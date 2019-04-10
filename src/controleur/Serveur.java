@@ -109,7 +109,7 @@ public class Serveur extends HttpServlet {
 			System.out.println("Défi en demande de validation");
 			request.getRequestDispatcher("index.html").forward(request, response);
 		}
-
+		
 		// ACTION CREER DEFI
 		if (action.equals("ajouterDefi")) {
 			actionAjouterDefi(request, response, session);
