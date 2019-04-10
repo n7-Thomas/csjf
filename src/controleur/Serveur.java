@@ -152,7 +152,18 @@ public class Serveur extends HttpServlet {
 				request.getRequestDispatcher("profil.jsp").forward(request, response);
 			}
 		}
-	}
+
+		if (action.equals("inscription")) {
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String email = request.getParameter("email");
+			String motdepasse = request.getParameter("motdepasse");
+			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
+			System.out.println("MEMBRE TROUVE : " + m);
+			session.setAttribute("user", m);
+			request.getRequestDispatcher("profil.jsp").forward(request, response);
+			}
+		}
 
 	/**
 	 * Traiter la requête pour amener vers la page de validation des défis.

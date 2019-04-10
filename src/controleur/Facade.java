@@ -48,6 +48,17 @@ public class Facade {
 		return member;
 	}
 
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
+		Membre mb = new Membre();
+		mb.setCoeff_sportif(1);
+		mb.setEmail(email);
+		mb.setMotdepasse(motdepasse);
+		mb.setNom(nom);
+		mb.setPrenom(prenom);
+		em.persist(mb);
+		return mb;
+	}
+
 	/**
 	 * FROM PAGE ADMIN
 	 * @param grp
