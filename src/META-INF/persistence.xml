@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+    xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="MaPU"
+        transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        
+        <class>modele.Commentaire</class>
+        <class>modele.CSJF</class>
+        <class>modele.Defi_A_Valider</class>
+        <class>modele.Defi_Valide</class>
+        <class>modele.Defi</class>
+        <class>modele.FilActu</class>
+        <class>modele.Groupe</class>
+        <class>modele.Membre</class>
+        <class>modele.Groupe</class>
+        <class>modele.Message</class>
+        <class>modele.Notification</class>
+        <class>modele.Publication</class>
+        
+        
+        <properties>
+            <property name="hibernate.dialect" 
+				value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>
