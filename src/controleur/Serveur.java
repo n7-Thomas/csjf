@@ -104,6 +104,12 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("index.html").forward(request, response);
 		}
 		
+		if(action.equals("init3")) {
+			facade.initialiserTest3();
+			System.out.println("Défi en demande de validation");
+			request.getRequestDispatcher("index.html").forward(request, response);
+		}
+		
 
 		// ACTION CREER DEFI
 		if (action.equals("ajouterDefi")) {

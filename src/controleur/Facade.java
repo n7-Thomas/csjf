@@ -220,6 +220,10 @@ public class Facade {
 		Defi_A_Valider dav = new Defi_A_Valider();
 		dav.setDefi(defi);
 		dav.setMembre(mb);
+		dav.setGroupe(gp);
+		
+		em.persist(dav);
+		
 		
 	}
 	
