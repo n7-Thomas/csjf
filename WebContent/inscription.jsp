@@ -3,11 +3,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-        <meta charset="utf-8" />
-        <title>Inscription sur CSJF</title>
+    <title>Inscription sur CSJF</title>
     </head>
     <body>
-        <form method="post" action="Serveur">
+    	<% String status = (String) request.getAttribute("status");
+		if(status != null){ %> <p> Status : <%=status %> </p> <% }
+		%>
+    
+        <form method="post" action="ServeurConnexion">
             <fieldset>
                 <legend>Inscription</legend>
                 <p>Inscris-toi pour pouvoir rejoindre cette grande communauté sportive.</p>

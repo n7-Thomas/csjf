@@ -3,11 +3,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-        <meta charset="utf-8" />
         <title>Connexion</title>
     </head>
     <body>
-        <form method="post" action="Serveur">
+    	<% String status = (String) request.getAttribute("status");
+		if(status != null){ %> <p> Status : <%=status %> </p> <% }
+		%>
+        <form method="post" action="ServeurConnexion">
             <fieldset>
                 <legend>Connexion</legend>
                 <p>Connectez-vous à votre compte pour continuer votre progression.</p>

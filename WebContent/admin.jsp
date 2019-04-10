@@ -7,7 +7,10 @@
 <title>Administration du groupe</title>
 </head>
 <body>
-
+	<% String status = (String) request.getAttribute("status");
+		if(status != null){ %> <p> Status : <%=status %> </p> <% }
+	%>
+	
 	<%
 		Membre mb = (Membre) session.getAttribute("user");
 		if (mb == null) {
@@ -28,8 +31,8 @@
 
 	<a href="ajouter_membre.jsp">Ajouter des membres</a> <br>
 	<a href="ajouter_defi.jsp">Ajouter des défis</a> <br>
-	<a href="Serveur?action=validerDefis">Valider des défis</a> <br>
-	<a href="Serveur?action=validerDemandesARejoindre">Valider des demandes à rejoindre</a> <br>
+	<a href="ServeurGroupe?action=validerDefis">Valider des défis</a> <br>
+	<a href="ServeurGroupe?action=validerDemandesARejoindre">Valider des demandes à rejoindre</a> <br>
 	<%
 		}
 
