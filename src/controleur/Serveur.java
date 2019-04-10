@@ -59,7 +59,7 @@ public class Serveur extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		
+
 		if (session == null) {
 			request.setAttribute("erreur", "Pas de session");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
@@ -68,10 +68,10 @@ public class Serveur extends HttpServlet {
 
 		// Récupération de l'action
 		String action = request.getParameter("action");
-		
+
 		System.out.println("Serveur action : " + action);
-		
-		
+
+
 		// Si pas d'action on envoie sur l'index
 		if (action == null) {
 			request.getRequestDispatcher("index.html").forward(request, response);
@@ -90,26 +90,25 @@ public class Serveur extends HttpServlet {
 				request.getRequestDispatcher("groupe.jsp").forward(request, response);
 			}
 		}
-		
+
 		if(action.equals("init1")) {
 			Membre mb = facade.initialiserTest();
-			session.setAttribute("user", mb);	
+			session.setAttribute("user", mb);
 			System.out.println("Thomas ajouté.");
 			request.getRequestDispatcher("index.html").forward(request, response);
 		}
-		
+
 		if(action.equals("init2")) {
 			facade.initialiserTest2();
 			System.out.println("Manu ajouté.");
 			request.getRequestDispatcher("index.html").forward(request, response);
 		}
-		
+
 		if(action.equals("init3")) {
 			facade.initialiserTest3();
 			System.out.println("Défi en demande de validation");
 			request.getRequestDispatcher("index.html").forward(request, response);
 		}
-		
 
 		// ACTION CREER DEFI
 		if (action.equals("ajouterDefi")) {
@@ -125,17 +124,17 @@ public class Serveur extends HttpServlet {
 		if (action.equals("ajouterMembre")) {
 			actionAjouterMembre(request, response, session);
 		}
-		
+
 		// ACTION CREER GROUPE
 		if (action.equals("validerDefis")) {
 			actionValiderDefis(request, response, session);
 		}
-		
+
 		// ACTION CREER GROUPE
 		if (action.equals("validerDemandesARejoindre")) {
 			actionValiderDemandesARejoindre(request, response, session);
 		}
-		
+
 
 		// ACTION AFFICHER PAGE GROUPE
 		if (action.equals("pageGroupe")) {
@@ -152,14 +151,25 @@ public class Serveur extends HttpServlet {
 			System.out.println("MEMBRE TROUVE : " + m);
 			if (m == null) {
 				request.setAttribute("erreur", "Pas de membre trouvé");
-				request.getRequestDispatcher("pageConnexion.html").forward(request, response);
+				request.getRequestDispatcher("connexion.jsp").forward(request, response);
 			} else {
 				session.setAttribute("user", m);
 				request.getRequestDispatcher("profil.jsp").forward(request, response);
 			}
 		}
-	}
-	
+
+		if (action.equals("inscription")) {
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String email = request.getParameter("email");
+			String motdepasse = request.getParameter("motdepasse");
+			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
+			System.out.println("MEMBRE TROUVE : " + m);
+			session.setAttribute("user", m);
+			request.getRequestDispatcher("profil.jsp").forward(request, response);
+			}
+		}
+
 	/**
 	 * Traiter la requête pour amener vers la page de validation des défis.
 	 * @param request
@@ -170,7 +180,7 @@ public class Serveur extends HttpServlet {
 	 */
 	private void actionValiderDefis(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-			
+
 		// Récupération du membre connecté
 		Membre usr = (Membre) session.getAttribute("user");
 		if (usr == null) {
@@ -178,7 +188,7 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		// Récupération du groupe lié
 		Groupe grp = (Groupe) session.getAttribute("groupe");
 		if (grp == null) {
@@ -186,14 +196,14 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Collection<Defi_A_Valider> defis = facade.getDefisAValider(grp);
-		
+
 		request.setAttribute("defis_a_valider", defis);
-		request.getRequestDispatcher("valider_defis.jsp").forward(request, response);		
-	
+		request.getRequestDispatcher("valider_defis.jsp").forward(request, response);
+
 	}
-	
+
 	/**
 	 * Traiter la requête d'affichage des demandes à rejoindre.
 	 * @param request
@@ -204,7 +214,7 @@ public class Serveur extends HttpServlet {
 	 */
 	private void actionValiderDemandesARejoindre(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-			
+
 		// Récupération du membre connecté
 		Membre usr = (Membre) session.getAttribute("user");
 		if (usr == null) {
@@ -212,7 +222,7 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		// Récupération du groupe lié
 		Groupe grp = (Groupe) session.getAttribute("groupe");
 		if (grp == null) {
@@ -220,15 +230,15 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Collection<Demande_A_Rejoindre> defis = facade.getDemandeARejoindre(grp);
-		
+
 		request.setAttribute("demandes_a_rejoindre", defis);
-		request.getRequestDispatcher("valider_demande_a_rejoindre.jsp").forward(request, response);		
-	
+		request.getRequestDispatcher("valider_demande_a_rejoindre.jsp").forward(request, response);
+
 	}
-	
-	
+
+
 	/**
 	 * Traiter la requête d'ajout d'un membre au groupe.
 	 * @param request
@@ -239,7 +249,7 @@ public class Serveur extends HttpServlet {
 	 */
 	private void actionAjouterMembre(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-		
+
 		// Vérification du email de groupe donné
 		String email = request.getParameter("email");
 		if (email == null) {
@@ -247,7 +257,7 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		// Récupération du groupe courant
 		Groupe grp = (Groupe) session.getAttribute("groupe");
 		if (grp == null) {
@@ -255,20 +265,20 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		// Ajout du membre
 		if(!facade.ajouterMembre(email, grp)) {
 			request.setAttribute("erreur", "Nous n'avons pas trouvé cette personne");
 			request.getRequestDispatcher("ajouter_membre.jsp").forward(request, response);
 			return;
 		}
-		
-		request.getRequestDispatcher("admin.jsp").forward(request, response);		
+
+		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
 
 	/**
 	 * Traiter la requête de création d'un nouveau groupe.
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
@@ -304,14 +314,14 @@ public class Serveur extends HttpServlet {
 
 		// Ajout du groupe sélectionné dans le groupe
 		session.setAttribute("groupe", grp);
-		
+
 		// Redirection vers la page admin
 		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
 
 	/**
 	 * Traiter la requete d'ajout d'un défi au groupe correspondant.
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
@@ -335,21 +345,21 @@ public class Serveur extends HttpServlet {
 			return;
 		}
 
-		String nom = (String) request.getParameter("nom");
+		String nom = request.getParameter("nom");
 		if (nom == null) {
 			request.setAttribute("erreur", "Vous n'avez pas donné de nom");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
 
-		String description = (String) request.getParameter("description");
+		String description = request.getParameter("description");
 		if (description == null) {
 			request.setAttribute("erreur", "Vous n'avez pas donné de description");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
 
-		String str_points = (String) request.getParameter("points");
+		String str_points = request.getParameter("points");
 		if (str_points == null) {
 			request.setAttribute("erreur", "Vous n'avez pas donné de nom");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);

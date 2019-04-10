@@ -28,24 +28,44 @@ public class Facade {
 	 * FROM PAGE CONNEXION
 	 */
 	public Membre checkConnexion(String email, String motDePasse) {
-		System.out.println("select m from Membre m WHERE email='" + email + "'");
-		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email='" + email + "'", Membre.class);
-		Membre mb = req.getSingleResult();
-		System.out.println("AH : " + mb);
-		if (mb != null && mb.getMotdepasse() == motDePasse) {
-			return mb;
-		} else {
-			return null;
+
+
+		System.out.println("select * from Membre WHERE email='" + email + "'");
+		Membre member;
+
+		try {
+			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
+			Membre mb = req.getSingleResult();
+			if (mb != null && mb.getMotdepasse().equals(motDePasse)) {
+				member = mb;;
+			} else {
+				member = null;
+			}
+		} catch (Exception e) {
+			System.out.println("Utilisateur n'existe pas");
+			member = null;
 		}
+		return member;
+	}
+
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
+		Membre mb = new Membre();
+		mb.setCoeff_sportif(1);
+		mb.setEmail(email);
+		mb.setMotdepasse(motdepasse);
+		mb.setNom(nom);
+		mb.setPrenom(prenom);
+		em.persist(mb);
+		return mb;
 	}
 
 	/**
 	 * FROM PAGE ADMIN
-	 * @param grp 
-	 * @param usr 
-	 * @param description 
-	 * @param nom 
-	 * @return 
+	 * @param grp
+	 * @param usr
+	 * @param description
+	 * @param nom
+	 * @return
 	 */
 	public Defi ajouterDefi(String nom, String description, Membre usr, Groupe grp, int points) {
 		Defi defi = new Defi();
@@ -53,9 +73,9 @@ public class Facade {
 		defi.setGroupe(grp);
 		defi.setNom(nom);
 		defi.setPoints(points);
-		
+
 		em.persist(defi);
-		
+
 		return defi;
 	}
 
@@ -77,11 +97,11 @@ public class Facade {
 			System.out.println("Aucun résultat pour cette requête.");
 			return false;
 		}else {
-			Membre mb = (Membre) req.getSingleResult();
+			Membre mb = req.getSingleResult();
 			mb.addGroupeAppartenus(grp);
-			return true;			
+			return true;
 		}
-		
+
 	}
 
 	public void supprimerMembre() {
@@ -112,10 +132,10 @@ public class Facade {
 
 	public FilActu getFilActu(int id_groupe) {
 		// Faire la requete vers l'em
-		
+
 		// Renvoie
-		
-		
+
+
 		return null;
 	}
 
@@ -136,7 +156,7 @@ public class Facade {
 
 	/**
 	 * Créer un groupe.
-	 * 
+	 *
 	 * @param nom
 	 * @throws ExceptionUserNonDefini
 	 */
@@ -155,7 +175,7 @@ public class Facade {
 
 	/**
 	 * Récupérer le groupe dans la base de données avec son nom.
-	 * 
+	 *
 	 * @param nom
 	 * @return
 	 */
@@ -207,25 +227,24 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Goncalves");
 		mb.setPrenom("Manu");
-		em.persist(mb);	
+		em.persist(mb);
 		return mb;
 	}
-	
+
 	// A UTILISER QU'APRES 1 et 2
 	public void initialiserTest3() {
 		Membre mb = em.find(Membre.class, 2);
 		Groupe gp = em.find(Groupe.class, 1);
 		Defi defi = em.find(Defi.class, 1);
-		
+
 		Defi_A_Valider dav = new Defi_A_Valider();
 		dav.setDefi(defi);
 		dav.setMembre(mb);
 		dav.setGroupe(gp);
 		
 		em.persist(dav);
-		
-		
+
 	}
-	
+
 
 }
