@@ -9,6 +9,39 @@
 <title>Profil de <%= mb.getPrenom() + " " + mb.getNom() %></title>
 </head>
 <body>
-	
+	<fieldset>
+                <h2>Coordonnées.</h2>
+                
+                <p>Nom : <%= mb.getNom() %></p>
+                <p>Prénom : <%= mb.getPrenom() %></p>
+                <p>Email : <%= mb.getEmail() %></p>
+                
+                <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
+                <% 
+                	Collection<Groupe> groupes = mb.getId_groupes_app(); 
+                	Collection<Groupe> groupes_admin = mb.getId_groupes_admin();
+                	if (groupes_admin != null) {
+                	groupes.addAll(groupes_admin);
+                	}
+                %>
+                <% if (groupes != null){
+       				for (Groupe g : groupes) {
+                		String groupe_nom = g.getNom(); 
+                %>
+                <p> <%= groupe_nom %> </p>
+                <% } 
+       				} else { %>
+                <p> Vous n'êtes dans aucun groupe actuellement</p>
+                <% } %>
+                
+                <a href="creer_groupe.jsp">Créer un groupe</a> <br>
+                
+                
+                
+
+                
+                
+                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
+            </fieldset>
 </body>
 </html>

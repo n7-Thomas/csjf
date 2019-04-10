@@ -16,7 +16,7 @@ if(status != null){ %> <p> Status : <%=status %> </p> <% }
 if(mbr_co != null){ %> <p> Bonjour, <%=mbr_co.getNom() %> !</p> <% } else { %> <p> Vous n'êtes pas connecté </p> <% }
 %>
 
-<% if (mbr_co != null){ %>
+<% if (mbr_co == null){ %>
 <h2>Inscription & Connexion</h2>
 <a href="inscription.jsp">S'inscrire gros</a> <br>
 <a href="connexion.jsp">Connexion</a> <br>
