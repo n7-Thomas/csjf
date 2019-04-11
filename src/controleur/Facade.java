@@ -71,12 +71,15 @@ public class Facade {
 	public Defi ajouterDefi(String nom, String description, Membre usr, Groupe grp, int points) {
 		Defi defi = new Defi();
 		defi.setDescription(description);
-		defi.setGroupe(grp);
+		//defi.setGroupe(grp);
 		defi.setNom(nom);
 		defi.setPoints(points);
 		defi.setType(TypeDefi.Sport);
 
 		em.persist(defi);
+		
+		Groupe g = em.find(Groupe.class, grp.getId());
+		g.addDefi(defi);
 
 		return defi;
 	}

@@ -120,6 +120,14 @@ public class Groupe {
 	public void setDefis(Collection<Defi> defis) {
 		this.defis = defis;		
 	}
+	
+	/**
+	 * Ajouter un défi à la collection.
+	 * @param defi
+	 */
+	public void addDefi(Defi defi) {
+		this.defis.add(defi);	
+	}
 		
 	/**
 	 * Retourner l'identifiant.
