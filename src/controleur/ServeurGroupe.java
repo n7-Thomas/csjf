@@ -56,6 +56,8 @@ public class ServeurGroupe extends HttpServlet {
 		processRequest(request, response);
 	}
 
+	
+	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -81,6 +83,11 @@ public class ServeurGroupe extends HttpServlet {
 		// ACTION CREER DEFI
 		if (action.equals("ajouterDefi")) {
 			actionAjouterDefi(request, response, session);
+		}
+		
+		// ACTION AJOUTER DEFI AUX DEFI A VALIDER
+		if (action.equals("ajouterDefiAValider")) {
+			actionAjouterDefiAValider(request, response, session);
 		}
 
 		// ACTION CREER GROUPE
@@ -108,6 +115,42 @@ public class ServeurGroupe extends HttpServlet {
 			actionDemanderRejoindreGroupe(request, response, session);
 		}
 
+	}
+	
+	/**
+	 * Traiter une requête de demande à rejoindre le groupe.
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void actionAjouterDefiAValider(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws ServletException, IOException {
+		
+		Defi defiAValider = (Defi) request.getAttribute("defiAValider");
+		Membre usr = (Membre) session.getAttribute("user");
+		
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		if (defiAValider == null) {
+			request.setAttribute("erreur", "Aucun défi séléctionné");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		try {
+			facade.demandeValidationDefi(defiAValider, (Membre) session.getAttribute("user"));
+			request.setAttribute("succes", "Votre défi a été envoyé !");
+			request.getRequestDispatcher("groupe.jsp").forward(request, response);
+		} catch (Exception e) {
+			request.setAttribute("erreur", e.getMessage());
+			request.getRequestDispatcher("groupe.jsp").forward(request, response);
+		}
 	}
 	
 	/**

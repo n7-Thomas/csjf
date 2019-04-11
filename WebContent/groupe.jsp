@@ -30,36 +30,69 @@
 	%>
 		
 				<div id="afficherDefisGroupe">
-				<table>
-	   				<tr>
-	    				<th>Description</th>
-	       				<th>Points à gagner</th>
-	       				<th>État</th>
-	   				</tr>
+					<table>
+		   				<tr>
+		    				<th>Description</th>
+		       				<th>Points à gagner</th>
+		       				<th>État</th>
+		   				</tr>
 		<%
-				if(groupe.getDefis() != null) {
-					for (Defi defi : groupe.getDefis()) {
-						if (defi == null) {
-				%>
-							<tr>
-								<td>Aucun défi à afficher</td>
-					       		<td>RIEN</td>
-					       		<td>RIEN</td>
-					       	</tr>
+						if(groupe.getDefis() != null) {
+							for (Defi defi : groupe.getDefis()) {
+								if (defi == null) {				
+		%>
+									<tr>
+										<td>Aucun défi à afficher</td>
+							       		<td>RIEN</td>
+							       		<td>RIEN</td>
+							       	</tr>
 				<%
-						} else {
+								} else {
 				%>
-							<tr>
-						       	<td><%=defi.getDescription() %></td>
-						       	<td><%=defi.getPoints() %></td>
-						       	<td>Pas encore de type</td>
-						   	</tr>
+									<tr>
+								       	<td><%=defi.getDescription() %></td>
+								       	<td><%=defi.getPoints() %></td>
+								       	<td>Pas encore de type</td>
+								   	</tr>
 				<% 	
+								}
+							}
+						} else {
+							%>
+							<p>groupe.getDefis est null</p>
+							<%
 						}
-					}
-				}
 				%>
 					</table>
+				</div>
+				
+				
+				<div id="demandeValiderDefi">
+					<p> Remplissez le formulaire suivant pour demander à valider un de vos défis. </p>
+					<form method="post" action="">
+						<label for="defi">Quel défi voulez-vous valider ?</label><br/>
+			       		<select name="defi" id="defi">
+			       			<%
+			       			if (groupe.getDefis() == null) {
+			       				%>
+			   					<option value="rien">Aucun</option>
+			   					<%
+			       			} else {
+				       			for (Defi defi : groupe.getDefis()) {
+				       				%>
+				           			<option value="<%=defi.getNom()%>"><%=defi.getNom() %></option> 
+				           			<%
+				       			}
+			           		}
+			           		%>
+			       		</select>
+			       		<input type="submit" value="Envoyer" />
+			       		<input type="hidden" value="ajouterDefiAValider" name="action">
+			       		<% //String err = (String) request.getAttribute("erreur");
+			       		//String succ = (String) request.getAttribute("succes"); %>
+			       		<span class="erreur"><%//=err %></span>
+			       		<span class="succes"><%//=succ %></span>
+					</form>
 				</div>
 	
 	<%

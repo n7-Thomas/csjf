@@ -119,7 +119,7 @@ public class Facade {
 	 */
 	public void demandeValidationDefi(Defi defi, Membre membre) throws Exception {
 		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE defi='" + defi + "' && membre='" + membre + "'", Defi_A_Valider.class);
-		if (req.getResultList().size() == 0) { // alors le défi à valider n'existe pas déjà
+		if (req.getResultList().size() == 0) { // alors le défi est déjà en cours de validation ou rien n'a été sélectionné
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 			defi_a_valider.setDefi(defi);
 			defi_a_valider.setMembre(membre);
