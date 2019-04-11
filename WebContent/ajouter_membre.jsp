@@ -8,12 +8,16 @@
 <title>Ajouter un membre à la main</title>
 </head>
 <body>
+		<% String status = (String) request.getAttribute("status");
+		if(status != null){ %> <p> Status : <%=status %> </p> <% }
+		%>
+		
 		<% Groupe g = ((Groupe) session.getAttribute("groupe"));
 		   if(g == null){
 			   %> <p> Erreur vous n'avez pas sélectionné de groupe </p> <% 
 		   }else{
 		%>
-        <form method="post" action="Serveur">
+        <form method="post" action="ServeurGroupe">
             <fieldset>
                 <legend>Ajouter un membre au groupe</legend>
                 <p>Ajouter un membre pour le groupe <%=g.getNom()%></p>

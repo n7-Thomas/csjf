@@ -1,6 +1,7 @@
 package controleur;
 
 import java.io.IOException;
+
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,32 +10,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modele.Defi;
-import modele.Groupe;
 import modele.Membre;
 
 /**
- * Servlet implementation class Serveur
+ * Servlet implementation class ServeurConnexion
  */
-@WebServlet(description = "Serveur principal", urlPatterns = { "/Serveur" })
-public class Serveur extends HttpServlet {
+@WebServlet("/ServeurConnexion")
+public class ServeurConnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private Facade facade;
-
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Serveur() {
+	public ServeurConnexion() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processRequest(request, response);
@@ -44,7 +43,6 @@ public class Serveur extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processRequest(request, response);
@@ -52,7 +50,6 @@ public class Serveur extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		HttpSession session = request.getSession();
 
 		if (session == null) {
@@ -72,27 +69,32 @@ public class Serveur extends HttpServlet {
 			return;
 		}
 
-		// ACTION DEMANDE DE VALIDATION D'UN DEFI
-		if (action.equals("formulaireValiderDefi")) {
-			Defi defiAValider = (Defi) request.getAttribute("defiAValider");
-			try {
-				facade.demandeValidationDefi(defiAValider, (Membre) session.getAttribute("user"));
-				request.setAttribute("succes", "Votre défi a été envoyé !");
-				request.getRequestDispatcher("groupe.jsp").forward(request, response);
-			} catch (Exception e) {
-				request.setAttribute("erreur", e.getMessage());
-				request.getRequestDispatcher("groupe.jsp").forward(request, response);
+		// ACTION CHECKER LA CONNEXION
+		if (action.equals("testconnexion")) {
+			String email = request.getParameter("email");
+			String motdepasse = request.getParameter("motdepasse");
+			Membre m = facade.checkConnexion(email, motdepasse);
+			System.out.println("MEMBRE TROUVE : " + m);
+			if (m == null) {
+				request.setAttribute("erreur", "Pas de membre trouvé");
+				request.getRequestDispatcher("connexion.jsp").forward(request, response);
+			} else {
+				session.setAttribute("user", m);
+				request.getRequestDispatcher("profil.jsp").forward(request, response);
 			}
 		}
 
-		// ACTION AFFICHER PAGE GROUPE
-		if (action.equals("pageGroupe")) {
-			Groupe grp = (Groupe) session.getAttribute("groupe");
-			request.setAttribute("groupe", grp);
-			request.getRequestDispatcher("groupe.jsp").forward(request, response);
+		if (action.equals("inscription")) {
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String email = request.getParameter("email");
+			String motdepasse = request.getParameter("motdepasse");
+			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
+			System.out.println("MEMBRE TROUVE : " + m);
+			session.setAttribute("user", m);
+			request.getRequestDispatcher("profil.jsp").forward(request, response);
 		}
 
-		
 	}
 
 }

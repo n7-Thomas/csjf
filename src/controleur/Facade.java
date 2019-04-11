@@ -14,6 +14,7 @@ import modele.Demande_A_Rejoindre;
 import modele.FilActu;
 import modele.Groupe;
 import modele.Membre;
+import modele.TypeDefi;
 
 @Singleton
 public class Facade {
@@ -28,24 +29,44 @@ public class Facade {
 	 * FROM PAGE CONNEXION
 	 */
 	public Membre checkConnexion(String email, String motDePasse) {
-		System.out.println("select m from Membre m WHERE email='" + email + "'");
-		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email='" + email + "'", Membre.class);
-		Membre mb = req.getSingleResult();
-		System.out.println("AH : " + mb);
-		if (mb != null && mb.getMotdepasse() == motDePasse) {
-			return mb;
-		} else {
-			return null;
+
+
+		System.out.println("select * from Membre WHERE email='" + email + "'");
+		Membre member;
+
+		try {
+			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
+			Membre mb = req.getSingleResult();
+			if (mb != null && mb.getMotdepasse().equals(motDePasse)) {
+				member = mb;;
+			} else {
+				member = null;
+			}
+		} catch (Exception e) {
+			System.out.println("Utilisateur n'existe pas");
+			member = null;
 		}
+		return member;
+	}
+
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
+		Membre mb = new Membre();
+		mb.setCoeff_sportif(1);
+		mb.setEmail(email);
+		mb.setMotdepasse(motdepasse);
+		mb.setNom(nom);
+		mb.setPrenom(prenom);
+		em.persist(mb);
+		return mb;
 	}
 
 	/**
-	 * FROM PAGE ADMIN
-	 * @param grp 
-	 * @param usr 
-	 * @param description 
-	 * @param nom 
-	 * @return 
+	 * Ajouter un défi dans le grp avec les caractéristiques.
+	 * @param grp
+	 * @param usr
+	 * @param description
+	 * @param nom
+	 * @return
 	 */
 	public Defi ajouterDefi(String nom, String description, Membre usr, Groupe grp, int points) {
 		Defi defi = new Defi();
@@ -53,14 +74,15 @@ public class Facade {
 		defi.setGroupe(grp);
 		defi.setNom(nom);
 		defi.setPoints(points);
-		
+		defi.setType(TypeDefi.Sport);
+
 		em.persist(defi);
-		
+
 		return defi;
 	}
 
 	public void validerDefi() {
-
+		
 	}
 
 	public void modifierDefi() {
@@ -77,11 +99,11 @@ public class Facade {
 			System.out.println("Aucun résultat pour cette requête.");
 			return false;
 		}else {
-			Membre mb = (Membre) req.getSingleResult();
+			Membre mb = req.getSingleResult();
 			mb.addGroupeAppartenus(grp);
-			return true;			
+			return true;
 		}
-		
+
 	}
 
 	public void supprimerMembre() {
@@ -112,10 +134,10 @@ public class Facade {
 
 	public FilActu getFilActu(int id_groupe) {
 		// Faire la requete vers l'em
-		
+
 		// Renvoie
-		
-		
+
+
 		return null;
 	}
 
@@ -130,13 +152,16 @@ public class Facade {
 	/**
 	 * FROM PAGE ACCUEIL
 	 */
-	public void rejoindreGroupe() {
-
+	public void demanderRejoindreGroupe(Membre mb, Groupe gr) {
+		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
+		dar.setGroupe(gr);
+		dar.setMembre(mb);
+		em.persist(dar);
 	}
 
 	/**
 	 * Créer un groupe.
-	 * 
+	 *
 	 * @param nom
 	 * @throws ExceptionUserNonDefini
 	 */
@@ -155,7 +180,7 @@ public class Facade {
 
 	/**
 	 * Récupérer le groupe dans la base de données avec son nom.
-	 * 
+	 *
 	 * @param nom
 	 * @return
 	 */
@@ -180,7 +205,7 @@ public class Facade {
 	}
 
 	public Collection<Defi_A_Valider> getDefisAValider(Groupe grp) {
-		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE groupe=??", Defi_A_Valider.class);
+		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE groupe=" + grp.getId(), Defi_A_Valider.class);
 		return req.getResultList();
 	}
 
@@ -189,6 +214,11 @@ public class Facade {
 		return req.getResultList();
 	}
 
+	
+	
+	
+	
+	
 	public Membre initialiserTest() {
 		Membre mb = new Membre();
 		mb.setCoeff_sportif(1);
@@ -199,7 +229,6 @@ public class Facade {
 		em.persist(mb);
 		return mb;
 	}
-
 	public Membre initialiserTest2() {
 		Membre mb = new Membre();
 		mb.setCoeff_sportif(1);
@@ -207,21 +236,72 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Goncalves");
 		mb.setPrenom("Manu");
-		em.persist(mb);	
+		em.persist(mb);
 		return mb;
 	}
-	
-	// A UTILISER QU'APRES 1 et 2
 	public void initialiserTest3() {
 		Membre mb = em.find(Membre.class, 2);
 		Groupe gp = em.find(Groupe.class, 1);
 		Defi defi = em.find(Defi.class, 1);
-		
+
 		Defi_A_Valider dav = new Defi_A_Valider();
 		dav.setDefi(defi);
 		dav.setMembre(mb);
+		dav.setGroupe(gp);
 		
+		em.persist(dav);
 	}
-	
+	public Groupe initialiserTest4() {
+		Membre mb = new Membre();
+		mb.setCoeff_sportif(1);
+		mb.setEmail("thomasdarget@hotmail.fr");
+		mb.setMotdepasse("abc");
+		mb.setNom("Darget");
+		mb.setPrenom("Thomas");
+		em.persist(mb);
+		
+		Membre mb2 = new Membre();
+		mb2.setCoeff_sportif(1);
+		mb2.setEmail("manugoncalves@gmail.com");
+		mb2.setMotdepasse("abc");
+		mb2.setNom("Goncalves");
+		mb2.setPrenom("Manu");
+		em.persist(mb2);
+		
+		Groupe g = new Groupe();
+		g.setAdministrateur(mb);
+		g.setNom("Groupe1");
+		em.persist(g);		
+		
+		Defi d = new Defi();
+		d.setDescription("Description");
+		d.setNom("Defi test");
+		d.setPoints(10);
+		d.setType(TypeDefi.Sport);
+		d.setGroupe(g);
+		em.persist(d);
+		
+		Defi_A_Valider dav = new Defi_A_Valider();
+		dav.setDefi(d);
+		dav.setMembre(mb2);
+		dav.setGroupe(g);
+		em.persist(dav);
+		
+		Membre mb3 = new Membre();
+		mb3.setCoeff_sportif(1);
+		mb3.setEmail("cha@sfr.fr");
+		mb3.setMotdepasse("abc");
+		mb3.setNom("De Foucaud");
+		mb3.setPrenom("Charlotte");
+		em.persist(mb3);
+				
+		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
+		dar.setGroupe(g);
+		dar.setMembre(mb3);
+		em.persist(dar);
+		
+		return g;
+	}
+
 
 }

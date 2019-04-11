@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 //Faire une entity?
 public class FilActu {

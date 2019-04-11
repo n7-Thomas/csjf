@@ -8,6 +8,9 @@
 <title>Valider des défis</title>
 </head>
 <body>
+<% String status = (String) request.getAttribute("status");
+if(status != null){ %> <p> Status : <%=status %> </p> <% }
+%>
 <% 
 	Groupe groupe = (Groupe) session.getAttribute("groupe"); 
     Collection<Defi_A_Valider> defis_a_valider = (Collection<Defi_A_Valider>) request.getAttribute("defis_a_valider"); 
@@ -24,8 +27,8 @@
 	   		</tr>
 			<% for (Defi_A_Valider defi : defis_a_valider) { %>
 				<tr>
-	       			<td><%=defi.getDefi().getDescription()%></td>
-	       			<td><%=defi.getMembre().getNom() %></td>
+	       			<td><%=defi.getDefi().getNom()%></td>
+	       			<td><%=defi.getMembre().getPrenom() %></td>
 	   			</tr>
 			<% } %>
 		</table>

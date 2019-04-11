@@ -8,6 +8,9 @@
 <title>Valider des défis</title>
 </head>
 <body>
+<% String status = (String) request.getAttribute("status");
+if(status != null){ %> <p> Status : <%=status %> </p> <% }
+%>
 <% 
 	Groupe groupe = (Groupe) session.getAttribute("groupe"); 
     Collection<Demande_A_Rejoindre> demandes_a_rejoindre = (Collection<Demande_A_Rejoindre>) request.getAttribute("demandes_a_rejoindre"); 
