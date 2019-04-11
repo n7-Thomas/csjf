@@ -17,31 +17,30 @@
                 <p>Email : <%= mb.getEmail() %></p>
                 
                 <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
-                <% 
-                	Collection<Groupe> groupes = mb.getId_groupes_app(); 
-                	Collection<Groupe> groupes_admin = mb.getId_groupes_admin();
-                	if (groupes_admin != null) {
-                	groupes.addAll(groupes_admin);
-                	}
-                %>
-                <% if (groupes != null){
+                <%
+                Collection<Groupe> groupes = mb.getGroupesAppartenus(); 
+				if (groupes != null){
        				for (Groupe g : groupes) {
                 		String groupe_nom = g.getNom(); 
-                %>
-                <p> <%= groupe_nom %> </p>
-                <% } 
-       				} else { %>
+               	%>
+               			<p> <%= groupe_nom %> </p>
+                <%} 
+       			} else { 
+       			%>
                 <p> Vous n'êtes dans aucun groupe actuellement</p>
-                <% } %>
-                
-                <a href="creer_groupe.jsp">Créer un groupe</a> <br>
-                
-                
-                
-
-                
+                <% }
+                Collection<Groupe> groupes_admin = mb.getGroupesAdministres();
+                if (groupes_admin != null){
+           			for (Groupe g : groupes_admin) {
+                    	String groupe_nom = g.getNom(); 
+                %>		<p><%= groupe_nom %></p>
+                <%}  
+           		  } else {
+                %><p> Vous n'administrez aucun groupe actuellement. <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
+				<%} 
+				%>
                 
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
-            </fieldset>
+         </fieldset>
 </body>
 </html>

@@ -98,12 +98,17 @@ public class Facade {
 		if (req.getResultList() == null) {
 			System.out.println("Aucun résultat pour cette requête.");
 			return false;
-		}else {
-			Membre mb = req.getSingleResult();
-			mb.addGroupeAppartenus(grp);
-			return true;
 		}
-
+		Membre mb = req.getSingleResult();
+		mb.getGroupesAppartenus().add(grp);
+		
+		TypedQuery<Demande_A_Rejoindre> req2 = em.createQuery("select d from Demande_A_Rejoindre d WHERE GROUPE_ID=" + grp.getId() + " AND MEMBRE_ID=" + mb.getId(), Demande_A_Rejoindre.class);
+		if(req2.getResultList() != null) {
+			Demande_A_Rejoindre dar = req2.getSingleResult();
+			em.remove(em.find(Demande_A_Rejoindre.class, dar.getId()));	
+		}
+		
+		return true;
 	}
 
 	public void supprimerMembre() {
@@ -167,9 +172,9 @@ public class Facade {
 	 */
 	public Groupe creerGroupe(String nom, Membre usr) throws ExceptionUserNonDefini {
 		Groupe g = new Groupe();
+		em.persist(g);
 		g.setNom(nom);
 		g.setAdministrateur(usr);
-		em.persist(g);
 
 		return g;
 	}
@@ -214,10 +219,11 @@ public class Facade {
 		return req.getResultList();
 	}
 
-	
-	
-	
-	
+	public Collection<Membre> getMembres(Groupe grp) {
+		Groupe g = em.find(Groupe.class, grp.getId());
+		return g.getMembres();
+	}
+
 	
 	public Membre initialiserTest() {
 		Membre mb = new Membre();
@@ -273,6 +279,21 @@ public class Facade {
 		g.setNom("Groupe1");
 		em.persist(g);		
 		
+		
+		System.out.println("Groupe : " + g);
+		System.out.println("Membres : " + g.getMembres());
+		
+		g.getMembres().add(mb2);
+		
+		System.out.println("Membre.getGroupes " + mb2.getGroupesAppartenus());
+		System.out.println("Admin.getGroupesAdmin " + mb.getGroupesAdministres());
+		System.out.println("Groupe by em : " + em.find(Groupe.class, g.getId()));
+		
+		
+		
+		//mb2.getGroupesAppartenus().add(g);
+		//g.getMembres().add(mb2);
+		
 		Defi d = new Defi();
 		d.setDescription("Description");
 		d.setNom("Defi test");
@@ -294,6 +315,8 @@ public class Facade {
 		mb3.setNom("De Foucaud");
 		mb3.setPrenom("Charlotte");
 		em.persist(mb3);
+		
+
 				
 		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
 		dar.setGroupe(g);
@@ -302,6 +325,5 @@ public class Facade {
 		
 		return g;
 	}
-
 
 }

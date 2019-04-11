@@ -3,43 +3,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Administration du groupe</title>
+		<meta charset="ISO-8859-1">
+		<title>Administration du groupe</title>
+        <link type="text/css" rel="stylesheet" href="CSS/form.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/pageAdmin.css" />
 </head>
 <body>
+	<header>
 	<% String status = (String) request.getAttribute("status");
-		if(status != null){ %> <p> Status : <%=status %> </p> <% }
+	if(status != null){ %> <p> Status : <%=status %> </p> <% }
 	%>
-	
+	</header>
 	<%
-		Membre mb = (Membre) session.getAttribute("user");
-		if (mb == null) {
+	Membre mb = (Membre) session.getAttribute("user");
+	if (mb == null) {
 	%>
 	<p>Vous n'êtes pas connectés.</p>
 	<%
 		} else {
-			Groupe grp = (Groupe) session.getAttribute("groupe");
+			Groupe groupe = (Groupe) session.getAttribute("groupe");
 
-			if (grp == null) {
+			if (groupe == null) {
 	%>
+	
 	<p>Pas de groupe administré sélectionné.</p>
 	<a href="creer_groupe.jsp">Créer groupe</a>	<br>
 	<%
 		} else {
 	%>
-	<p>	Administrer le groupe <%=grp.getNom()%></p>
+	
+	<h1><%=groupe.getNom()%></h1>
+	<h2>Administration</h2>
+	
+	<%Collection<Defi_A_Valider> defis_a_valider = (Collection<Defi_A_Valider>) request.getAttribute("defis_a_valider"); 
+    
+    if(groupe == null || defis_a_valider == null){
+    	%> <p> Erreur dans la récupération des données </p> <%
+    }else{
+    %>
+    
+   	<fieldset id="afficherMembres">
+	<legend>Membres du groupes</legend>
+		<%  Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
+			if(membres == null){
+		%>	<p>	Personne dans le groupe... </p> <%
+    	   } else {
+			    for (Membre membre : membres) { %>
+	       			<p><%=membre.getPrenom() %></p>
 
-	<a href="ajouter_membre.jsp">Ajouter des membres</a> <br>
+			<% } 
+			}%>
+	</fieldset>
+    
+    <fieldset>
+    <legend>Valider des défis</legend>
+	<div id="afficherDefisAValider">
+		<% if(defis_a_valider.size() == 0){
+		%>	<p>	Aucune demande en cours ! </p> <%
+    	   } else {
+		%>
+		<table>
+	   		<tr>
+	    		<th>Defi</th>
+	       		<th>Membre</th>
+	   		</tr>
+			<% for (Defi_A_Valider defi : defis_a_valider) { %>
+				<tr>
+	       			<td><%=defi.getDefi().getNom()%></td>
+	       			<td><%=defi.getMembre().getPrenom() %></td>
+	   			</tr>
+			<% } %>
+		</table>
+	</div>
+	<% }
+	}%>
+	</fieldset>
+		
+	<fieldset id="AjouterDefi">
+    <legend>Ajouter un défi</legend>
+	<form method="post" action="ServeurGroupe">
+                <label for="nom">Nom du défi: <span class="requis">*</span></label>
+                <input type="text" id="nom" name="nom" value="" size="20" maxlength="60" />
+                <br />
+                <label for="description">Description: <span class="requis">*</span></label>
+                <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
+                <br />
+          		<label for="points">Nombre de points: <span class="requis">*</span></label>
+                <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
+                <br />
+                <input type="submit" value="Ajouter ce défi" class="sansLabel" />
+                <br />
+				<input type="hidden" value="ajouterDefi" name="action"/>
+        </form>	
+	</fieldset>
+	
+	
+	<fieldset id="ValiderDemandeARejoindre">   
+	<legend>Valider les demandes à rejoindre votre groupe</legend>
+	<% 
+	Collection<Demande_A_Rejoindre> demandes_a_rejoindre = (Collection<Demande_A_Rejoindre>) request.getAttribute("demandes_a_rejoindre"); 
+  
+    if(demandes_a_rejoindre == null){
+    	%> <p> Erreur dans la récupération des données </p> 
+    <%
+    }else{
+    %>
+			<% if(demandes_a_rejoindre.size() == 0){
+			   %>	<p>	Aucune demande en cours ! </p> <%
+    		   } else {
+    				for (Demande_A_Rejoindre dar : demandes_a_rejoindre) { %>
+						<p><%=dar.getMembre().getNom()%></p>
+					<% } %>
+	<% } 
+	}%>
+	</fieldset>	
+	<fieldset id="AjouterMembre">
+		<legend>Ajouter un membre au groupe</legend>
+	        <form method="post" action="ServeurGroupe">       
+                <label for="email">Email du nouveau membre: <span class="requis">*</span></label>
+                <input type="text" id="email" name="email" value="" size="20" maxlength="60" />
+                <br />
+                <input type="submit" value="Ajouter ce membre" class="sansLabel" />
+                <br />
+				<input type="hidden" value="ajouterMembre" name="action"/>
+       		</form>
+	</fieldset>
+
+	<!-- <a href="ajouter_membre.jsp">Ajouter des membres</a> <br>
 	<a href="ajouter_defi.jsp">Ajouter des défis</a> <br>
 	<a href="ServeurGroupe?action=validerDefis">Valider des défis</a> <br>
-	<a href="ServeurGroupe?action=validerDemandesARejoindre">Valider des demandes à rejoindre</a> <br>
+	<a href="ServeurGroupe?action=validerDemandesARejoindre">Valider des demandes à rejoindre</a> <br> -->
+	
 	<%
-		}
-
-		}
+	}
+	}
 	%>
-
-
-
 </body>
 </html>
