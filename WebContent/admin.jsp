@@ -30,6 +30,7 @@
 	<a href="ajouter_defi.jsp">Ajouter des défis</a> <br>
 	<a href="Serveur?action=validerDefis">Valider des défis</a> <br>
 	<a href="Serveur?action=validerDemandesARejoindre">Valider des demandes à rejoindre</a> <br>
+	<a href="groupe.jsp">Page du groupe</a> <br>
 	<%
 		}
 

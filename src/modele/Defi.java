@@ -28,7 +28,6 @@ public class Defi {
 		this.description = "";
 		this.nom = "";
 		this.points = 0;
-		this.groupe = null;
 	}
 	
 	/**
