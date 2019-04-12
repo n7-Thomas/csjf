@@ -40,6 +40,8 @@
 				<%} 
 				%>
                 
+                <a href="connexion.jsp"> <%= session.invalidate() %> Déconnexion </a> <br> </p>
+                
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
          </fieldset>
 </body>
