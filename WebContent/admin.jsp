@@ -38,7 +38,7 @@
 	<%Collection<Defi_A_Valider> defis_a_valider = (Collection<Defi_A_Valider>) request.getAttribute("defis_a_valider"); 
     
     if(groupe == null || defis_a_valider == null){
-    	%> <p> Erreur dans la récupération des données </p> <%
+    	%> <div> Erreur dans la récupération des données </div> <%
     }else{
     %>
     
@@ -46,10 +46,10 @@
 	<legend>Membres du groupes</legend>
 		<%  Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
 			if(membres == null){
-		%>	<p>	Personne dans le groupe... </p> <%
+		%>	<div>	Personne dans le groupe... </div> <%
     	   } else {
 			    for (Membre membre : membres) { %>
-	       			<p><%=membre.getPrenom() %></p>
+	       			<div><%=membre.getPrenom() %></div>
 
 			<% } 
 			}%>
@@ -57,24 +57,26 @@
     
     <fieldset>
     <legend>Valider des défis</legend>
-	<div id="afficherDefisAValider">
 		<% if(defis_a_valider.size() == 0){
 		%>	<p>	Aucune demande en cours ! </p> <%
     	   } else {
 		%>
-		<table>
-	   		<tr>
-	    		<th>Defi</th>
-	       		<th>Membre</th>
-	   		</tr>
-			<% for (Defi_A_Valider defi : defis_a_valider) { %>
-				<tr>
-	       			<td><%=defi.getDefi().getNom()%></td>
-	       			<td><%=defi.getMembre().getPrenom() %></td>
-	   			</tr>
+		<form method="get" action="ServeurGroupe">
+		
+		    <% for (Defi_A_Valider defi : defis_a_valider) { 
+		    		String id_pour_dav = "defi_" + defi.getId();
+		    %>
+		    <div>
+				  <input type="checkbox" id="<%=id_pour_dav%>" name="<%=id_pour_dav%>" value="ok">
+				  <label for="<%=id_pour_dav%>"><%=defi.getMembre().getPrenom() %> veut valider le défi <%=defi.getDefi().getNom() %></label>	
+			</div>
 			<% } %>
-		</table>
-	</div>
+		
+		<div>
+			<button type="submit">Valider ces défis</button>
+			<input type="hidden" name="action" value="validerDefis">
+		</div>
+		</form>
 	<% }
 	}%>
 	</fieldset>
