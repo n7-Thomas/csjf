@@ -1,6 +1,7 @@
 package controleur;
 
 import java.io.IOException;
+
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -92,7 +93,14 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("groupe.jsp").forward(request, response);
 		}
 
-		
+		//AFFICHER LA PAGE D'ACCUEIL
+		if(action.equals("afficher_pageAccueil")){
+			request.setAttribute("groupes", facade.getGroupes());
+			request.getRequestDispatcher("pageAccueil.jsp").forward(request, response);
+		}
+
+
+
 	}
 
 }

@@ -30,16 +30,18 @@ public class Groupe {
 	private Collection<Defi> defis;
 
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
-	private Collection<Publication> publis;
+	private Collection<Defi_A_Valider> defis_a_valider;
 
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
-	private Collection<Defi_A_Valider> defis_a_valider;
-	
-	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
-	
+
+
+	//@OneToOne(mappedBy="groupe", fetch=FetchType.EAGER)
+	//private FilActu filActu;
+
+
 	public Groupe() {}
-	
+
 	public Collection<Defi_A_Valider> getDefis_a_valider() {
 		return defis_a_valider;
 	}
@@ -71,15 +73,15 @@ public class Groupe {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
+
 	/**
 	 * Donner un administrateur au groupe
 	 * @param membre
 	 */
 	public void setAdministrateur(Membre membre) {
-		this.admin = membre;		
+		this.admin = membre;
 	}
-	
+
 	/**
 	 * Retourner l'admin du groupe.
 	 * @return
@@ -95,15 +97,15 @@ public class Groupe {
 	public Collection<Membre> getMembres(){
 		return this.membres;
 	}
-	
+
 	/**
 	 * Donner une liste de membre.
 	 * @param membre
 	 */
 	public void setMembres(Collection<Membre> membres) {
-		this.membres = membres;		
+		this.membres = membres;
 	}
-	
+
 	/**
 	 * Retourner la liste des membres.
 	 * @return
@@ -111,15 +113,15 @@ public class Groupe {
 	public Collection<Defi> getDefis(){
 		return this.defis;
 	}
-	
+
 	/**
 	 * Donner une liste de membre.
 	 * @param membre
 	 */
 	public void setDefis(Collection<Defi> defis) {
-		this.defis = defis;		
+		this.defis = defis;
 	}
-		
+
 	/**
 	 * Retourner l'identifiant.
 	 * @return
@@ -129,6 +131,10 @@ public class Groupe {
 	}
 
 	public void addMembre(Membre mb) {
-		this.membres.add(mb);		
+		this.membres.add(mb);
 	}
+
+//	public FilActu getFilActuB() {
+//		return this.filActu;
+//	}
 }

@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Notification {
@@ -17,8 +16,9 @@ public class Notification {
 
 	private String message;
 
-	@ManyToOne
-	private Groupe groupe;
+
+	//@ManyToOne
+	//private FilActu filActu;
 
 	public Notification(){}
 
@@ -35,7 +35,7 @@ public class Notification {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 	/**
 	 * Retourner l'identifiant.
 	 * @return
@@ -43,4 +43,15 @@ public class Notification {
 	public int getId() {
 		return this.id;
 	}
+
+	/*
+	public void setFilActu(FilActu filActu){
+		this.filActu = filActu;
+	}
+
+	public FilActu getFilActu(){
+		return this.filActu;
+	}
+	*/
+
 }

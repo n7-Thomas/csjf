@@ -1,47 +1,59 @@
 package modele;
 
-import java.util.List;
+import java.util.Collection;
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-//Faire une entity?
+
+@Entity
 public class FilActu {
-	
-	//Faudrat que tu mettes ça @OneToOne(mappedBy="filactu", fetch=FetchType.EAGER)
-	private Groupe groupe;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+
+
+	//@OneToOne
+	//private Groupe groupe;
 
 	// P-e faire une classe abstraite pour Publication et Notification
 
-	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
-	private List<Publication> publications;
+
+	//@OneToMany(mappedBy="filActu", fetch = FetchType.EAGER)
+	//private Collection< Notification> notifications;
 
 
-	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
-	private List<Notification> notifications;
+	@OneToMany(mappedBy="filActu", fetch = FetchType.LAZY)
+	private Collection<Publication> publications;
 
 
-	public FilActu(Groupe g){
-		this.setGroupe(g);
+	public FilActu(){
 	}
 
-	public void addNotif(Notification notif){
+/*
+	public void addNotification(Notification notif){
 		notifications.add(notif);
+
 	}
 
-	public List<Notification> getNotification(){
+	public  Collection<Notification> getNotifications(){
 		return this.notifications;
 	}
-
+*/
 
 	public void addPublication(Publication publi){
 		publications.add(publi);
 	}
 
-	public List<Publication> getPublication(){
+	public Collection<Publication> getPublications(){
 		return this.publications;
 	}
-
+/*
 	public Groupe getGroupe() {
 		return groupe;
 	}
@@ -49,5 +61,6 @@ public class FilActu {
 	public void setGroupe(Groupe groupe) {
 		this.groupe = groupe;
 	}
+	*/
 
 }

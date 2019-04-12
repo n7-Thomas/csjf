@@ -1,14 +1,10 @@
 package modele;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -18,8 +14,6 @@ public class Publication {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne
-	private Groupe groupe;
 
 	@OneToOne
 	private Membre membre;
@@ -28,8 +22,15 @@ public class Publication {
 
 	//private Date date;
 
-	@OneToMany(mappedBy="publi", fetch= FetchType.EAGER)
-	private Collection<Commentaire> commentaires;
+//	@OneToMany(mappedBy="publi", fetch= FetchType.EAGER)
+//	private Collection<Commentaire> commentaires;
+
+	//@ManyToOne
+	//private Groupe groupe;
+
+	@ManyToOne
+	private FilActu filActu;
+
 
 	/**
 	 * @return the publi
@@ -47,14 +48,14 @@ public class Publication {
 
 	/**
 	 * @return the date
-	 
+
 	public Date getDate() {
 		return date;
 	}
 
 	/**
 	 * @param date the date to set
-	 
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -74,24 +75,18 @@ public class Publication {
 	}
 
 	/**
-	 * @return the groupe
-	 */
-	public Groupe getGroupe() {
-		return groupe;
-	}
-
-	/**
-	 * @param groupe the groupe to set
-	 */
-	public void setGroupe(Groupe groupe) {
-		this.groupe = groupe;
-	}
-	
-	/**
 	 * Retourner l'identifiant.
 	 * @return
 	 */
 	public int getId() {
 		return this.id;
+	}
+
+	public void setFilActu(FilActu filActu){
+		this.filActu = filActu;
+	}
+
+	public FilActu getFilActu(){
+		return this.filActu;
 	}
 }

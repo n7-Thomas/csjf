@@ -11,10 +11,9 @@
 
 Fil d'Actualité <br>
 
-<form method= "get" action = "serveur">
 
 
-<% List<Notification> listeNotif = (List<Notification>) request.getAttribute("listeNotifications");
+<% Collection<Notification> listeNotif = (Collection<Notification>) request.getAttribute("listeNotifications");
 	
 	for (Notification n: listeNotif){
 
@@ -25,7 +24,7 @@ Fil d'Actualité <br>
 			<% 			
 	}%>
 	
-<% List<Publication> listePubli= (List<Publication>) request.getAttribute("listePublication");
+<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublication");
 	
 	for (Publication p: listePubli){
 
@@ -35,6 +34,21 @@ Fil d'Actualité <br>
 			
 			<% 			
 	}%>
+
+
+<form action= "ServeurPageGroupe" method="post">
+
+	Votre commentaire: <input type= "text" name= "contenu"><br/> 
+	
+	%> 
+	<input type= "submit"  value= "OK">
+	
+	<input type= "hidden" name= "action" value= "publier">
+	
+	
+
+%>
+	
 	
 
 </form>

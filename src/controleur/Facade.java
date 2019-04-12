@@ -11,9 +11,9 @@ import exceptions.ExceptionUserNonDefini;
 import modele.Defi;
 import modele.Defi_A_Valider;
 import modele.Demande_A_Rejoindre;
-import modele.FilActu;
 import modele.Groupe;
 import modele.Membre;
+import modele.Publication;
 import modele.TypeDefi;
 
 @Singleton
@@ -82,7 +82,7 @@ public class Facade {
 	}
 
 	public void validerDefi() {
-		
+
 	}
 
 	public void modifierDefi() {
@@ -131,18 +131,32 @@ public class Facade {
 	public void demandeValidationCSJF() {
 
 	}
+	/*
 
-	public FilActu getFilActu(int id_groupe) {
-		// Faire la requete vers l'em
+	public FilActu getFilActu(Groupe grp) {
 
-		// Renvoie
+			TypedQuery<Groupe> req = em.createQuery("select * from Groupe WHERE grp='" + grp + "'", Groupe.class);
+			grp = req.getSingleResult();
+			FilActu f = grp.getFilActuB();
 
+			if (f != null) {
+				return f;
 
-		return null;
+			} else {
+				return null;
+			}
 	}
+	*/
 
-	public void publier() {
+	public Publication creerPublication( Membre mbr, String contenu) {
+		Publication publi = new Publication();
+		//publi.setGroupe(grp);
+		publi.setMembre(mbr);
+		publi.setContenu(contenu);
 
+		em.persist(publi);
+
+		return publi;
 	}
 
 	public void commenter() {
@@ -191,6 +205,16 @@ public class Facade {
 	}
 
 	/**
+	 * Récupérer tous les groupes dans la base de données
+	 */
+	public Collection<Groupe> getGroupes() {
+		TypedQuery<Groupe> req = (TypedQuery<Groupe>) em.createQuery("select g from Groupe g");
+		Collection<Groupe> groupes = req.getResultList();
+		return groupes;
+
+	}
+
+	/**
 	 * FROM INSCRIPTION
 	 */
 	public void creerProfil() {
@@ -214,11 +238,11 @@ public class Facade {
 		return req.getResultList();
 	}
 
-	
-	
-	
-	
-	
+
+
+
+
+
 	public Membre initialiserTest() {
 		Membre mb = new Membre();
 		mb.setCoeff_sportif(1);
@@ -248,7 +272,7 @@ public class Facade {
 		dav.setDefi(defi);
 		dav.setMembre(mb);
 		dav.setGroupe(gp);
-		
+
 		em.persist(dav);
 	}
 	public Groupe initialiserTest4() {
@@ -259,7 +283,7 @@ public class Facade {
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
 		em.persist(mb);
-		
+
 		Membre mb2 = new Membre();
 		mb2.setCoeff_sportif(1);
 		mb2.setEmail("manugoncalves@gmail.com");
@@ -267,12 +291,12 @@ public class Facade {
 		mb2.setNom("Goncalves");
 		mb2.setPrenom("Manu");
 		em.persist(mb2);
-		
+
 		Groupe g = new Groupe();
 		g.setAdministrateur(mb);
 		g.setNom("Groupe1");
-		em.persist(g);		
-		
+		em.persist(g);
+
 		Defi d = new Defi();
 		d.setDescription("Description");
 		d.setNom("Defi test");
@@ -280,13 +304,13 @@ public class Facade {
 		d.setType(TypeDefi.Sport);
 		d.setGroupe(g);
 		em.persist(d);
-		
+
 		Defi_A_Valider dav = new Defi_A_Valider();
 		dav.setDefi(d);
 		dav.setMembre(mb2);
 		dav.setGroupe(g);
 		em.persist(dav);
-		
+
 		Membre mb3 = new Membre();
 		mb3.setCoeff_sportif(1);
 		mb3.setEmail("cha@sfr.fr");
@@ -294,12 +318,12 @@ public class Facade {
 		mb3.setNom("De Foucaud");
 		mb3.setPrenom("Charlotte");
 		em.persist(mb3);
-				
+
 		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
 		dar.setGroupe(g);
 		dar.setMembre(mb3);
 		em.persist(dar);
-		
+
 		return g;
 	}
 
