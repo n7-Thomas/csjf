@@ -1,14 +1,9 @@
 package modele;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -18,7 +13,11 @@ public class Publication {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
+	@OneToOne
+	private Membre membre;
+
 	private String contenu;
+
 
 	/**
 	 * @return the publi
@@ -35,10 +34,41 @@ public class Publication {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * @return the date
+
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date the date to set
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
+	 * @return the membre
+	 */
+	public Membre getMembre() {
+		return membre;
+	}
+
+	/**
+	 * @param membre the membre to set
+	 */
+	public void setMembre(Membre membre) {
+		this.membre = membre;
+	}
+
+	/**
 	 * Retourner l'identifiant.
 	 * @return
 	 */
 	public int getId() {
 		return this.id;
 	}
+
 }

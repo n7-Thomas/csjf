@@ -21,7 +21,7 @@ public class ServeurConnexion extends HttpServlet {
 
 	@EJB
 	private Facade facade;
-	
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -34,6 +34,7 @@ public class ServeurConnexion extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processRequest(request, response);
@@ -43,6 +44,7 @@ public class ServeurConnexion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processRequest(request, response);
@@ -80,7 +82,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.getRequestDispatcher("connexion.jsp").forward(request, response);
 			} else {
 				session.setAttribute("user", m);
-				request.getRequestDispatcher("profil.jsp").forward(request, response);
+				request.getRequestDispatcher("index.jsp").forward(request, response);
 			}
 		}
 
@@ -92,7 +94,7 @@ public class ServeurConnexion extends HttpServlet {
 			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
 			System.out.println("MEMBRE TROUVE : " + m);
 			session.setAttribute("user", m);
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 	}

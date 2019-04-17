@@ -8,18 +8,15 @@
         
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
         
-        <class>modele.Commentaire</class>
         <class>modele.CSJF</class>
         <class>modele.Defi_A_Valider</class>
         <class>modele.Defi_Valide</class>
         <class>modele.Defi</class>
-        <class>modele.FilActu</class>
         <class>modele.Groupe</class>
         <class>modele.Membre</class>
         <class>modele.Groupe</class>
         <class>modele.Message</class>
-        <class>modele.Notification</class>
-        <class>modele.Publication</class>
+        
         
         
         <properties>
