@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Groupe {
@@ -29,14 +30,23 @@ public class Groupe {
 	private Collection<Defi> defis;
 
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
-	private Collection<Publication> publis;
-
-	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
 	private Collection<Defi_A_Valider> defis_a_valider;
 	
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
 	
+	@OneToOne(mappedBy="groupe")
+	private FilActu filActu;
+	
+	
+	public FilActu getFilActu() {
+		return filActu;
+	}
+
+	public void setFilActu(FilActu filActu) {
+		this.filActu = filActu;
+	}
+
 	public Groupe() {}
 	
 	public Collection<Defi_A_Valider> getDefis_a_valider() {

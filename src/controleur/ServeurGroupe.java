@@ -241,12 +241,7 @@ public class ServeurGroupe extends HttpServlet {
 				facade.validerDefi(id_dav);
 			}
 		}
-		
-		
-		System.out.println("Valider : " + request.getParameterMap().toString());
-		
-		request.setAttribute("status", "ah");
-		
+				
 		actionAfficherAdmin(request, response, session);
 	}
 
@@ -265,6 +260,12 @@ public class ServeurGroupe extends HttpServlet {
 		Groupe grp = (Groupe) session.getAttribute("groupe");
 		if (grp == null) {
 			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		if (!facade.administreGroupe(usr.getId(), grp.getId())) {
+			request.setAttribute("erreur", "Vous n'êtes pas administrateur de ce groupe");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}

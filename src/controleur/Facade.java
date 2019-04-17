@@ -72,15 +72,13 @@ public class Facade {
 	public Defi ajouterDefi(String nom, String description, Membre usr, Groupe grp, int points) {
 		Defi defi = new Defi();
 		defi.setDescription(description);
-		//defi.setGroupe(grp);
+		defi.setGroupe(grp);
 		defi.setNom(nom);
 		defi.setPoints(points);
 		defi.setType(TypeDefi.Sport);
 
 		em.persist(defi);
-		
-		Groupe g = em.find(Groupe.class, grp.getId());
-		g.addDefi(defi);
+
 
 		return defi;
 	}
@@ -110,7 +108,7 @@ public class Facade {
 
 	public boolean ajouterMembre(String email, Groupe grp) {
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email='" + email + "'", Membre.class);
-		if (req.getResultList() == null || req.getResultList().size() == 0) {
+		if (req.getResultList() == null || req.getResultList().size() != 1) {
 			System.out.println("Aucun résultat pour cette requête.");
 			return false;
 		}
@@ -198,6 +196,21 @@ public class Facade {
 		return creerGroupe(nom, (em.find(Membre.class, usr)));
 	}
 
+	public boolean appartientGroupe(int id_mb, int id_grp) {
+		Membre mb = em.find(Membre.class, id_mb);
+		Groupe gp = em.find(Groupe.class, id_grp);
+		
+		return mb.getGroupesAppartenus().contains(gp);
+	}
+	
+	public boolean administreGroupe(int id_mb, int id_grp) {
+		Membre mb = em.find(Membre.class, id_mb);
+		Groupe gp = em.find(Groupe.class, id_grp);
+		
+		return mb.getGroupesAdministres().contains(gp);
+	}
+	
+	
 	/**
 	 * Récupérer le groupe dans la base de données avec son nom.
 	 *

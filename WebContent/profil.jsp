@@ -18,7 +18,7 @@
                 
                 <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
                 <%
-                Collection<Groupe> groupes = mb.getGroupesAppartenus(); 
+                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus"); // A IMPLEMENTER 
 				if (groupes != null){
        				for (Groupe g : groupes) {
                 		String groupe_nom = g.getNom(); 
@@ -29,7 +29,7 @@
        			%>
                 <p> Vous n'êtes dans aucun groupe actuellement</p>
                 <% }
-                Collection<Groupe> groupes_admin = mb.getGroupesAdministres();
+                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins"); // A IMPLEMENTER
                 if (groupes_admin != null){
            			for (Groupe g : groupes_admin) {
                     	String groupe_nom = g.getNom(); 
