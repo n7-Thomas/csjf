@@ -9,5 +9,6 @@
 </head>
 <body>
  <p> Erreur due à : <%=request.getAttribute("erreur")%></p>
+ <a href="index.jsp"> Index</a>
 </body>
 </html>

@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import exceptions.ExceptionUserNonDefini;
 import modele.Defi;
 import modele.Defi_A_Valider;
+import modele.Defi_Valide;
 import modele.Demande_A_Rejoindre;
 import modele.Groupe;
 import modele.Membre;
@@ -84,8 +85,16 @@ public class Facade {
 		return defi;
 	}
 
-	public void validerDefi() {
+	public void validerDefi(int id_dav) {
+		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 
+		Defi_Valide dv = new Defi_Valide();
+		em.persist(dv);
+		dv.setDefi(dav.getDefi());
+		dv.setGroupe(dav.getGroupe());
+		dv.setMembre(dav.getMembre());
+
+		em.remove(dav);
 	}
 
 	public void modifierDefi() {
@@ -98,7 +107,7 @@ public class Facade {
 
 	public boolean ajouterMembre(String email, Groupe grp) {
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email='" + email + "'", Membre.class);
-		if (req.getResultList() == null) {
+		if (req.getResultList() == null || req.getResultList().size() == 0) {
 			System.out.println("Aucun résultat pour cette requête.");
 			return false;
 		}
@@ -106,7 +115,7 @@ public class Facade {
 		mb.getGroupesAppartenus().add(grp);
 
 		TypedQuery<Demande_A_Rejoindre> req2 = em.createQuery("select d from Demande_A_Rejoindre d WHERE GROUPE_ID=" + grp.getId() + " AND MEMBRE_ID=" + mb.getId(), Demande_A_Rejoindre.class);
-		if(req2.getResultList() != null) {
+		if(req2.getResultList()!= null && req2.getResultList().size() != 0) {
 			Demande_A_Rejoindre dar = req2.getSingleResult();
 			em.remove(em.find(Demande_A_Rejoindre.class, dar.getId()));
 		}
@@ -313,6 +322,7 @@ public class Facade {
 		System.out.println("Groupe : " + g);
 		System.out.println("Membres : " + g.getMembres());
 
+
 		g.getMembres().add(mb2);
 
 		System.out.println("Membre.getGroupes " + mb2.getGroupesAppartenus());
@@ -346,6 +356,12 @@ public class Facade {
 		mb3.setNom("De Foucaud");
 		mb3.setPrenom("Charlotte");
 		em.persist(mb3);
+
+		Defi_A_Valider dav2 = new Defi_A_Valider();
+		dav2.setDefi(d);
+		dav2.setMembre(mb3);
+		dav2.setGroupe(g);
+		em.persist(dav2);
 
 
 		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();

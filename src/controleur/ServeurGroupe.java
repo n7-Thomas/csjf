@@ -2,6 +2,9 @@ package controleur;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -227,11 +230,24 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-		Collection<Defi_A_Valider> defis = facade.getDefisAValider(grp);
-
-		request.setAttribute("defis_a_valider", defis);
-		request.getRequestDispatcher("valider_defis.jsp").forward(request, response);
-
+		
+		Map<String, String[]> hm = request.getParameterMap();
+		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
+		while(iter.hasNext()) {
+			String key = iter.next().getKey();
+			
+			if(key.contains("defi_")) {
+				int id_dav = Integer.parseInt(key.substring(5));
+				facade.validerDefi(id_dav);
+			}
+		}
+		
+		
+		System.out.println("Valider : " + request.getParameterMap().toString());
+		
+		request.setAttribute("status", "ah");
+		
+		actionAfficherAdmin(request, response, session);
 	}
 
 	private void actionAfficherAdmin(HttpServletRequest request, HttpServletResponse response, HttpSession session)
