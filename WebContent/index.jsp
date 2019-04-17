@@ -12,8 +12,10 @@
 if(status != null){ %> <p> Status : <%=status %> </p> <% } %>
 
 <% Membre mbr_co = (Membre) session.getAttribute("user");
+
 if(mbr_co != null){ %> <p> Bonjour, <%=mbr_co.getNom() %> !</p> <% } else { %> <p> Vous n'êtes pas connecté </p>  
 <% } %>
+
 
 <% if (mbr_co == null){ %>
 <h2>Inscription & Connexion</h2>
@@ -24,8 +26,8 @@ if(mbr_co != null){ %> <p> Bonjour, <%=mbr_co.getNom() %> !</p> <% } else { %> <
 <a href="Serveur?action=afficher_pageAccueil"> Acceder à votre page d'accueil</a> <br>
 
 <h2>Activités</h2>
-<a href="demande_a_rejoindre.jsp">Formulaire pour demander à rejoindre un groupe</a>
-<a href="admin.jsp">Administration de votre groupe</a> <br>
+<a href="demande_a_rejoindre.jsp">Formulaire pour demander à rejoindre un groupe</a> <br>
+<a href="ServeurGroupe?action=admin">Administration de votre groupe</a> <br>
 <% } %>
 
 <h2>Tests</h2>

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -13,7 +14,7 @@ public class Defi {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	@OneToOne
+	@ManyToOne
 	private Groupe groupe;
 
 	private int points;
@@ -28,7 +29,6 @@ public class Defi {
 		this.description = "";
 		this.nom = "";
 		this.points = 0;
-		this.groupe = null;
 	}
 	
 	/**

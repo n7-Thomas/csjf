@@ -73,19 +73,6 @@ public class Serveur extends HttpServlet {
 			return;
 		}
 
-		// ACTION DEMANDE DE VALIDATION D'UN DEFI
-		if (action.equals("formulaireValiderDefi")) {
-			Defi defiAValider = (Defi) request.getAttribute("defiAValider");
-			try {
-				facade.demandeValidationDefi(defiAValider, (Membre) session.getAttribute("user"));
-				request.setAttribute("succes", "Votre défi a été envoyé !");
-				request.getRequestDispatcher("groupe.jsp").forward(request, response);
-			} catch (Exception e) {
-				request.setAttribute("erreur", e.getMessage());
-				request.getRequestDispatcher("groupe.jsp").forward(request, response);
-			}
-		}
-
 		// ACTION AFFICHER PAGE GROUPE
 		if (action.equals("pageGroupe")) {
 			Groupe grp = (Groupe) session.getAttribute("groupe");

@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -23,9 +24,10 @@ public class Membre {
 	private String prenom;
 
 	@ManyToMany
+	@JoinTable(name = "membre_groupe")
 	private Collection<Groupe> groupes_appartenus;
 
-	@OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "admin", fetch = FetchType.EAGER)
 	private Collection<Groupe> groupes_administres;
 
 	private int coeff_sportif;
@@ -80,19 +82,19 @@ public class Membre {
 		this.nom = nom;
 	}
 
-	public Collection<Groupe> getId_groupes_app() {
+	public Collection<Groupe> getGroupesAppartenus() {
 		return groupes_appartenus;
 	}
 
-	public void setId_groupes_app(Collection<Groupe> id_groupes_app) {
+	public void setGroupesAppartenus(Collection<Groupe> id_groupes_app) {
 		this.groupes_appartenus = id_groupes_app;
 	}
 
-	public Collection<Groupe> getId_groupes_admin() {
+	public Collection<Groupe> getGroupesAdministres() {
 		return groupes_administres;
 	}
 
-	public void setId_groupes_admin(Collection<Groupe> id_groupes_admin) {
+	public void setGroupesAdministres(Collection<Groupe> id_groupes_admin) {
 		this.groupes_administres = id_groupes_admin;
 	}
 
@@ -111,10 +113,5 @@ public class Membre {
 	public int getId() {
 		return this.id;
 	}
-
-	public void addGroupeAppartenus(Groupe grp) {
-		this.groupes_appartenus.add(grp);		
-	}
-	
 
 }
