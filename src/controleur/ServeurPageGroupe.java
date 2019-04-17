@@ -67,7 +67,7 @@ public class ServeurPageGroupe extends HttpServlet {
 			Groupe grp =  (Groupe) session.getAttribute("grp");
 			try {
 				//request.setAttribute("listeNotif", facade.getFilActu(grp).getNotifications());
-			//	request.setAttribute("listePubli", facade.getFilActu(grp).getPublications());
+			    //request.setAttribute("listePubli", facade.getFilActu(grp).getPublications());
 				request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
 			} catch (Exception e) {
 				request.setAttribute("erreur", e.getStackTrace());

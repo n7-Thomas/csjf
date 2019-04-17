@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -14,22 +13,11 @@ public class Publication {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-
 	@OneToOne
 	private Membre membre;
 
 	private String contenu;
 
-	//private Date date;
-
-//	@OneToMany(mappedBy="publi", fetch= FetchType.EAGER)
-//	private Collection<Commentaire> commentaires;
-
-	//@ManyToOne
-	//private Groupe groupe;
-
-	@ManyToOne
-	private FilActu filActu;
 
 
 	/**
@@ -82,11 +70,4 @@ public class Publication {
 		return this.id;
 	}
 
-	public void setFilActu(FilActu filActu){
-		this.filActu = filActu;
-	}
-
-	public FilActu getFilActu(){
-		return this.filActu;
-	}
 }

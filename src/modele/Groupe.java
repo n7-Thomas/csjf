@@ -36,10 +36,6 @@ public class Groupe {
 	private Collection<Defi_Valide> defis_valides;
 
 
-	//@OneToOne(mappedBy="groupe", fetch=FetchType.EAGER)
-	//private FilActu filActu;
-
-
 	public Groupe() {}
 
 	public Collection<Defi_A_Valider> getDefis_a_valider() {
@@ -65,6 +61,16 @@ public class Groupe {
 	public String getNom() {
 		return nom;
 	}
+
+	public Membre getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Membre admin) {
+		this.admin = admin;
+	}
+
+
 
 	/**
 	 * Donner un nom au groupe.
@@ -143,7 +149,4 @@ public class Groupe {
 		this.membres.add(mb);
 	}
 
-//	public FilActu getFilActuB() {
-//		return this.filActu;
-//	}
 }

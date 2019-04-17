@@ -1,0 +1,25 @@
+body, legend, input {
+    font: normal 8pt verdana, helvetica, sans-serif;
+}
+
+body
+{
+    font-family: Impact, "Arial Black", Arial, Verdana, sans-serif;
+
+}
+h1{
+	color: #09106b;
+	
+}
+
+h2{
+	color: #555753;
+}
+
+/* Les éléments <a> avec un href qui correspond */
+/* à "https://example.org" */
+a {
+  color: #38849c;
+  font-size: 14px;
+}
+
