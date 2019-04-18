@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import modele.Groupe;
+import modele.Membre;
 
 
 /**
@@ -84,7 +86,24 @@ public class Serveur extends HttpServlet {
 			request.getRequestDispatcher("pageAccueil.jsp").forward(request, response);
 		}
 
+		if(action.equals("deconnexion")) {
+			session.invalidate();
+			request.getRequestDispatcher("connexion.jsp").forward(request, response);
+		}
 
+		if (action.equals("modifier_profil")) {
+			request.getRequestDispatcher("modifier_profil.jsp").forward(request, response);
+		}
+
+		if (action.equals("enregistrer_modif")) {
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String email = request.getParameter("email");
+			String motdepasse = request.getParameter("motdepasse");
+			Membre mb = ((Membre) session.getAttribute("user"));
+			facade.modifierProfil(mb, nom, prenom, email, motdepasse);
+			request.getRequestDispatcher("profil.jsp").forward(request, response);
+		}
 
 	}
 

@@ -82,7 +82,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.getRequestDispatcher("connexion.jsp").forward(request, response);
 			} else {
 				session.setAttribute("user", m);
-				request.getRequestDispatcher("index.jsp").forward(request, response);
+				request.getRequestDispatcher("profil.jsp").forward(request, response);
 			}
 		}
 

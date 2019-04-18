@@ -16,6 +16,9 @@
                 <p>Prénom : <%= mb.getPrenom() %></p>
                 <p>Email : <%= mb.getEmail() %></p>
                 
+
+                <a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
+                
                 <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
                 <%
                 Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus"); // A IMPLEMENTER 
@@ -36,14 +39,18 @@
                 %>		<p><%= groupe_nom %></p>
                 <%}  
            		  } else {
-                %><p> Vous n'administrez aucun groupe actuellement. <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
+                %><p> Vous n'administrez aucun groupe actuellement. 
+                
+                <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
 				<%} 
 				%>
-                
-                <% 
-                 // <p> <a href="connexion.jsp"> <%=session.invalidate() %>  <%  //Déconnexion </a> <br> </p>
-                %>
-                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
+
+
+				<a href="Serveur?action=deconnexion">Déconnexion </a><br>
+				
+				
+				
+                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat} </p>
          </fieldset>
 </body>
 </html>

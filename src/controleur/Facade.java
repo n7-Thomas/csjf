@@ -95,7 +95,7 @@ public class Facade {
 
 		em.remove(dav);
 	}
-	
+
 	public void validerDemande(int id_dar) {
 		Demande_A_Rejoindre dar = em.find(Demande_A_Rejoindre.class, id_dar);
 		Membre mb = em.find(Membre.class, dar.getMembre().getId());
@@ -139,7 +139,7 @@ public class Facade {
 	public void editerCoefMembre() {
 
 	}
-	
+
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
@@ -159,7 +159,7 @@ public class Facade {
 		}
 		*/
 	}
-	
+
 	/**
 	 * FROM PAGE GROUPE, on demande les défis d'un groupe
 	 */
@@ -262,17 +262,14 @@ public class Facade {
 	}
 
 	/**
-	 * FROM INSCRIPTION
-	 */
-	public void creerProfil() {
-
-	}
-
-	/**
 	 * FROM PROFIL
 	 */
-	public void modifierProfil() {
-
+	public void modifierProfil(Membre mb, String nom, String prenom, String email, String motdepasse) {
+		mb.setNom(nom);
+		mb.setPrenom(prenom);
+		mb.setEmail(email);
+		mb.setMotdepasse(motdepasse);
+		em.merge(mb);
 	}
 
 	public Collection<Defi_A_Valider> getDefisAValider(Groupe grp) {
@@ -286,7 +283,7 @@ public class Facade {
 				"select d from Defi d WHERE groupe=" + grp.getId(), Defi.class);
 		return req.getResultList();
 	}
-	
+
 	public Collection<Demande_A_Rejoindre> getDemandeARejoindre(Groupe grp) {
 		TypedQuery<Demande_A_Rejoindre> req = em.createQuery(
 				"select d from Demande_A_Rejoindre d WHERE groupe=" + grp.getId(), Demande_A_Rejoindre.class);
@@ -355,7 +352,7 @@ public class Facade {
 		g.setNom("Groupe1");
 		em.persist(g);
 
-		
+
 		Defi d = new Defi();
 		d.setDescription("Description");
 		d.setNom("Defi test");
@@ -402,18 +399,18 @@ public class Facade {
 
 	public void editerDefi(int id_defi, String nom, String description, int points) {
 		Defi defi = em.find(Defi.class, id_defi);
-		
+
 		if(!(nom.equals("")))
 			defi.setNom(nom);
-		
+
 		if(!(description.equals("")))
 			defi.setDescription(description);
-		
+
 		if(!(points == 0))
 			defi.setPoints(points);
-		
+
 		System.out.print("\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
-		
+
 	}
 
 
