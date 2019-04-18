@@ -217,7 +217,7 @@ public class ServeurGroupe extends HttpServlet {
 	private void actionAjouterDefiAValider(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) throws ServletException, IOException {
 
-		String defiAValider = (String) request.getParameter("name");
+		String defiAValider = (String) request.getParameter("id_defi");
 		Membre usr = (Membre) session.getAttribute("user");
 
 		if (usr == null) {
@@ -233,7 +233,8 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 		try {
-			facade.ajouterDefiAValider(defiAValider, (Membre) session.getAttribute("user"));
+			int idDefiAValider = Integer.parseInt(defiAValider);
+			facade.ajouterDefiAValider(idDefiAValider, (Membre) session.getAttribute("user"));
 			request.setAttribute("status", "Votre défi a été envoyé !");
 			request.setAttribute("groupe", session.getAttribute("groupe"));
 			request.getRequestDispatcher("groupe.jsp").forward(request, response);
@@ -381,12 +382,10 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 		// Récupération du groupe lié
-		Groupe grp = (Groupe) session.getAttribute("groupe");
-		if (grp == null) {
-			request.setAttribute("erreur", "Pas de groupe actif");
-			request.getRequestDispatcher("erreur.jsp").forward(request, response);
-			return;
-		}
+		String id_grp = (String) request.getParameter("id_grp");
+		int id_grp1 = Integer.parseInt(id_grp);
+		Groupe grp = facade.getGroupeFromId(id_grp1);
+		request.setAttribute("groupe", grp);
 
 		Collection<Defi> defis = facade.getDefis(grp);
 		request.setAttribute("defis", defis);
