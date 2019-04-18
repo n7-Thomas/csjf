@@ -93,8 +93,17 @@ public class ServeurConnexion extends HttpServlet {
 			String motdepasse = request.getParameter("motdepasse");
 			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
 			System.out.println("MEMBRE TROUVE : " + m);
-			session.setAttribute("user", m);
-			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
+			if (m != null) {
+				session.setAttribute("user", m);
+				request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
+			} else {
+				String erreur = "Un utilisateur utilisant cette email est déjà inscrit.";
+				Boolean existe = true;
+				request.setAttribute("warning", erreur);
+				request.setAttribute("existe", existe);
+				request.getRequestDispatcher("inscription.jsp").forward(request, response);
+			}
+
 		}
 
 	}

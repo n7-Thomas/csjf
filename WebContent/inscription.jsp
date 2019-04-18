@@ -6,8 +6,19 @@
     <title>Inscription sur CSJF</title>
     </head>
     <body>
+    	<% Boolean existe = false; %>
     	<% String status = (String) request.getAttribute("status");
 		if(status != null){ %> <p> Status : <%=status %> </p> <% }
+		%>
+		
+		<% try {
+			existe = ((Boolean) request.getAttribute("existe"));
+			if(existe == true){	
+		%> <p> <%= request.getAttribute("warning") %> </p>
+		<% } 
+			} catch(Exception e) {
+				existe = false;
+			}
 		%>
     
         <form method="post" action="ServeurConnexion">

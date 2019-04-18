@@ -52,14 +52,24 @@ public class Facade {
 	}
 
 	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail(email);
-		mb.setMotdepasse(motdepasse);
-		mb.setNom(nom);
-		mb.setPrenom(prenom);
-		em.persist(mb);
-		return mb;
+
+		Membre member = null;
+		try {
+			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",Membre.class);
+			Membre mr = req.getSingleResult();
+			if (mr.equals(null)) member = null;
+		} catch (Exception e) {
+			System.out.println("Utilisateur n'existe pas");
+			Membre mb = new Membre();
+			mb.setCoeff_sportif(1);
+			mb.setEmail(email);
+			mb.setMotdepasse(motdepasse);
+			mb.setNom(nom);
+			mb.setPrenom(prenom);
+			em.persist(mb);
+			member = mb;
+		}
+		return member;
 	}
 
 	/**
@@ -388,7 +398,7 @@ public class Facade {
 	public Groupe getGroupeFromId(int id) {
 		return em.find(Groupe.class, id);
 	}
-	
+
 	public Groupe getGroupeFromMembre(Membre membre) {
 		//A faire en faisant une requete sql
 		return null;

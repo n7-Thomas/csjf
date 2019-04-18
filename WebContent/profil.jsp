@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Profil de <%= mb.getPrenom() + " " + mb.getNom() %></title>
+
 </head>
 <body>
 	<fieldset>
