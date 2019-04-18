@@ -95,6 +95,14 @@ public class Facade {
 
 		em.remove(dav);
 	}
+	
+	public void validerDemande(int id_dar) {
+		Demande_A_Rejoindre dar = em.find(Demande_A_Rejoindre.class, id_dar);
+		Membre mb = em.find(Membre.class, dar.getMembre().getId());
+		Groupe gp = em.find(Groupe.class, dar.getGroupe().getId());
+		mb.getGroupesAppartenus().add(gp);
+		em.remove(dar);
+	}
 
 	public void modifierDefi() {
 
@@ -172,11 +180,16 @@ public class Facade {
 	/**
 	 * FROM PAGE ACCUEIL
 	 */
-	public void demanderRejoindreGroupe(Membre mb, Groupe gr) {
-		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
-		dar.setGroupe(gr);
-		dar.setMembre(mb);
-		em.persist(dar);
+	public boolean demanderRejoindreGroupe(Membre mb, Groupe gr) {
+		if(mb.getGroupesAppartenus() == null || !mb.getGroupesAppartenus().contains(gr)) {
+			Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
+			dar.setGroupe(gr);
+			dar.setMembre(mb);
+			em.persist(dar);
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	/**
@@ -201,18 +214,17 @@ public class Facade {
 	public boolean appartientGroupe(int id_mb, int id_grp) {
 		Membre mb = em.find(Membre.class, id_mb);
 		Groupe gp = em.find(Groupe.class, id_grp);
-		
+
 		return mb.getGroupesAppartenus().contains(gp);
 	}
-	
+
 	public boolean administreGroupe(int id_mb, int id_grp) {
 		Membre mb = em.find(Membre.class, id_mb);
 		Groupe gp = em.find(Groupe.class, id_grp);
-		
+
 		return mb.getGroupesAdministres().contains(gp);
 	}
-	
-	
+
 	/**
 	 * Récupérer le groupe dans la base de données avec son nom.
 	 *
@@ -220,8 +232,12 @@ public class Facade {
 	 * @return
 	 */
 	public Groupe getGroupeFromNom(String nom) {
+		Groupe grp = null;
 		TypedQuery<Groupe> req = em.createQuery("select g from Groupe g WHERE nom='" + nom + "'", Groupe.class);
-		Groupe grp = req.getSingleResult();
+		if (req != null && req.getResultList().size() != 0) {
+			grp = req.getSingleResult();
+		}
+
 		return grp;
 	}
 
@@ -229,7 +245,7 @@ public class Facade {
 	 * Récupérer tous les groupes dans la base de données
 	 */
 	public Collection<Groupe> getGroupes() {
-		TypedQuery<Groupe> req = (TypedQuery<Groupe>) em.createQuery("select g from Groupe g");
+		TypedQuery<Groupe> req = em.createQuery("select g from Groupe g", Groupe.class);
 		Collection<Groupe> groupes = req.getResultList();
 		return groupes;
 
@@ -255,6 +271,12 @@ public class Facade {
 		return req.getResultList();
 	}
 
+	public Collection<Defi> getDefisEnCours(Groupe grp) {
+		TypedQuery<Defi> req = em.createQuery(
+				"select d from Defi d WHERE groupe=" + grp.getId(), Defi.class);
+		return req.getResultList();
+	}
+	
 	public Collection<Demande_A_Rejoindre> getDemandeARejoindre(Groupe grp) {
 		TypedQuery<Demande_A_Rejoindre> req = em.createQuery(
 				"select d from Demande_A_Rejoindre d WHERE groupe=" + grp.getId(), Demande_A_Rejoindre.class);
@@ -321,21 +343,9 @@ public class Facade {
 		Groupe g = new Groupe();
 		g.setAdministrateur(mb);
 		g.setNom("Groupe1");
-
 		em.persist(g);
 
-		System.out.println("Groupe : " + g);
-		System.out.println("Membres : " + g.getMembres());
-
-		g.getMembres().add(mb2);
-
-		System.out.println("Membre.getGroupes " + mb2.getGroupesAppartenus());
-		System.out.println("Admin.getGroupesAdmin " + mb.getGroupesAdministres());
-		System.out.println("Groupe by em : " + em.find(Groupe.class, g.getId()));
-
-		// mb2.getGroupesAppartenus().add(g);
-		// g.getMembres().add(mb2);
-
+		
 		Defi d = new Defi();
 		d.setDescription("Description");
 		d.setNom("Defi test");
@@ -371,5 +381,17 @@ public class Facade {
 
 		return g;
 	}
+
+	public Groupe getGroupeFromId(int id) {
+		return em.find(Groupe.class, id);
+	}
+
+	public Membre getMembreFromId(int id) {
+		return em.find(Membre.class, id);
+	}
+
+
+
+
 
 }

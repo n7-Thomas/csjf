@@ -16,10 +16,9 @@
   
         <form method="post" action="ServeurGroupe">
             <fieldset>
-                <legend>Creer un groupe</legend>
-                <p>Créer un groupe dont vous serez l'administrateur</p>
+                <legend>Creer un groupe dont vous serez l'administrateur</legend>
                 <label for="nom">Nom du groupe: <span class="requis">*</span></label>
-                <input type="text" id="nom" name="nom" value="nom" size="20" maxlength="60" />
+                <input type="text" id="nom" name="nom" size="20" maxlength="60" />
                 <br />
                 <input type="submit" value="Créer ce groupe" class="sansLabel" />
                 <br />

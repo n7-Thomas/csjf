@@ -95,8 +95,11 @@ public class ServeurTests extends HttpServlet {
 
 		if (action.equals("init4")) {
 			Groupe g = facade.initialiserTest4();
-			session.setAttribute("groupe", g);
+			request.setAttribute("groupe", g);
 			System.out.println("Initialisation bdd");
+			Membre m = facade.getMembreFromId(1);
+			session.setAttribute("membre", m);
+			
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 		

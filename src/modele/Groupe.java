@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Groupe {
@@ -69,8 +68,6 @@ public class Groupe {
 	public void setAdmin(Membre admin) {
 		this.admin = admin;
 	}
-
-
 
 	/**
 	 * Donner un nom au groupe.

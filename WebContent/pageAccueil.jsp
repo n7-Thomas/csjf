@@ -13,7 +13,7 @@
 
 <fieldset>
 	<% Membre mbr_co = (Membre) session.getAttribute("user");%>
-	<h1><p> Hello <%=mbr_co.getPrenom() %>, bienvenu sur ta page d'Accueil ! <p></h1>
+	<h1><p> Hello <%=mbr_co.getPrenom() %>, bienvenue sur ta page d'Accueil ! <p></h1>
 	
 	<a href="profil.jsp"> Voir mon profil</a> <br>
 	

@@ -1,0 +1,8 @@
+section {
+	font: normal 8pt verdana, helvetica, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    border: 1px #0568CD solid;
+    size: 200px;
+}
