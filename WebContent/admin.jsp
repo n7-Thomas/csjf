@@ -117,7 +117,7 @@
                 <label for="nom">Nom du défi: <span class="requis">*</span></label>
                 <input type="text" id="nom" name="nom" value="" size="20" maxlength="60" />
                 <br />
-                <label for="description">Description: <span class="requis">*</span></label>
+                <label for="description">Description:</label>
                 <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
                 <br />
           		<label for="points">Nombre de points: <span class="requis">*</span></label>
@@ -185,9 +185,10 @@
             <input type="submit" value="Editer ce défi" class="sansLabel" />
             <br />
 			
-			<input type="hidden" name="formModif_id_defi" id="formModif_id_defi" />
+			<input type="hidden" name="id_defi" id="formModif_id_defi" />
 			<input type="hidden" name="action" value="editDefi"/>
 			<input type="hidden" name="id_grp" value="<%=groupe.getId()%>">
+			
 			</form>
 			</div>
 			

@@ -71,7 +71,7 @@ public class Facade {
 	 * @param nom
 	 * @return
 	 */
-	public Defi ajouterDefi(String nom, String description, Membre usr, Groupe grp, int points) {
+	public Defi ajouterDefi(String nom, String description, Groupe grp, int points) {
 		Defi defi = new Defi();
 		defi.setDescription(description);
 		defi.setGroupe(grp);
@@ -398,6 +398,22 @@ public class Facade {
 
 	public Membre getMembreFromId(int id) {
 		return em.find(Membre.class, id);
+	}
+
+	public void editerDefi(int id_defi, String nom, String description, int points) {
+		Defi defi = em.find(Defi.class, id_defi);
+		
+		if(!(nom.equals("")))
+			defi.setNom(nom);
+		
+		if(!(description.equals("")))
+			defi.setDescription(description);
+		
+		if(!(points == 0))
+			defi.setPoints(points);
+		
+		System.out.print("\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
+		
 	}
 
 

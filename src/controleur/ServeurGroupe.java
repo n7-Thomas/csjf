@@ -68,7 +68,7 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		// Récupération de l'action
 		String action = request.getParameter("action");
 
@@ -81,17 +81,19 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 		String str_id_groupe_selectionne = request.getParameter("id_grp");
-		if(str_id_groupe_selectionne != null) {
+		if (str_id_groupe_selectionne != null) {
 			Groupe g = facade.getGroupeFromId(Integer.parseInt(str_id_groupe_selectionne));
 			request.setAttribute("groupe", g);
 		}
-		
-		
+
 		// ACTION CREER DEFI
 		if (action.equals("ajouterDefi")) {
 			actionAjouterDefi(request, response, session);
 		}
-
+		// ACTION EDITER DEFI
+		if (action.equals("editDefi")) {
+			actionEditerDefi(request, response, session);
+		}
 		// ACTION AJOUTER DEFI AUX DEFI A VALIDER
 		if (action.equals("ajouterDefiAValider")) {
 			actionAjouterDefiAValider(request, response, session);
@@ -121,18 +123,85 @@ public class ServeurGroupe extends HttpServlet {
 		if (action.equals("demanderRejoindreGroupe")) {
 			actionDemanderRejoindreGroupe(request, response, session);
 		}
-		
+
 		// ACTION AFFICHER ADMIN
-		if(action.equals("admin")) {
+		if (action.equals("admin")) {
 			actionAfficherAdmin(request, response, session);
 		}
-		
+
 		// ACTION AFFICHER PAGE GROUPE
 		if (action.equals("pageGroupe")) {
 			actionAfficherGroupe(request, response, session);
 		}
+
+	}
+
+	/**
+	 * Editer un défi.
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void actionEditerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		
+		Membre usr = (Membre) session.getAttribute("user");
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		Groupe grp = (Groupe) request.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		String nom = request.getParameter("nom");
+		if (nom == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de nom");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		String description = request.getParameter("description");
+		if (description == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de description");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		String str_points = request.getParameter("points");
+		if (str_points == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de nom");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		int points = Integer.parseInt(str_points);
+
+		String str_id_defi = request.getParameter("id_defi");
+		if (str_id_defi == null) {
+			request.setAttribute("erreur", "On a pas pu récupéré l'id du défi");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		int id_defi = Integer.parseInt(str_id_defi);
 		
+		try {
+			facade.editerDefi(id_defi, nom, description, points);
+		} catch (Exception e) {
+			request.setAttribute("erreur", e.getStackTrace());
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		request.setAttribute("status", "Le défi " + nom + " a été modifié.");
+		request.getRequestDispatcher("ServeurGroupe?action=admin&id_grp=" + grp.getId()).forward(request, response);
+
 
 	}
 
@@ -209,7 +278,7 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-		if(facade.demanderRejoindreGroupe(usr, gp)) {
+		if (facade.demanderRejoindreGroupe(usr, gp)) {
 			request.setAttribute("status", "La demande a été envoyé");
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		} else {
@@ -246,18 +315,17 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-		
 		Map<String, String[]> hm = request.getParameterMap();
 		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			String key = iter.next().getKey();
-			
-			if(key.contains("defi_")) {
+
+			if (key.contains("defi_")) {
 				int id_dav = Integer.parseInt(key.substring(5));
 				facade.validerDefi(id_dav);
 			}
 		}
-				
+
 		actionAfficherAdmin(request, response, session);
 	}
 
@@ -279,30 +347,28 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		if (!facade.administreGroupe(usr.getId(), grp.getId())) {
 			request.setAttribute("erreur", "Vous n'êtes pas administrateur de ce groupe");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Collection<Defi> defis_en_cours = facade.getDefisEnCours(grp);
 		request.setAttribute("defis_en_cours", defis_en_cours);
-		
+
 		Collection<Demande_A_Rejoindre> demandes_a_rejoindre = facade.getDemandeARejoindre(grp);
 		request.setAttribute("demandes_a_rejoindre", demandes_a_rejoindre);
-		
+
 		Collection<Defi_A_Valider> defis_a_valider = facade.getDefisAValider(grp);
 		request.setAttribute("defis_a_valider", defis_a_valider);
-		
+
 		Collection<Membre> membres_du_groupe = facade.getMembres(grp);
 		request.setAttribute("membres", membres_du_groupe);
-		
-		
+
 		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
-	
-	
+
 	private void actionAfficherGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
@@ -321,17 +387,15 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Collection<Defi> defis = facade.getDefis(grp);
 		request.setAttribute("defis", defis);
-		
+
 		Collection<Membre> membres_du_groupe = facade.getMembres(grp);
 		request.setAttribute("membres", membres_du_groupe);
-		
+
 		request.getRequestDispatcher("groupe.jsp").forward(request, response);
 	}
-	
-	
 
 	/**
 	 * Traiter la requête d'affichage des demandes à rejoindre.
@@ -361,18 +425,17 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-
 		Map<String, String[]> hm = request.getParameterMap();
 		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			String key = iter.next().getKey();
-			
-			if(key.contains("dar_")) {
+
+			if (key.contains("dar_")) {
 				int id_dar = Integer.parseInt(key.substring(4));
 				facade.validerDemande(id_dar);
 			}
 		}
-		
+
 		actionAfficherAdmin(request, response, session);
 	}
 
@@ -507,7 +570,7 @@ public class ServeurGroupe extends HttpServlet {
 
 		Defi defi = null;
 		try {
-			defi = facade.ajouterDefi(nom, description, usr, grp, points);
+			defi = facade.ajouterDefi(nom, description, grp, points);
 		} catch (Exception e) {
 			request.setAttribute("erreur", e.getStackTrace());
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
