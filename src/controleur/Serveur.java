@@ -73,13 +73,6 @@ public class Serveur extends HttpServlet {
 			return;
 		}
 
-		// ACTION AFFICHER PAGE GROUPE
-		if (action.equals("pageGroupe")) {
-			Groupe grp = (Groupe) session.getAttribute("groupe");
-			request.setAttribute("groupe", grp);
-			request.getRequestDispatcher("groupe.jsp").forward(request, response);
-		}
-
 		//AFFICHER LA PAGE D'ACCUEIL
 		if(action.equals("afficher_pageAccueil")){
 			request.setAttribute("groupes", facade.getGroupes());

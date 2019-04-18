@@ -143,21 +143,17 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
-	public void ajouterDefiAValider(String nomDefi, Membre membre) throws Exception {
-		/*TypedQuery<Defi_A_Valider> req = em.createQuery(
-				"select d from Defi d WHERE defi='" + defi + "' && membre='" + membre + "'",
-				Defi_A_Valider.class);
-		Defi defi1 = em.find(Defi.class, defi.getId());
+	public void ajouterDefiAValider(int idDefiAValider, Membre membre) throws Exception {
+		Defi defi1 = em.find(Defi.class, idDefiAValider);
 		Membre m = em.find(Membre.class, membre.getId());
 		if (defi1 != null && m != null) {
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
-			defi_a_valider.setDefi(defi);
-			defi_a_valider.setMembre(membre);
+			defi_a_valider.setDefi(defi1);
+			defi_a_valider.setMembre(m);
 			em.persist(defi_a_valider);
 		} else {
 			throw new Exception("Ce défi est déjà en cours de validation !");
 		}
-		*/
 	}
 
 	/**
@@ -391,6 +387,11 @@ public class Facade {
 
 	public Groupe getGroupeFromId(int id) {
 		return em.find(Groupe.class, id);
+	}
+	
+	public Groupe getGroupeFromMembre(Membre membre) {
+		//A faire en faisant une requete sql
+		return null;
 	}
 
 	public Membre getMembreFromId(int id) {

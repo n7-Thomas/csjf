@@ -17,13 +17,13 @@
 		} else {
 			Membre mb = (Membre) session.getAttribute("user");
 
-			if (session.getAttribute("groupe") == null) {
+			if (request.getAttribute("groupe") == null) {
 	%>
 				<p>Pas de groupe administré sélectionné.</p>
 				<a href="index.html">Aller à l'index</a><br>
 	<%
 			} else {
-				Groupe groupe = (Groupe) session.getAttribute("groupe");
+				Groupe groupe = (Groupe) request.getAttribute("groupe");
 				
     			String status = (String) request.getAttribute("status");
 				if(status != null){ %> <p> Status : <%=status %> </p> <% } else { %> <p>status = null</p> <% } %>
@@ -67,55 +67,29 @@
 				</div>
 				
 				
-				<div id="choisirDefiAFaire">
-					<p> Commencez un nouveau défi ! </p>
-					<form method="post" action="">
-						<label for="defi">Sélectionnez un défi pour le commencer !</label><br/>
-			       		<select name="defi" id="defi">
-			       			<%
-			       			if (defis == null) {
-			       				%>
-			   					<option value="rien">Aucun</option>
-			   					<%
-			       			} else {
-				       			for (Defi defi : defis) {
-				       				%>
-				           			<option value="<%=defi.getNom()%>"><%=defi.getNom() %></option> 
-				           			<%
-				       			}
-			           		}
-			           		%>
-			       		</select>
-			       		<input type="submit" value="Commencer!" />
-			       		<input type="hidden" value="ajouterDefiACommencer" name="action">
-			       		<% //String err = (String) request.getAttribute("erreur");
-			       		//String succ = (String) request.getAttribute("succes"); %>
-			       		<span class="erreur"><%//=err %></span>
-			       		<span class="succes"><%//=succ %></span>
-					</form>
-				</div>
-				
-				
 				<div id="demandeValiderDefi">
 					<p> Remplissez le formulaire suivant pour demander à valider un de vos défis. </p>
 					<form method="post" action="ServeurGroupe">
 						<label for="defi">Quel défi voulez-vous valider ?</label><br/>
-			       		<select name="defiAValider" id="defi">
 			       			<%
 			       			if (defis == null) {
 			       				%>
-			   					<option value="rien">Aucun</option>
+			   					<p>Pas de défi disponible pour demander validation</p>
 			   					<%
 			       			} else {
+			       				%>
+			       				<label for="defi">Quel défi voulez-vous valider ?</label><br/>
+			       			 	<select name="id_defi" id="defi">
+			       			<%
 				       			for (Defi defi : defis) {
 				       				%>
-				           			<option value="name"><%=defi.getNom() %></option> 
+				           			<option value="<%=defi.getId() %>"><%=defi.getNom() %></option> 
 				           			<%
 				       			}
 			           		}
 			           		%>
-			       		</select>
-			       		<input type="submit" value="Envoyer" />
+			       				</select>
+			       		<input type="submit" value="Envoyer!" />
 			       		<input type="hidden" value="ajouterDefiAValider" name="action">
 			       		<% //String err = (String) request.getAttribute("erreur");
 			       		//String succ = (String) request.getAttribute("succes"); %>
