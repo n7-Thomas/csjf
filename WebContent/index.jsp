@@ -28,6 +28,7 @@ if(mbr_co != null){ %> <p> Bonjour, <%=mbr_co.getNom() %> !</p> <% } else { %> <
 <h2>Activités</h2>
 <a href="demande_a_rejoindre.jsp">Formulaire pour demander à rejoindre un groupe</a> <br>
 <a href="ServeurGroupe?action=admin&id_grp=1">Administration du groupe 1</a> <br>
+<a href="ServeurGroupe?action=pageGroupe">Accéder à ma page de groupe</a> <br>
 <% } %>
 
 <h2>Tests</h2>

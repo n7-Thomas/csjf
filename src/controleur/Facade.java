@@ -139,23 +139,33 @@ public class Facade {
 	public void editerCoefMembre() {
 
 	}
-
+	
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
-	public void demandeValidationDefi(Defi defi, Membre membre) throws Exception {
-		TypedQuery<Defi_A_Valider> req = em.createQuery(
-				"select d from Defi_A_Valider d WHERE defi='" + defi + "' && membre='" + membre + "'",
+	public void ajouterDefiAValider(String nomDefi, Membre membre) throws Exception {
+		/*TypedQuery<Defi_A_Valider> req = em.createQuery(
+				"select d from Defi d WHERE defi='" + defi + "' && membre='" + membre + "'",
 				Defi_A_Valider.class);
-		if (req.getResultList().size() == 0) { // alors le défi est déjà en
-												// cours de validation ou rien
-												// n'a été sélectionné
+		Defi defi1 = em.find(Defi.class, defi.getId());
+		Membre m = em.find(Membre.class, membre.getId());
+		if (defi1 != null && m != null) {
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 			defi_a_valider.setDefi(defi);
 			defi_a_valider.setMembre(membre);
+			em.persist(defi_a_valider);
 		} else {
 			throw new Exception("Ce défi est déjà en cours de validation !");
 		}
+		*/
+	}
+	
+	/**
+	 * FROM PAGE GROUPE, on demande les défis d'un groupe
+	 */
+	public Collection<Defi> getDefis(Groupe grp) {
+		Groupe g = em.find(Groupe.class, grp.getId());
+		return g.getDefis();
 	}
 
 	public void demandeValidationCSJF() {

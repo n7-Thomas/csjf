@@ -26,8 +26,7 @@
 				Groupe groupe = (Groupe) session.getAttribute("groupe");
 				
     			String status = (String) request.getAttribute("status");
-				if(status != null){ %> <p> Status : <%=status %> </p> <% }
-	%>
+				if(status != null){ %> <p> Status : <%=status %> </p> <% } else { %> <p>status = null</p> <% } %>
 		
 				<div id="afficherDefisGroupe">
 					<table>
@@ -37,8 +36,9 @@
 		       				<th>État</th>
 		   				</tr>
 		<%
-						if(groupe.getDefis() != null) {
-							for (Defi defi : groupe.getDefis()) {
+						Collection<Defi> defis = (Collection<Defi>) request.getAttribute("defis");
+						if(defis != null) {
+							for (Defi defi : defis) {
 								if (defi == null) {				
 		%>
 									<tr>
@@ -59,7 +59,7 @@
 							}
 						} else {
 							%>
-							<p>groupe.getDefis est null</p>
+							<p>La collection de défis est nulle</p>
 							<%
 						}
 				%>
@@ -67,20 +67,49 @@
 				</div>
 				
 				
-				<div id="demandeValiderDefi">
-					<p> Remplissez le formulaire suivant pour demander à valider un de vos défis. </p>
+				<div id="choisirDefiAFaire">
+					<p> Commencez un nouveau défi ! </p>
 					<form method="post" action="">
-						<label for="defi">Quel défi voulez-vous valider ?</label><br/>
+						<label for="defi">Sélectionnez un défi pour le commencer !</label><br/>
 			       		<select name="defi" id="defi">
 			       			<%
-			       			if (groupe.getDefis() == null) {
+			       			if (defis == null) {
 			       				%>
 			   					<option value="rien">Aucun</option>
 			   					<%
 			       			} else {
-				       			for (Defi defi : groupe.getDefis()) {
+				       			for (Defi defi : defis) {
 				       				%>
 				           			<option value="<%=defi.getNom()%>"><%=defi.getNom() %></option> 
+				           			<%
+				       			}
+			           		}
+			           		%>
+			       		</select>
+			       		<input type="submit" value="Commencer!" />
+			       		<input type="hidden" value="ajouterDefiACommencer" name="action">
+			       		<% //String err = (String) request.getAttribute("erreur");
+			       		//String succ = (String) request.getAttribute("succes"); %>
+			       		<span class="erreur"><%//=err %></span>
+			       		<span class="succes"><%//=succ %></span>
+					</form>
+				</div>
+				
+				
+				<div id="demandeValiderDefi">
+					<p> Remplissez le formulaire suivant pour demander à valider un de vos défis. </p>
+					<form method="post" action="ServeurGroupe">
+						<label for="defi">Quel défi voulez-vous valider ?</label><br/>
+			       		<select name="defiAValider" id="defi">
+			       			<%
+			       			if (defis == null) {
+			       				%>
+			   					<option value="rien">Aucun</option>
+			   					<%
+			       			} else {
+				       			for (Defi defi : defis) {
+				       				%>
+				           			<option value="name"><%=defi.getNom() %></option> 
 				           			<%
 				       			}
 			           		}

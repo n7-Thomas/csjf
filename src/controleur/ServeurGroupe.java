@@ -127,12 +127,17 @@ public class ServeurGroupe extends HttpServlet {
 			actionAfficherAdmin(request, response, session);
 		}
 		
+		// ACTION AFFICHER PAGE GROUPE
+		if (action.equals("pageGroupe")) {
+			actionAfficherGroupe(request, response, session);
+		}
+		
 		
 
 	}
 
 	/**
-	 * Traiter une requête de demande à rejoindre le groupe.
+	 * Ajouter un défi à valider à la liste pour le faire valider par l'admin
 	 * 
 	 * @param request
 	 * @param response
@@ -143,7 +148,7 @@ public class ServeurGroupe extends HttpServlet {
 	private void actionAjouterDefiAValider(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) throws ServletException, IOException {
 
-		Defi defiAValider = (Defi) request.getAttribute("defiAValider");
+		String defiAValider = (String) request.getParameter("name");
 		Membre usr = (Membre) session.getAttribute("user");
 
 		if (usr == null) {
@@ -159,11 +164,13 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 		try {
-			facade.demandeValidationDefi(defiAValider, (Membre) session.getAttribute("user"));
-			request.setAttribute("succes", "Votre défi a été envoyé !");
+			facade.ajouterDefiAValider(defiAValider, (Membre) session.getAttribute("user"));
+			request.setAttribute("status", "Votre défi a été envoyé !");
+			request.setAttribute("groupe", session.getAttribute("groupe"));
 			request.getRequestDispatcher("groupe.jsp").forward(request, response);
 		} catch (Exception e) {
-			request.setAttribute("erreur", e.getMessage());
+			request.setAttribute("status", e.getMessage());
+			request.setAttribute("groupe", session.getAttribute("groupe"));
 			request.getRequestDispatcher("groupe.jsp").forward(request, response);
 		}
 	}
@@ -294,6 +301,37 @@ public class ServeurGroupe extends HttpServlet {
 		
 		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
+	
+	
+	private void actionAfficherGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+
+		// Récupération du membre connecté
+		Membre usr = (Membre) session.getAttribute("user");
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		// Récupération du groupe lié
+		Groupe grp = (Groupe) session.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		Collection<Defi> defis = facade.getDefis(grp);
+		request.setAttribute("defis", defis);
+		
+		Collection<Membre> membres_du_groupe = facade.getMembres(grp);
+		request.setAttribute("membres", membres_du_groupe);
+		
+		request.getRequestDispatcher("groupe.jsp").forward(request, response);
+	}
+	
+	
 
 	/**
 	 * Traiter la requête d'affichage des demandes à rejoindre.
