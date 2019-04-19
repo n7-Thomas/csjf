@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modele.Groupe;
 import modele.Membre;
 
 
@@ -95,7 +94,7 @@ public class Serveur extends HttpServlet {
 			String motdepasse = request.getParameter("motdepasse");
 			Membre mb = ((Membre) session.getAttribute("user"));
 			facade.modifierProfil(mb, nom, prenom, email, motdepasse);
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
+			request.getRequestDispatcher("ServeurConnexion?action=afficher_profil").forward(request, response);
 		}
 
 	}
