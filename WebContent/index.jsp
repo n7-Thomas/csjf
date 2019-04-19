@@ -4,7 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Index</title>
+	<title>Index</title>
+	<link type="text/css" rel="stylesheet" href="CSS/header.css" />
 </head>
 <body>
 
