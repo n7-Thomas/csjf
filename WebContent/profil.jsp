@@ -22,7 +22,7 @@
                 <a href="index.jsp">Index</a>
                 <a href="groupe.jsp" >Groupe</a>
                 <a href="Serveur?action=deconnexion"style="float:right">Déconnexion </a><br>
-    </div>
+    	</div>
 	<fieldset>
 			<div class="row">
             <div class="rightcolumn">

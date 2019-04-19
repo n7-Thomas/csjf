@@ -10,19 +10,6 @@
 <body>
 
 Fil d'Actualité <br>
-
-
-
-<% Collection<Notification> listeNotif = (Collection<Notification>) request.getAttribute("listeNotifications");
-	
-	for (Notification n: listeNotif){
-
-			String notif = n.getMessage();
-			%>
-			<%=notif %> <br>
-			
-			<% 			
-	}%>
 	
 <% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublication");
 	

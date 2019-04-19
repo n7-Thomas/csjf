@@ -5,7 +5,6 @@
 <head>
 		<meta charset="ISO-8859-1">
 		<title>Administration du groupe</title>
-        <link type="text/css" rel="stylesheet" href="CSS/form.css" />
         <link type="text/css" rel="stylesheet" href="CSS/pageAdmin.css" />
         <script type="text/javascript" src="JS/defiEdit.js"></script>
 </head>
@@ -15,6 +14,7 @@
 	if(status != null){ %> <p> Status : <%=status %> </p> <% }
 	%>
 	</header>
+
 	<%
 	Membre mb = (Membre) session.getAttribute("user");
 	if (mb == null) { %> 
@@ -27,8 +27,19 @@
 	<a href="creer_groupe.jsp">Créer groupe</a>	<br>
 	<%		} else {
 	%>
-	<h1>Administration de <span style="color.blue"><%=groupe.getNom()%></span></h1>
-	    
+	<div class="header">
+    <h1>Administration de <span style="color.blue"><%=groupe.getNom()%></span></h1>       
+    </div>
+    <div class="topnav">
+                <a href="pageAccueil.jsp">Accueil</a>
+                <a href="Serveur?action=afficher_profil">Mon profil</a>
+                <a href="index.jsp">Index</a>
+                <a href="groupe.jsp?id_grp=<%=groupe.getId() %>" >Groupe</a>
+                <a href="Serveur?action=deconnexion"style="float:right">Déconnexion </a><br>
+    </div>
+	
+	<div class="row">
+	<div class="rightcolumn">   
    	<fieldset id="afficherMembres">
 	<legend>Membres du groupes</legend>
 	<%  Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
@@ -63,7 +74,7 @@
 				<label for="<%=id_pour_dar%>"><%=dar.getMembre().getPrenom() %> veut rejoindre le groupe</label>	
 				</div>
 			<% } %>
-			<button type="submit">Valider ces demandes </button>
+			<input type="submit" value="Valider ces demandes" class="sansLabel">
 			<input type="hidden" name="action" value="validerDemandes">
 			<input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 			</form>
@@ -83,8 +94,8 @@
        		</form>
 	</fieldset>
 	
-	
-	
+	</div>
+	<div class="leftcolumn">	
     <fieldset>
     <legend>Valider des défis</legend>
     
@@ -103,7 +114,7 @@
 		<% } %>
 		
 				  <div>
-				  <button type="submit">Valider ces défis</button>
+				  <input type="submit" value="Valider ces défis">
 				  <input type="hidden" name="action" value="validerDefis">
 				  <input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 				  </div>
@@ -194,7 +205,8 @@
 			
 	<% } %>
 	</fieldset>
-	
+	</div>
+	</div>
 	
 	
 	
