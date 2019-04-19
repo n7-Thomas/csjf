@@ -82,7 +82,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.getRequestDispatcher("connexion.jsp").forward(request, response);
 			} else {
 				session.setAttribute("user", m);
-				request.getRequestDispatcher("profil.jsp").forward(request, response);
+				actionAfficherGroupe(request,response,session);
 			}
 		}
 
@@ -106,6 +106,25 @@ public class ServeurConnexion extends HttpServlet {
 
 		}
 
+		if(action.equals("afficher_profil")){
+			actionAfficherGroupe(request,response,session);
+		}
+
+	}
+
+	private void actionAfficherGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+
+		// Récupération du membre connecté
+		Membre usr = (Membre) session.getAttribute("user");
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
+		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
+		request.getRequestDispatcher("profil.jsp").forward(request, response);
 	}
 
 }

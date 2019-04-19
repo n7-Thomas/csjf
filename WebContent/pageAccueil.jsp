@@ -15,7 +15,7 @@
 	<% Membre mbr_co = (Membre) session.getAttribute("user");%>
 	<h1><p> Hello <%=mbr_co.getPrenom() %>, bienvenue sur ta page d'Accueil ! <p></h1>
 	
-	<a href="profil.jsp"> Voir mon profil</a> <br>
+	<a href="ServeurConnexion?action=afficher_profil"> Voir mon profil</a> <br>
 	
 	<h2> Mes groupes</h2>
                 <%

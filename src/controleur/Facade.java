@@ -264,7 +264,16 @@ public class Facade {
 		TypedQuery<Groupe> req = em.createQuery("select g from Groupe g", Groupe.class);
 		Collection<Groupe> groupes = req.getResultList();
 		return groupes;
+	}
 
+	public Collection<Groupe> getGroupesAppartenus(Membre m) {
+		Membre mb = em.find(Membre.class, m.getId());
+		return mb.getGroupesAppartenus();
+	}
+
+	public Collection<Groupe> getGroupesAdministres(Membre m){
+		Membre mb = em.find(Membre.class, m.getId());
+		return mb.getGroupesAdministres();
 	}
 
 	/**

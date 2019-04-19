@@ -21,6 +21,8 @@
                 <a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
                 
                 <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
+                
+                <h2> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h2>
                 <%
                 Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus"); // A IMPLEMENTER 
 				if (groupes != null){
@@ -32,7 +34,9 @@
        			} else { 
        			%>
                 <p> Vous n'êtes dans aucun groupe actuellement</p>
-                <% }
+                <% } %>
+                <h2> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin</h2>
+                <% 
                 Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins"); // A IMPLEMENTER
                 if (groupes_admin != null){
            			for (Groupe g : groupes_admin) {

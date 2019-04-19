@@ -49,7 +49,7 @@
                 <input type="submit" value="Inscription" class="sansLabel" />
                 <br />
                 
-                <input type="hidden" name= "action" value="inscription">
+                <input type="hidden" name= "action" value="inscription"/>
                 
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
             </fieldset>

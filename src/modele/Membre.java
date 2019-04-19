@@ -22,7 +22,7 @@ public class Membre {
 
 	private String prenom;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "membre_groupe")
 	private Collection<Groupe> groupes_appartenus;
 
