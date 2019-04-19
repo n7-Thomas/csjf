@@ -1,0 +1,84 @@
+@CHARSET "UTF-8";
+
+*{
+    box-sizing: border-box;
+}
+
+.header {
+    padding: 40px;
+    text-align: center;
+}
+
+body {
+  background-image: url("arriere-plan-profil.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 2000px 2000px;
+  font-family: Arial;
+  padding: 20px;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+  
+/* Style the topnav links */
+.topnav a {
+   float: left;
+   display: block;
+   color: #f2f2f2;
+   text-align: center;
+   padding: 14px 16px;
+   text-decoration: none;
+}
+  
+/* Change color on hover */
+.topnav a:hover {
+   background-color: #333;
+    color: white;
+}
+
+a:link, a:visited {
+    background-color: #c4c1a4;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+  
+a:hover, a:active {
+ background-color: #c4c1a4;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {   
+    float: left;
+    width: 65%;
+    padding-left: 20px;
+}
+  
+/* Right column */
+.rightcolumn {
+    margin-top: 40px;
+    margin-right: 13px;
+    float: right;
+    width: 33%;
+    padding-left: 20px;
+}
+
+.card {
+    background-color: #c0bbb0;
+    padding: 20px;
+    margin-top: 20px;
+}
+  
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
