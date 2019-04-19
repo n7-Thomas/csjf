@@ -26,14 +26,15 @@
 				Groupe groupe = (Groupe) request.getAttribute("groupe");
 				
     			String status = (String) request.getAttribute("status");
-				if(status != null){ %> <p> Status : <%=status %> </p> <% } else { %> <p>status = null</p> <% } %>
+				if(status != null){ %> <p> Status : <%=status %> </p> <% } %>
 		
 				<div id="afficherDefisGroupe">
 					<table>
 		   				<tr>
+		   					<th>Défi</th>
 		    				<th>Description</th>
 		       				<th>Points à gagner</th>
-		       				<th>État</th>
+		       				<th>Type</th>
 		   				</tr>
 		<%
 						Collection<Defi> defis = (Collection<Defi>) request.getAttribute("defis");
@@ -43,6 +44,7 @@
 		%>
 									<tr>
 										<td>Aucun défi à afficher</td>
+										<td>RIEN</td>
 							       		<td>RIEN</td>
 							       		<td>RIEN</td>
 							       	</tr>
@@ -50,17 +52,14 @@
 								} else {
 				%>
 									<tr>
+										<td><%=defi.getNom() %></td>
 								       	<td><%=defi.getDescription() %></td>
 								       	<td><%=defi.getPoints() %></td>
-								       	<td>Pas encore de type</td>
+								       	<td><%=defi.getType() %></td>
 								   	</tr>
 				<% 	
 								}
 							}
-						} else {
-							%>
-							<p>La collection de défis est nulle</p>
-							<%
 						}
 				%>
 					</table>
@@ -83,7 +82,7 @@
 			       			<%
 				       			for (Defi defi : defis) {
 				       				%>
-				           			<option value="<%=defi.getId() %>"><%=defi.getNom() %></option> 
+				           			<option value="<%=defi.getId() %>"><%=defi.getNom() %></option>
 				           			<%
 				       			}
 			           		}
@@ -91,6 +90,7 @@
 			       				</select>
 			       		<input type="submit" value="Envoyer!" />
 			       		<input type="hidden" value="ajouterDefiAValider" name="action">
+			       		<input type="hidden" value="<%=groupe.getId() %>" name="id_groupe">
 			       		<% //String err = (String) request.getAttribute("erreur");
 			       		//String succ = (String) request.getAttribute("succes"); %>
 			       		<span class="erreur"><%//=err %></span>
