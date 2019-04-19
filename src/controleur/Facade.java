@@ -153,16 +153,24 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
-	public void ajouterDefiAValider(int idDefiAValider, Membre membre) throws Exception {
+	public void ajouterDefiAValider(int idGroupe, int idDefiAValider, Membre membre) throws Exception {
 		Defi defi1 = em.find(Defi.class, idDefiAValider);
+		Groupe groupe = em.find(Groupe.class, idGroupe);
 		Membre m = em.find(Membre.class, membre.getId());
-		if (defi1 != null && m != null) {
+		TypedQuery<Defi_A_Valider> req = em.createQuery(
+				"select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider,
+				Defi_A_Valider.class);
+		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
+			throw new Exception("Ce défi a déjà été envoyer pour être validé, vous ne pouvez pas le réenvoyer !");
+		}
+		if (defi1 != null && m != null && groupe != null) {
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 			defi_a_valider.setDefi(defi1);
 			defi_a_valider.setMembre(m);
+			defi_a_valider.setGroupe(groupe);
 			em.persist(defi_a_valider);
 		} else {
-			throw new Exception("Ce défi est déjà en cours de validation !");
+			throw new Exception("probbb facade ajouter defi a valider");
 		}
 	}
 

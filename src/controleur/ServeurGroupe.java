@@ -218,6 +218,7 @@ public class ServeurGroupe extends HttpServlet {
 			HttpSession session) throws ServletException, IOException {
 
 		String defiAValider = (String) request.getParameter("id_defi");
+		String groupe = (String) request.getParameter("id_groupe");
 		Membre usr = (Membre) session.getAttribute("user");
 
 		if (usr == null) {
@@ -231,16 +232,28 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
+		
+		if (groupe == null) {
+			request.setAttribute("erreur", "Aucun groupe présent");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		int idDefiAValider = Integer.parseInt(defiAValider);
+		int idGroupe = Integer.parseInt(groupe);
+		Groupe grp = facade.getGroupeFromId(idGroupe);
+		Collection<Defi> defis = facade.getDefis(grp);
+		
 		try {
-			int idDefiAValider = Integer.parseInt(defiAValider);
-			facade.ajouterDefiAValider(idDefiAValider, (Membre) session.getAttribute("user"));
+			facade.ajouterDefiAValider(idGroupe, idDefiAValider, usr);
 			request.setAttribute("status", "Votre défi a été envoyé !");
-			request.setAttribute("groupe", session.getAttribute("groupe"));
+			request.setAttribute("groupe", grp);
+			request.setAttribute("defis", defis);
 			request.getRequestDispatcher("groupe.jsp").forward(request, response);
 		} catch (Exception e) {
 			request.setAttribute("status", e.getMessage());
-			request.setAttribute("groupe", session.getAttribute("groupe"));
+			request.setAttribute("groupe", grp);
+			request.setAttribute("defis", defis);
 			request.getRequestDispatcher("groupe.jsp").forward(request, response);
 		}
 	}
