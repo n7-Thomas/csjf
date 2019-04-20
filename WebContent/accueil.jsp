@@ -21,7 +21,6 @@ if(!isConnected){
     <div class="topnav">
     <a href="connexion.jsp">Se connecter</a>
     <a href="inscription.jsp">S'inscrire</a>
-    <a href="index.jsp">Index</a>
 	</div>
 	<%
 } else {
