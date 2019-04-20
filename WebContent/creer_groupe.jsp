@@ -6,13 +6,19 @@
     <head>
         <meta charset="ISO-8859-1" />
         <title>Création d'un groupe</title>
+        <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
         <link type="text/css" rel="stylesheet" href="CSS/form.css" />
     </head>
     <body>
     	<% String status = (String) request.getAttribute("status");
 		if(status != null){ %> <p> Status : <%=status %> </p> <% }
 		%>
-    
+		
+		<div class="header">
+        <h1>Creer un groupe</h1>
+		</div>
+		
+		<%@ include file="navigationBar.jsp" %>  
   
         <form method="post" action="ServeurGroupe">
             <fieldset>

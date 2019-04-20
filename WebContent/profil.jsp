@@ -13,16 +13,9 @@
 </head>
 <body>
 	<div class="header">
-                <h1>Profil <i class="material-icons" style="font-size:60px;">computer</i></h1>
-                
-              </div>
-        <div class="topnav">
-                <a href="pageAccueil.jsp">Accueil</a>
-                <a href="admin.jsp">Page administrateur</a>
-                <a href="index.jsp">Index</a>
-                <a href="groupe.jsp" >Groupe</a>
-                <a href="Serveur?action=deconnexion"style="float:right">Déconnexion </a><br>
-    	</div>
+    <h1>Profil <i class="material-icons" style="font-size:60px;">computer</i></h1>          
+    </div>
+	<%@ include file="navigationBar.jsp" %>  
 	<fieldset>
 			<div class="row">
             <div class="rightcolumn">

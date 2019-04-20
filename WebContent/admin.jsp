@@ -30,13 +30,7 @@
 	<div class="header">
     <h1>Administration de <span style="color.blue"><%=groupe.getNom()%></span></h1>       
     </div>
-    <div class="topnav">
-                <a href="accueil.jsp">Accueil</a>
-                <a href="Serveur?action=afficher_profil">Mon profil</a>
-                <a href="index.jsp">Index</a>
-                <a href="groupe.jsp?id_grp=<%=groupe.getId() %>" >Groupe</a>
-                <a href="Serveur?action=deconnexion"style="float:right">Déconnexion </a><br>
-    </div>
+	<%@ include file="navigationBar.jsp" %>  
 	
 	<div class="row">
 	<div class="rightcolumn">   

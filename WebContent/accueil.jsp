@@ -5,7 +5,7 @@
 <head>
 		<meta charset="ISO-8859-1">
 		<title>Accueil</title>
-        <link type="text/css" rel="stylesheet" href="CSS/accueil.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 </head>
 <body>
 <div class="header">
@@ -25,14 +25,7 @@ if(!isConnected){
 	<%
 } else {
 	%>
-    <div class="topnav">
-    <a href="ServeurGroupe?action=pageGroupe&id_grp=1">Groupe 1</a>
-    <a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a>
-    <a href="ServeurGroupe?action=admin&id_grp=1">Administrer groupe 1</a>
-    <a href="creer_groupe.jsp">Créer un groupe</a>
-    <a href="ServeurConnexion?action=afficher_profil">Mon Profil</a>
-    <a href="Serveur?action=deconnexion"style="float:right">Déconnexion </a>
-	</div>
+	<%@ include file="navigationBar.jsp" %>  
 	<%
 }
 %>
