@@ -34,12 +34,12 @@ body {
 }
 
 /* Change color on hover */
-.topnav a:hover {
+a:hover {
    background-color: #333;
     color: white;
 }
 
-.topnav a:link {
+a:link, a:visited {
     background-color: #c4c1a4;
     color: white;
     padding: 14px 25px;
@@ -48,22 +48,11 @@ body {
     display: inline-block;
 }
 
-.topnav a:visited {
-    background-color: #c4c1a4;
-    color: white;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-}
 
-.topnav a:hover {
+.topnav a:hover, a:active {
  background-color: #c4c1a4;
 }
 
-.topnav a:active {
- background-color: #c4c1a4;
-}
 
 
 
