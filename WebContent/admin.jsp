@@ -5,7 +5,7 @@
 <head>
 		<meta charset="ISO-8859-1">
 		<title>Administration du groupe</title>
-        <link type="text/css" rel="stylesheet" href="CSS/pageAdmin.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/admin.css" />
         <script type="text/javascript" src="JS/defiEdit.js"></script>
 </head>
 <body>

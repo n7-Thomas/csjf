@@ -68,14 +68,14 @@ public class Serveur extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'index
 		if (action == null) {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 			return;
 		}
 
 		//AFFICHER LA PAGE D'ACCUEIL
 		if(action.equals("afficher_pageAccueil")){
 			request.setAttribute("groupes", facade.getGroupes());
-			request.getRequestDispatcher("pageAccueil.jsp").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 		}
 
 		if(action.equals("deconnexion")) {

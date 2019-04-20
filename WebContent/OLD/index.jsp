@@ -19,7 +19,7 @@ if(mbr_co != null){ %> <p> Bonjour, <%=mbr_co.getNom() %> !</p> <% } else { %> <
 
 
 <% if (mbr_co == null){ %>
-<h2>Inscription & Connexion</h2>
+<h2>Inscription et Connexion</h2>
 <a href="inscription.jsp">S'inscrire gros</a> <br>
 <a href="connexion.jsp">Connexion</a> <br>
 <% } else { %>

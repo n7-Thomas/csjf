@@ -65,9 +65,9 @@ public class ServeurConnexion extends HttpServlet {
 
 		System.out.println("Serveur action : " + action);
 
-		// Si pas d'action on envoie sur l'index
+		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 			return;
 		}
 

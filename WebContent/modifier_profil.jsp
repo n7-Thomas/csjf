@@ -38,5 +38,7 @@
                 <br />
                 
                 <input type="hidden" name= "action" value="enregistrer_modif">
+            </fieldset>
+    </form>
 </body>
 </html>

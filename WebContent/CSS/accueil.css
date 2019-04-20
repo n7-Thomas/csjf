@@ -1,25 +1,73 @@
-body, legend, input {
-    font: normal 8pt verdana, helvetica, sans-serif;
+*{
+    box-sizing: border-box;
 }
 
-body
-{
-    font-family: Impact, "Arial Black", Arial, Verdana, sans-serif;
-
-}
-h1{
-	color: #09106b;
-	
+.header {
+    padding: 40px;
+    text-align: center;
 }
 
-h2{
-	color: #555753;
+body {
+  font-family: Impact, "Arial Black", Arial, Verdana, sans-serif;
+  background-image: url("arriere-plan-profil.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 2000px 2000px;
+  font-family: Arial;
+  padding: 20px;
 }
 
-/* Les éléments <a> avec un href qui correspond */
-/* à "https://example.org" */
-a {
-  color: #38849c;
-  font-size: 14px;
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+   float: left;
+   display: block;
+   color: #f2f2f2;
+   text-align: center;
+   padding: 14px 16px;
+   text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+   background-color: #333;
+    color: white;
+}
+
+.topnav a:link {
+    background-color: #c4c1a4;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.topnav a:visited {
+    background-color: #c4c1a4;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.topnav a:hover {
+ background-color: #c4c1a4;
+}
+
+.topnav a:active {
+ background-color: #c4c1a4;
+}
+
+
+
+fieldset {
+	margin-top: 20px;	
 }
 

@@ -74,9 +74,9 @@ public class ServeurGroupe extends HttpServlet {
 
 		System.out.println("Serveur action : " + action);
 
-		// Si pas d'action on envoie sur l'index
+		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 			return;
 		}
 
@@ -294,10 +294,10 @@ public class ServeurGroupe extends HttpServlet {
 
 		if (facade.demanderRejoindreGroupe(usr, gp)) {
 			request.setAttribute("status", "La demande a été envoyé");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 		} else {
 			request.setAttribute("status", "Vous faites déjà parti de ce groupe");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 		}
 	}
 
@@ -396,15 +396,22 @@ public class ServeurGroupe extends HttpServlet {
 
 		// Récupération du groupe lié
 		String id_grp = (String) request.getParameter("id_grp");
+		if(id_grp == null) {
+			request.setAttribute("erreur", "Pas de groupe selectionné");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
 		int id_grp1 = Integer.parseInt(id_grp);
+		
 		Groupe grp = facade.getGroupeFromId(id_grp1);
+		if(grp == null) {
+			request.setAttribute("erreur", "Le groupe n'a pas été trouvé");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
 		request.setAttribute("groupe", grp);
-
-		Collection<Defi> defis = facade.getDefis(grp);
-		request.setAttribute("defis", defis);
-
-		Collection<Membre> membres_du_groupe = facade.getMembres(grp);
-		request.setAttribute("membres", membres_du_groupe);
+		request.setAttribute("defis", facade.getDefis(grp));
+		request.setAttribute("membres", facade.getMembres(grp));
 
 		request.getRequestDispatcher("groupe.jsp").forward(request, response);
 	}

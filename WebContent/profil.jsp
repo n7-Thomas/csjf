@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class="header">
-                <h1>Profil <i class="material-icons" size="font-size:60px;">computer</i></h1>
+                <h1>Profil <i class="material-icons" style="font-size:60px;">computer</i></h1>
                 
               </div>
         <div class="topnav">
@@ -27,18 +27,18 @@
 			<div class="row">
             <div class="rightcolumn">
                 <div class="card">
-                <h2>Coordonnées.</h2></br>
+                <h2>Coordonnées.</h2>
                 
                 <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
-                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p></br>
+                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
                 
 
-                <a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br></div></div></br></br>
+                <a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br></div></div>
                 <div class="leftcolumn">
                 <div class="card">
-                <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2></br>
+                <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
                 
-                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4></br>
+                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
                 <%
                 Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
 				if (groupes != null){
@@ -51,7 +51,7 @@
        			%>
                 <p> Vous n'êtes dans aucun groupe actuellement</p>
                 <% } %>
-                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4></br>
+                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
                 <% 
                 Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins"); // A IMPLEMENTER
                 if (groupes_admin != null){
