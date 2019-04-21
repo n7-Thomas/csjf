@@ -134,6 +134,39 @@ public class ServeurGroupe extends HttpServlet {
 			actionAfficherGroupe(request, response, session);
 		}
 
+		if (action.equals("histogramme")) {
+			actionAfficherHistogramme(request, response, session);
+		}
+		
+	}
+
+	private void actionAfficherHistogramme(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws ServletException, IOException{
+		
+		Membre usr = (Membre) session.getAttribute("user");
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		Groupe grp = (Groupe) request.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		Collection<String> classement = facade.getClassement(grp);
+		if(classement == null) {
+			request.setAttribute("erreur", "récupération des points");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		request.setAttribute("groupe", grp);
+		request.setAttribute("classement", classement);
+		request.getRequestDispatcher("histogramme.jsp").forward(request, response);
+		
 	}
 
 	/**

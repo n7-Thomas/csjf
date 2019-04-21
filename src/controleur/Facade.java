@@ -1,5 +1,6 @@
 package controleur;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ejb.Singleton;
@@ -439,6 +440,30 @@ public class Facade {
 
 		System.out.print("\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
 
+	}
+
+	public Collection<String> getClassement(Groupe grp) {
+		Collection<String> resultat = new ArrayList<String>();
+		
+		Collection<Membre> membres = em.find(Groupe.class, grp.getId()).getMembres();
+		System.out.println("\n\n MEMBRES " + membres + " \n\n");
+		if(membres != null) {
+			for(Membre mb : membres) {
+				int somme = 0;
+				TypedQuery<Defi_Valide> req = em.createQuery("select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(), Defi_Valide.class);
+				if(req != null && req.getResultList().size() != 0) {
+					Collection<Defi_Valide> dvs = req.getResultList();
+					for(Defi_Valide dv : dvs) {
+						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+					}
+				}
+				resultat.add(mb.getPrenom() + ":" + somme);
+			}			
+		}else {
+			System.out.println("\n\n AUCUN MEMBRE \n\n");
+		}
+		System.out.println(resultat);
+		return resultat;
 	}
 
 
