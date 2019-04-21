@@ -22,7 +22,7 @@
 
 			if (request.getAttribute("groupe") == null) {
 	%>
-			<p>Pas de groupe administré sélectionné.</p>
+			<p>Pas de groupe sélectionné.</p>
 			<a href="index.html">Aller à l'index</a><br>
 	<%
 			} else {

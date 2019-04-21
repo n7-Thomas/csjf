@@ -13,9 +13,10 @@
 </head>
 <body>
 	<div class="header">
-    <h1>Profil <i class="material-icons" style="font-size:60px;">computer</i></h1>          
-    </div>
-	<%@ include file="navigationBar.jsp" %>  
+    	<h1>Profil <i class="material-icons" style="font-size:60px;">computer</i></h1>          
+		<%@ include file="navigationBar.jsp" %> 
+	</div> 
+	
 	<fieldset>
 			<div class="row">
             <div class="rightcolumn">

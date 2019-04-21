@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.header {
+#header h1{
     padding: 40px;
     text-align: center;
 }

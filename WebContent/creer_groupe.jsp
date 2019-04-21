@@ -9,27 +9,27 @@
         <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
         <link type="text/css" rel="stylesheet" href="CSS/form.css" />
     </head>
+    
     <body>
-    	<% String status = (String) request.getAttribute("status");
-		if(status != null){ %> <p> Status : <%=status %> </p> <% }
-		%>
-		
-		<div class="header">
-        <h1>Creer un groupe</h1>
+    	
+		<div id="header">
+        	<h1>Creer un groupe</h1>
+        	<%@ include file="navigationBar.jsp" %> 
+        	<%@ include file="statusBar.jsp" %>
 		</div>
 		
-		<%@ include file="navigationBar.jsp" %>  
-  
-        <form method="post" action="ServeurGroupe">
-            <fieldset>
-                <legend>Creer un groupe dont vous serez l'administrateur</legend>
-                <label for="nom">Nom du groupe: <span class="requis">*</span></label>
-                <input type="text" id="nom" name="nom" size="20" maxlength="60" />
-                <br />
-                <input type="submit" value="Créer ce groupe" class="sansLabel" />
-                <br />
-				<input type="hidden" value="creerGroupe" name="action">
-            </fieldset>
-        </form>
-</body>
+		<div id="contenu">
+			<fieldset>
+			    <legend>Creer un groupe dont vous serez l'administrateur</legend>
+	        	<form method="post" action="ServeurGroupe">
+	                <label for="nom">Nom du groupe: <span class="requis">*</span></label>
+	                <input type="text" id="nom" name="nom" size="20" maxlength="60" />
+	                <br />
+	                <input type="submit" value="Créer ce groupe" class="sansLabel" />
+	                <br />
+					<input type="hidden" value="creerGroupe" name="action">       
+	        	</form>
+	        </fieldset>
+        </div>
+	</body>
 </html>

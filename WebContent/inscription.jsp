@@ -7,9 +7,7 @@
     </head>
     <body>
     	<% Boolean existe = false; %>
-    	<% String status = (String) request.getAttribute("status");
-		if(status != null){ %> <p> Status : <%=status %> </p> <% }
-		%>
+    	<%@ include file="statusBar.jsp" %>
 		
 		<% try {
 			existe = ((Boolean) request.getAttribute("existe"));
