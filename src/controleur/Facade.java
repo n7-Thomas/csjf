@@ -487,6 +487,11 @@ public class Facade {
 		em.merge(mb);
 	}
 
+	public void enleverDefi(int id_defi) {
+		Defi defi = em.find(Defi.class, id_defi);
+		em.remove(defi);	
+	}
+
 
 
 }

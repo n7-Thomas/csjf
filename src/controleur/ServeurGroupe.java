@@ -143,7 +143,28 @@ public class ServeurGroupe extends HttpServlet {
 		if (action.equals("del_membre")) {
 			actionEnleverMembre(request, response, session);
 		}
+		
+		// ACTION SUPPRIMER DEFI
+		if (action.equals("del_defi")) {
+			actionSupprimerDefi(request, response, session);
+		}
 
+	}
+
+	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
+			throws ServletException, IOException {
+		
+		String str_id_defi = (String) request.getParameter("id_defi");
+		if(str_id_defi == null){
+			request.setAttribute("erreur", "Pas de défi sélectionné");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		int id_defi = Integer.parseInt(str_id_defi);
+		
+		facade.enleverDefi(id_defi);
+		
+		actionAfficherAdmin(request, response, session);
 	}
 
 	private void actionEnleverMembre(HttpServletRequest request, HttpServletResponse response, HttpSession session)
