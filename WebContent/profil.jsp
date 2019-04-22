@@ -47,7 +47,7 @@
                 <% } %>
                 <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
                 <% 
-                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins"); // A IMPLEMENTER
+                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
                 if (groupes_admin != null){
            			for (Groupe g : groupes_admin) {
                     	String groupe_nom = g.getNom(); 
