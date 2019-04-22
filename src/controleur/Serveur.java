@@ -74,8 +74,17 @@ public class Serveur extends HttpServlet {
 
 		//AFFICHER LA PAGE D'ACCUEIL
 		if(action.equals("afficher_pageAccueil")){
-			request.setAttribute("groupes", facade.getGroupes());
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			// Récupération du membre connecté
+			Membre usr = (Membre) session.getAttribute("user");
+			if (usr == null) {
+				request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			} else {
+				request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
+				request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
+				request.setAttribute("groupes", facade.getGroupes());
+				request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			}
+			
 		}
 
 		if(action.equals("deconnexion")) {

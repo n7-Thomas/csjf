@@ -9,24 +9,21 @@
 	Membre user = (Membre) session.getAttribute("user");
 	boolean isConnected = (user != null);
 		
+%> 
+	<nav id="main_nav">
+		<ul>
+<%
 	// BARRE DE NAVIGATION
 	if(!isConnected){
 %>
-	<nav id="main_nav">
-		<ul>
 			<li>
 	    		<a href="connexion.jsp">Se connecter</a>
 	    	</li>
 	    	<li>
 				<a href="inscription.jsp">S'inscrire</a>
 			</li>
-		</ul>
-	</nav>
 <%	} else { %>
-
-	<nav id="main_nav">
-			<ul>
-				<li>
+			<li>
 					<a href="">Groupes</a>
 					<ul>
 						<li>
@@ -70,8 +67,9 @@
 				<li style="float:right">
 					<a href="Serveur?action=deconnexion"><i class="glyphicon glyphicon-log-out" style="font-size:20px"></i> </a>
 				</li>
-			</ul>
-		</nav>
+
 	<%}%>
+		</ul>
+	</nav>
 </div>
 </div>

@@ -45,7 +45,7 @@
     			} else { %>
     			<div> <%
 					for (Membre membre : membres) { %>
-	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %></p>
+	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %> <a href="ServeurGroupe?action=del_membre&id_grp=<%=groupe.getId() %>&id_mbr=<%=membre.getId() %>" style="color:red; background:none; size:5px;font-family: Verdana, Times, serif;">x</a></p>
 					<% } %>
 				</div> <%
 				}%>
@@ -150,7 +150,9 @@
 						    <% for (Defi defi : defis_en_cours) { 
 						    %>
 								<p> Défi <%= defi.getId() %> : "<%= defi.getNom() %>" (<%= defi.getDescription() %>) pour <%= defi.getPoints() %> points. 
-								Depuis <%= defi.getDate() %> jusqu'au <%=defi.getEndDate() %> </p>	
+								Depuis <%= defi.getDate() %> jusqu'au <%=defi.getEndDate() %> 
+								<a href="ServeurGroupe?action=del_defi&id_grp=<%=groupe.getId() %>&id_defi=<%=defi.getId() %>" style="color:red; background:none; size:5px;font-family: Verdana, Times, serif;">x</a>
+								</p>	
 							<% } %>
 						</div>
 						<% } %>

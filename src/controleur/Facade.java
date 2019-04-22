@@ -479,6 +479,19 @@ public class Facade {
 		return g;
 	}
 
+	
+	public void enleverMembre(Groupe grp, int id_mbr) {
+		Groupe gp = em.find(Groupe.class, grp.getId());
+		Membre mb = em.find(Membre.class, id_mbr);
+		mb.getGroupesAppartenus().remove(gp);
+		em.merge(mb);
+	}
+
+	public void enleverDefi(int id_defi) {
+		Defi defi = em.find(Defi.class, id_defi);
+		em.remove(defi);	
+	}
+
 
 
 }
