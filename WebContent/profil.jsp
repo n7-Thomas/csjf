@@ -14,7 +14,7 @@
 <body>
 	<div id="header">
     	<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>          
-		<%@ include file="navigationBar.jsp" %> 
+		<%@ include file="navigationBar.jsp" %>
 	</div> 
 	
 	<fieldset>
@@ -27,7 +27,7 @@
                 <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
                 
 
-                <a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br></div></div>
+                <a href="Serveur?action=modifier_profil"><i class="glyphicon glyphicon-pencil"></i>  Modifier son profil.</a><br></div></div>
                 <div class="leftcolumn">
                 <div class="card">
                 <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
@@ -59,9 +59,7 @@
                 <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
 				<%} 
 				%>
-				</div></div></div>
-				
-				
+				</div></div></div>	
 				
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat} </p>
          </fieldset>

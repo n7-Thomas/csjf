@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*, controleur.*, modele.*"%>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <div class="topnav">
 <%
@@ -10,8 +11,16 @@
 	// BARRE DE NAVIGATION
 	if(!isConnected){
 %>
-	    <a href="connexion.jsp">Se connecter</a>
-		<a href="inscription.jsp">S'inscrire</a>
+	<nav id="main_nav">
+		<ul>
+			<li>
+	    		<a href="connexion.jsp">Se connecter</a>
+	    	</li>
+	    	<li>
+				<a href="inscription.jsp">S'inscrire</a>
+			</li>
+		</ul>
+	</nav>
 <%	} else { %>
 
 	<nav id="main_nav">
@@ -55,10 +64,10 @@
 					</ul>
 				</li>
 				<li>
-					<a href="ServeurConnexion?action=afficher_profil">Mon Profil</a>
+					<a href="ServeurConnexion?action=afficher_profil"><i class="glyphicon glyphicon-user" style="font-size:20px"></i></a>
 				</li>
-				<li>
-					<a href="Serveur?action=deconnexion"style="float:right">Déconnexion </a>
+				<li style="float:right">
+					<a href="Serveur?action=deconnexion"><i class="glyphicon glyphicon-log-out" style="font-size:20px"></i> </a>
 				</li>
 			</ul>
 		</nav>
