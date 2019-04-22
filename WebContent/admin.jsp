@@ -116,19 +116,26 @@
 				<fieldset id="AjouterDefi">
 				    <legend>Ajouter un défi</legend>
 					<form method="post" action="ServeurGroupe">
-				                <label for="nom">Nom du défi: <span class="requis">*</span></label>
-				                <input type="text" id="nom" name="nom" value="" size="20" maxlength="60" />
-				                <br />
-				                <label for="description">Description:</label>
-				                <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
-				                <br />
-				          		<label for="points">Nombre de points: <span class="requis">*</span></label>
-				                <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
-				                <br />
-				                <input type="submit" value="Ajouter ce défi" class="sansLabel" />
-				                <br />
-								<input type="hidden" value="ajouterDefi" name="action"/>
-								<input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
+				            <label for="nom">Nom du défi: <span class="requis">*</span></label>
+				            <input type="text" id="nom" name="nom" value="" size="20" maxlength="60" />
+				            <br />
+				            <label for="description">Description:</label>
+				            <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
+				            <br />
+				          	<label for="points">Nombre de points: <span class="requis">*</span></label>
+				            <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
+				            <br />
+				            <label for="dateDebut">Date de début: </label>
+			            	<input type="date" id="dateDebut" name="dateDebut" />
+			           		<br />
+			           		<label for="dateFin">Date de fin: </label>
+			            	<input type="date" id="dateFin" name="dateFin"/>
+			           		<br />
+				                				                
+				            <input type="submit" value="Ajouter ce défi" class="sansLabel" />
+				            <br />
+							<input type="hidden" value="ajouterDefi" name="action"/>
+							<input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 			        </form>	
 				</fieldset>
 		
@@ -142,7 +149,8 @@
 						<div>
 						    <% for (Defi defi : defis_en_cours) { 
 						    %>
-								<p> Défi <%= defi.getId() %> : "<%= defi.getNom() %>" (<%= defi.getDescription() %>) pour <%= defi.getPoints() %> points. </p>	
+								<p> Défi <%= defi.getId() %> : "<%= defi.getNom() %>" (<%= defi.getDescription() %>) pour <%= defi.getPoints() %> points. 
+								Depuis <%= defi.getDate() %> jusqu'au <%=defi.getEndDate() %> </p>	
 							<% } %>
 						</div>
 						<% } %>
@@ -181,6 +189,13 @@
 			          	<label for="points">Nombre de points: </label>
 			            <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
 			            <br />
+			            <label for="dateDebut">Date de début: </label>
+			            <input type="date" id="dateDebut" name="dateDebut" value="" size="20" maxlength="60" />
+			            <br />
+			            <label for="dateFin">Date de fin: </label>
+			            <input type="date" id="dateFin" name="dateFin" value="" size="20" maxlength="60" />
+			            <br />
+			            
 			            <input type="submit" value="Editer ce défi" class="sansLabel" />
 			            <br />
 						
