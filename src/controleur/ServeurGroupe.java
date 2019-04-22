@@ -149,6 +149,58 @@ public class ServeurGroupe extends HttpServlet {
 			actionSupprimerDefi(request, response, session);
 		}
 
+		// ACTION SUPPRIMER GROUPE
+		if (action.equals("supprimerGroupe")) {
+			actionSupprimerGroupe(request, response, session);
+		}
+		
+		// ACTION EDIT GROUPE NOM
+		if (action.equals("editNameGroupe")) {
+			actionEditerNomGroupe(request, response, session);
+		}
+		
+	}
+
+	private void actionSupprimerGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		
+		Groupe grp = (Groupe) request.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		facade.supprimerGroupe(grp);
+		
+		request.setAttribute("status", "Vous avez bien supprimé ce groupe");
+		request.getRequestDispatcher("accueil.jsp").forward(request, response);
+				
+	}
+	
+	private void actionEditerNomGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		
+		Groupe grp = (Groupe) request.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		String nom = (String) request.getParameter("nouveau_nom_groupe");
+		if(nom == null){
+			request.setAttribute("erreur", "Pas de nom récupéré");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		
+		request.setAttribute("groupe", facade.changerNomGroupe(grp, nom));
+		
+		
+		actionAfficherAdmin(request, response, session);
+				
 	}
 
 	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session) 

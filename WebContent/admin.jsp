@@ -83,7 +83,34 @@
 						<input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 		       		</form>
 			</fieldset>	
+		
+			<fieldset>
+					<legend>Paramètres généraux</legend>
+					<form id="formNouveauNom" method="post" action="ServeurGroupe">
+						<label for="nouveau_nom_groupe">Nouveau nom: </label>
+			            <input type="text" id="nouveau_nom_groupe" name="nouveau_nom_groupe" value="" size="20" maxlength="60" />
+			            <br />
+			            <input type="submit" value="Changer le nom" class="sansLabel" />
+			            <br />
+						<input type="hidden" name="action" value="editNameGroupe"/>
+						<input type="hidden" name="id_grp" value="<%=groupe.getId()%>">
+					</form>
+					
+					<form id="formNouveauNom" method="post" action="ServeurGroupe">
+					
+						<input type="hidden" name="action" value="supprimerGroupe"/>
+						<input type="submit" value="Supprimer ce groupe" class="sansLabel" />
+			            <br />
+						<input type="hidden" name="id_grp" value="<%=groupe.getId()%>">
+					</form>
+				
+			</fieldset>
+		
+		
 		</div>
+		
+		
+		
 	
 		<div class="leftcolumn">	
 		    <fieldset id="ValiderDesDefis">

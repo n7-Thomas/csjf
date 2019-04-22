@@ -12,6 +12,9 @@
 %> 
 	<nav id="main_nav">
 		<ul>
+			<li>
+	    		<a href="Serveur?action=afficher_pageAccueil">Accueil</a>
+	    	</li>
 <%
 	// BARRE DE NAVIGATION
 	if(!isConnected){

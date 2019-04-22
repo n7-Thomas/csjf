@@ -57,9 +57,11 @@ public class Facade {
 
 		Membre member = null;
 		try {
-			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",Membre.class);
+			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
+					Membre.class);
 			Membre mr = req.getSingleResult();
-			if (mr.equals(null)) member = null;
+			if (mr.equals(null))
+				member = null;
 		} catch (Exception e) {
 			System.out.println("Utilisateur n'existe pas");
 			Membre mb = new Membre();
@@ -88,27 +90,27 @@ public class Facade {
 		defi.setDescription(description);
 		defi.setGroupe(grp);
 		defi.setNom(nom);
-		
+
 		defi.setPoints(points);
-		
+
 		defi.setType(TypeDefi.Sport);
-		
-		if(dateDebut.equals("")) {
+
+		if (dateDebut.equals("")) {
 			PrivateDate debutNow = PrivateDate.getNow();
 			dateDebut = debutNow.toString();
 		}
-		if(dateFin.equals("")) {
+		if (dateFin.equals("")) {
 			PrivateDate end1week = PrivateDate.getNow();
 			end1week.setJour(end1week.getJour() + 7);
 			dateFin = end1week.toString();
-		}		
+		}
 		defi.setDate(dateDebut);
 		defi.setEndDate(dateFin);
 		em.persist(defi);
 
 		return defi;
 	}
-	
+
 	public void validerDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 
@@ -129,8 +131,14 @@ public class Facade {
 		em.remove(dar);
 	}
 
-	public void supprimerGroupe() {
-
+	public void supprimerGroupe(Groupe gp) {
+		em.remove(em.find(Groupe.class, gp.getId()));
+	}
+	
+	public Groupe changerNomGroupe(Groupe gp, String nom) {
+		Groupe groupe = em.find(Groupe.class, gp.getId());
+		groupe.setNom(nom);
+		return groupe;
 	}
 
 	public boolean ajouterMembre(String email, Groupe grp) {
@@ -158,7 +166,7 @@ public class Facade {
 	}
 
 	public void editerCoefMembre() {
-		
+
 	}
 
 	/**
@@ -168,9 +176,8 @@ public class Facade {
 		Defi defi1 = em.find(Defi.class, idDefiAValider);
 		Groupe groupe = em.find(Groupe.class, idGroupe);
 		Membre m = em.find(Membre.class, membre.getId());
-		TypedQuery<Defi_A_Valider> req = em.createQuery(
-				"select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider,
-				Defi_A_Valider.class);
+		TypedQuery<Defi_A_Valider> req = em
+				.createQuery("select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider, Defi_A_Valider.class);
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
 			throw new Exception("Ce défi a déjà été envoyer pour être validé, vous ne pouvez pas le réenvoyer !");
 		}
@@ -216,13 +223,13 @@ public class Facade {
 	 * FROM PAGE ACCUEIL
 	 */
 	public boolean demanderRejoindreGroupe(Membre mb, Groupe gr) {
-		if(mb.getGroupesAppartenus() == null || !mb.getGroupesAppartenus().contains(gr)) {
+		if (mb.getGroupesAppartenus() == null || !mb.getGroupesAppartenus().contains(gr)) {
 			Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
 			dar.setGroupe(gr);
 			dar.setMembre(mb);
 			em.persist(dar);
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
@@ -290,7 +297,7 @@ public class Facade {
 		return mb.getGroupesAppartenus();
 	}
 
-	public Collection<Groupe> getGroupesAdministres(Membre m){
+	public Collection<Groupe> getGroupesAdministres(Membre m) {
 		Membre mb = em.find(Membre.class, m.getId());
 		return mb.getGroupesAdministres();
 	}
@@ -313,8 +320,7 @@ public class Facade {
 	}
 
 	public Collection<Defi> getDefisEnCours(Groupe grp) {
-		TypedQuery<Defi> req = em.createQuery(
-				"select d from Defi d WHERE groupe=" + grp.getId(), Defi.class);
+		TypedQuery<Defi> req = em.createQuery("select d from Defi d WHERE groupe=" + grp.getId(), Defi.class);
 		return req.getResultList();
 	}
 
@@ -340,50 +346,51 @@ public class Facade {
 	public void editerDefi(int id_defi, String nom, String description, int points, String dateDebut, String dateFin) {
 		Defi defi = em.find(Defi.class, id_defi);
 
-		if(!(nom.equals("")))
+		if (!(nom.equals("")))
 			defi.setNom(nom);
 
-		if(!(description.equals("")))
+		if (!(description.equals("")))
 			defi.setDescription(description);
 
-		if(!(points == -1))
+		if (!(points == -1))
 			defi.setPoints(points);
-		
-		if(!(dateDebut.equals("")))
+
+		if (!(dateDebut.equals("")))
 			defi.setDate(dateDebut);
-		
-		if(!(dateFin.equals("")))
+
+		if (!(dateFin.equals("")))
 			defi.setEndDate(dateFin);
 
-
-		System.out.print("\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
+		System.out.print(
+				"\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
 
 	}
 
 	public Collection<String> getClassement(Groupe grp) {
 		Collection<String> resultat = new ArrayList<String>();
-		
+
 		Collection<Membre> membres = em.find(Groupe.class, grp.getId()).getMembres();
 		System.out.println("\n\n MEMBRES " + membres + " \n\n");
-		if(membres != null) {
-			for(Membre mb : membres) {
+		if (membres != null) {
+			for (Membre mb : membres) {
 				int somme = 0;
-				TypedQuery<Defi_Valide> req = em.createQuery("select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(), Defi_Valide.class);
-				if(req != null && req.getResultList().size() != 0) {
+				TypedQuery<Defi_Valide> req = em.createQuery(
+						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
+						Defi_Valide.class);
+				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
-					for(Defi_Valide dv : dvs) {
+					for (Defi_Valide dv : dvs) {
 						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
 				resultat.add(mb.getPrenom() + ":" + somme);
-			}			
-		}else {
+			}
+		} else {
 			System.out.println("\n\n AUCUN MEMBRE \n\n");
 		}
 		System.out.println(resultat);
 		return resultat;
 	}
-
 
 	public Membre initialiserTest() {
 		Membre mb = new Membre();
@@ -442,7 +449,6 @@ public class Facade {
 		g.setNom("Groupe1");
 		em.persist(g);
 
-
 		Defi d = new Defi();
 		d.setDescription("Description");
 		d.setNom("Defi test");
@@ -479,7 +485,6 @@ public class Facade {
 		return g;
 	}
 
-	
 	public void enleverMembre(Groupe grp, int id_mbr) {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		Membre mb = em.find(Membre.class, id_mbr);
@@ -489,9 +494,7 @@ public class Facade {
 
 	public void enleverDefi(int id_defi) {
 		Defi defi = em.find(Defi.class, id_defi);
-		em.remove(defi);	
+		em.remove(defi);
 	}
-
-
 
 }
