@@ -1,120 +1,97 @@
 @CHARSET "UTF-8";
 
-
-
-#header h1{
-    padding: 40px;
-    text-align: center;
-    background-image: url("arriere-plan-header.jpg");
+body {
+	padding: 20px;
+	font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
+	background-color: #eeeeec
 }
 
-.leftcolumn {   
-    float: left;
-    width: 65%;
-    padding-left: 20px;
+#header h1 {
+	padding: 40px;
+	text-align: center;
+	background-image: url("arriere-plan-header.jpg");
 }
 
-.rightcolumn {
-    margin-right: 13px;
-    float: right;
-    width: 33%;
-    padding-left: 20px;
+#contenu .leftcolumn {
+	float: left;
+	width: 65%;
+	padding-left: 20px;
+}
+
+#contenu .rightcolumn {
+	margin-right: 13px;
+	float: right;
+	width: 33%;
+	padding-left: 20px;
 }
 
 .card {
-    background-color: #729fcf;
-    padding: 20px;
-    margin-top: 20px;
+	background-color: #729fcf;
+	padding: 20px;
+	margin-top: 20px;
 }
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
-
-
-body {
-  padding: 20px;
-  font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
-  background-color: #eeeeec
-  
-}
-
-/*
-.topnav {
-    overflow: hidden;
-    background-color: #333;
-} 
-  
-
-.topnav a {
-   float: left;
-   display: inline;
-   color: #f2f2f2;
-   text-align: center;
-   padding: 15px 15px;
-   text-decoration: none;
-}
-  
-
-.topnav a:hover {
-   background-color: #3465a4;
-    color: white;
-}
-*/
 
 a:link, a:visited {
-    background-color: #3465a4;
-    color: white;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+	background-color: #3465a4;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
 }
-  
-a:hover, a:active {
- background-color: #729fcf;
-}
-	
-		#main_nav ul {
-			background: #3465a4;
-			float: left;
-			-webkit-transition: .5s;
-			transition: .5s;
-		}
-	
-		#main_nav li {
-			float: left;
-			position: relative;
-			width: 200px;
-			list-style-position: outside;
-			list-style: none;
-			-webkit-transition: .5s;
-			transition: .5s;
-		}
-	
-		#main_nav > ul > li > a, h1 {
-			text-transform: uppercase;
-		}
-	
-		#main_nav a {
-			display: block;
-			padding: 15px 15px;
-			text-decoration: none;
-			color: #dddddd;
-		}
 
-		#main_nav ul ul {
-			position: absolute;
-			top: 100%;
-			visibility: hidden;
-			opacity: 0;
-		}
-	
-		#main_nav li:hover > ul {
-			visibility: visible;
-			opacity: 1;
-		}
+a:hover, a:active {
+	background-color: #729fcf;
+}
+
+
+#ul_nav {
+	position: -webkit-sticky;
+	position: sticky;
+	width: 99%;
+	top: -1px;
+}
+
+#main_nav ul {
+	background: #3465a4;
+	float: left;
+	-webkit-transition: .5s;
+	transition: .5s;
+}
+
+#main_nav li {
+	float: left;
+	position: relative;
+	width: 200px;
+	list-style-position: outside;
+	list-style: none;
+	-webkit-transition: .5s;
+	transition: .5s;
+}
+
+#main_nav>ul>li>a, h1 {
+	text-transform: uppercase;
+}
+
+#main_nav a {
+	display: block;
+	padding: 15px 15px;
+	text-decoration: none;
+	color: #dddddd;
+}
+
+#main_nav ul ul {
+	position: absolute;
+	top: 100%;
+	visibility: hidden;
+	opacity: 0;
+}
+
+#main_nav li:hover>ul {
+	visibility: visible;
+	opacity: 1;
+}
+
+#deconnexion {
+	float: right;
+}

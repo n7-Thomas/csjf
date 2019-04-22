@@ -9,9 +9,9 @@
 	</head>
 	<body>
 		<div id="header">
-			<h1>Accueil</h1>    
-			<%@ include file="navigationBar.jsp" %>  
-			<%@ include file="statusBar.jsp" %>    
+			<h1>Accueil</h1>  
+			<%@ include file="navigationBar.jsp" %>
+			<%@ include file="statusBar.jsp" %> 
 		</div>
 		
 		<div id="contenu">

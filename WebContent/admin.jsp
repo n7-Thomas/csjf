@@ -45,7 +45,7 @@
     			} else { %>
     			<div> <%
 					for (Membre membre : membres) { %>
-	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %></p>
+	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %> <a href="ServeurGroupe?action=del_membre&id_grp=<%=groupe.getId() %>&id_mbr=<%=membre.getId() %>" style="color:red; background:none; size:5px;font-family: Verdana, Times, serif;">x</a></p>
 					<% } %>
 				</div> <%
 				}%>

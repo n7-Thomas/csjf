@@ -134,15 +134,44 @@ public class ServeurGroupe extends HttpServlet {
 			actionAfficherGroupe(request, response, session);
 		}
 
+		// ACTION AFFICHER CLASSEMENT
 		if (action.equals("histogramme")) {
 			actionAfficherHistogramme(request, response, session);
 		}
+
+		// ACTION SUPPRIMER MEMBRE
+		if (action.equals("del_membre")) {
+			actionEnleverMembre(request, response, session);
+		}
+
+	}
+
+	private void actionEnleverMembre(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		
+		Groupe grp = (Groupe) request.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		String str_id_mbr = (String) request.getParameter("id_mbr");
+		if(str_id_mbr == null){
+			request.setAttribute("erreur", "Pas de membre sélectionné");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		int id_mbr = Integer.parseInt(str_id_mbr);
+		
+		facade.enleverMembre(grp, id_mbr);
+		
+		actionAfficherAdmin(request, response, session);
 	}
 
 	private void actionAfficherHistogramme(HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) throws ServletException, IOException{
-		
+			HttpSession session) throws ServletException, IOException {
+
 		Membre usr = (Membre) session.getAttribute("user");
 		if (usr == null) {
 			request.setAttribute("erreur", "Vous n'êtes pas connecté");
@@ -156,9 +185,9 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Collection<String> classement = facade.getClassement(grp);
-		if(classement == null) {
+		if (classement == null) {
 			request.setAttribute("erreur", "récupération des points");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
@@ -166,11 +195,12 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("groupe", grp);
 		request.setAttribute("classement", classement);
 		request.getRequestDispatcher("histogramme.jsp").forward(request, response);
-		
+
 	}
 
 	/**
 	 * Editer un défi.
+	 * 
 	 * @param request
 	 * @param response
 	 * @param session
@@ -179,7 +209,7 @@ public class ServeurGroupe extends HttpServlet {
 	 */
 	private void actionEditerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-		
+
 		Membre usr = (Membre) session.getAttribute("user");
 		if (usr == null) {
 			request.setAttribute("erreur", "Vous n'êtes pas connecté");
@@ -214,9 +244,9 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		int points = -1;
-		if(!(str_points.equals("")))
+		if (!(str_points.equals("")))
 			points = Integer.parseInt(str_points);
 
 		String str_id_defi = request.getParameter("id_defi");
@@ -226,21 +256,21 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 		int id_defi = Integer.parseInt(str_id_defi);
-		
+
 		String dateDebut = request.getParameter("dateDebut");
 		if (dateDebut == null) {
 			request.setAttribute("erreur", "Vous n'avez pas donné de date de début");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		String dateFin = request.getParameter("dateFin");
 		if (dateFin == null) {
 			request.setAttribute("erreur", "Vous n'avez pas donné de date de fin");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		try {
 			facade.editerDefi(id_defi, nom, description, points, dateDebut, dateFin);
 		} catch (Exception e) {
@@ -251,7 +281,6 @@ public class ServeurGroupe extends HttpServlet {
 
 		request.setAttribute("status", "Le défi " + nom + " a été modifié.");
 		request.getRequestDispatcher("ServeurGroupe?action=admin&id_grp=" + grp.getId()).forward(request, response);
-
 
 	}
 
@@ -282,19 +311,19 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		if (groupe == null) {
 			request.setAttribute("erreur", "Aucun groupe présent");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		int idDefiAValider = Integer.parseInt(defiAValider);
 		int idGroupe = Integer.parseInt(groupe);
 		Groupe grp = facade.getGroupeFromId(idGroupe);
 		Collection<Membre> membres = grp.getMembres();
 		Collection<Defi> defis = facade.getDefis(grp);
-		
+
 		try {
 			facade.ajouterDefiAValider(idGroupe, idDefiAValider, usr);
 			request.setAttribute("status", "Votre défi a été envoyé !");
@@ -420,18 +449,15 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
-		Collection<Defi> defis_en_cours = facade.getDefisEnCours(grp);
-		request.setAttribute("defis_en_cours", defis_en_cours);
-
-		Collection<Demande_A_Rejoindre> demandes_a_rejoindre = facade.getDemandeARejoindre(grp);
-		request.setAttribute("demandes_a_rejoindre", demandes_a_rejoindre);
-
-		Collection<Defi_A_Valider> defis_a_valider = facade.getDefisAValider(grp);
-		request.setAttribute("defis_a_valider", defis_a_valider);
-
-		Collection<Membre> membres_du_groupe = facade.getMembres(grp);
-		request.setAttribute("membres", membres_du_groupe);
+		
+		// Récupération du membre connecté pour la topbar
+		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
+		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
+				
+		request.setAttribute("defis_en_cours", facade.getDefisEnCours(grp));
+		request.setAttribute("demandes_a_rejoindre", facade.getDemandeARejoindre(grp));
+		request.setAttribute("defis_a_valider", facade.getDefisAValider(grp));
+		request.setAttribute("membres",  facade.getMembres(grp));
 
 		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
@@ -449,22 +475,22 @@ public class ServeurGroupe extends HttpServlet {
 
 		// Récupération du groupe lié
 		String id_grp = (String) request.getParameter("id_grp");
-		if(id_grp == null) {
+		if (id_grp == null) {
 			request.setAttribute("erreur", "Pas de groupe selectionné");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
 		int id_grp1 = Integer.parseInt(id_grp);
-		
+
 		Groupe grp = facade.getGroupeFromId(id_grp1);
-		if(grp == null) {
+		if (grp == null) {
 			request.setAttribute("erreur", "Le groupe n'a pas été trouvé");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Collection<Membre> membres = grp.getMembres();
-		
+
 		request.setAttribute("membres", membres);
 		request.setAttribute("groupe", grp);
 		request.setAttribute("defis", facade.getDefis(grp));
@@ -643,7 +669,7 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 		int points = -1;
-		if(!(str_points.equals("")))
+		if (!(str_points.equals("")))
 			points = Integer.parseInt(str_points);
 
 		String dateDebut = request.getParameter("dateDebut");
@@ -652,14 +678,14 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		String dateFin = request.getParameter("dateFin");
 		if (dateFin == null) {
 			request.setAttribute("erreur", "Vous n'avez pas donné de date de fin");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		Defi defi = null;
 		try {
 			defi = facade.ajouterDefi(nom, description, grp, points, dateDebut, dateFin);

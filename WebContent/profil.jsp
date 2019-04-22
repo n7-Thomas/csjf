@@ -17,53 +17,54 @@
 		<%@ include file="navigationBar.jsp" %> 
 	</div> 
 	
-	<fieldset>
+	<div id="contenu">
 			<div class="row">
-            <div class="rightcolumn">
-                <div class="card">
-                <h2>Coordonnées.</h2>
-                
-                <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
-                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
-                
+            	<div class="rightcolumn">
+                	<div class="card">
+                		<h2>Coordonnées.</h2>
+		                <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
+		                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
 
-                <a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br></div></div>
+                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
+                	</div>
+                </div>
+                
                 <div class="leftcolumn">
-                <div class="card">
-                <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
-                
-                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
-                <%
-                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
-				if (groupes != null){
-       				for (Groupe g : groupes) {
-                		String groupe_nom = g.getNom(); 
-               			%>
-               			<p> <%= groupe_nom %> </p>
-                	<%} 
-       			} else { 
-       			%>
-                <p> Vous n'êtes dans aucun groupe actuellement</p>
-                <% } %>
-                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
-                <% 
-                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
-                if (groupes_admin != null){
-           			for (Groupe g : groupes_admin) {
-                    	String groupe_nom = g.getNom(); 
-                %>		<p><%= groupe_nom %></p>
-                <%}  
-           		  } else {
-                %><p> Vous n'administrez aucun groupe actuellement. 
-                
-                <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
-				<%} 
-				%>
-				</div></div></div>
-				
-				
-				
-                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat} </p>
-         </fieldset>
+	                <div class="card">
+		                <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
+		                
+		                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
+		                <%
+		                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
+						if (groupes != null){
+		       				for (Groupe g : groupes) {
+		                		String groupe_nom = g.getNom(); 
+		               			%>
+		               			<p> <%= groupe_nom %> </p>
+		                	<%} 
+		       			} else { 
+		       			%>
+		                <p> Vous n'êtes dans aucun groupe actuellement</p>
+		                
+		                <%} %>              
+		                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
+		                <% 
+		                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
+		                if (groupes_admin != null){
+		           			for (Groupe g : groupes_admin) {
+		                    	String groupe_nom = g.getNom(); 
+		                %>		<p><%= groupe_nom %></p>
+		                	<%}  
+		                } else {
+		                 %>
+		                <p> Vous n'administrez aucun groupe actuellement. 
+		                <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
+						<%
+		                }
+						%>
+					</div>
+				</div>
+			</div>
+	</div>
 </body>
 </html>
