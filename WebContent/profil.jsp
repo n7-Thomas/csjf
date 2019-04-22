@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-	<div class="header">
-    	<h1>Profil <i class="material-icons" style="font-size:60px;">computer</i></h1>          
+	<div id="header">
+    	<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>          
 		<%@ include file="navigationBar.jsp" %> 
 	</div> 
 	
