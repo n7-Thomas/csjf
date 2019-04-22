@@ -14,7 +14,7 @@
 <body>
 	<div id="header">
     	<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>          
-		<%@ include file="navigationBar.jsp" %> 
+		<%@ include file="navigationBar.jsp" %>
 	</div> 
 	
 	<div id="contenu">
@@ -24,7 +24,6 @@
                 		<h2>Coordonnées.</h2>
 		                <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
 		                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
-
                 		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
                 	</div>
                 </div>
@@ -66,5 +65,6 @@
 				</div>
 			</div>
 	</div>
+
 </body>
 </html>
