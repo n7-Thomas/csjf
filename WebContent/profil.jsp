@@ -7,16 +7,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Profil de <%= mb.getPrenom() + " " + mb.getNom() %></title>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 <body>
 	<div id="header">
-    	<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>          
-		<%@ include file="navigationBar.jsp" %>
-	</div> 
-	
+    	<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>    
+    	<%@ include file="navigationBar.jsp" %>    
+	</div>
 	<fieldset>
 			<div class="row">
             <div class="rightcolumn">
