@@ -15,6 +15,7 @@ import modele.Defi_Valide;
 import modele.Demande_A_Rejoindre;
 import modele.Groupe;
 import modele.Membre;
+import modele.PrivateDate;
 import modele.Publication;
 import modele.TypeDefi;
 
@@ -82,19 +83,32 @@ public class Facade {
 	 * @param nom
 	 * @return
 	 */
-	public Defi ajouterDefi(String nom, String description, Groupe grp, int points) {
+	public Defi ajouterDefi(String nom, String description, Groupe grp, int points, String dateDebut, String dateFin) {
 		Defi defi = new Defi();
 		defi.setDescription(description);
 		defi.setGroupe(grp);
 		defi.setNom(nom);
+		
 		defi.setPoints(points);
+		
 		defi.setType(TypeDefi.Sport);
-
+		
+		if(dateDebut.equals("")) {
+			PrivateDate debutNow = PrivateDate.getNow();
+			dateDebut = debutNow.toString();
+		}
+		if(dateFin.equals("")) {
+			PrivateDate end1week = PrivateDate.getNow();
+			end1week.setJour(end1week.getJour() + 7);
+			dateFin = end1week.toString();
+		}		
+		defi.setDate(dateDebut);
+		defi.setEndDate(dateFin);
 		em.persist(defi);
 
 		return defi;
 	}
-
+	
 	public void validerDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 
@@ -113,10 +127,6 @@ public class Facade {
 		Groupe gp = em.find(Groupe.class, dar.getGroupe().getId());
 		mb.getGroupesAppartenus().add(gp);
 		em.remove(dar);
-	}
-
-	public void modifierDefi() {
-
 	}
 
 	public void supprimerGroupe() {
@@ -148,7 +158,7 @@ public class Facade {
 	}
 
 	public void editerCoefMembre() {
-
+		
 	}
 
 	/**
@@ -319,6 +329,62 @@ public class Facade {
 		return g.getMembres();
 	}
 
+	public Groupe getGroupeFromId(int id) {
+		return em.find(Groupe.class, id);
+	}
+
+	public Membre getMembreFromId(int id) {
+		return em.find(Membre.class, id);
+	}
+
+	public void editerDefi(int id_defi, String nom, String description, int points, String dateDebut, String dateFin) {
+		Defi defi = em.find(Defi.class, id_defi);
+
+		if(!(nom.equals("")))
+			defi.setNom(nom);
+
+		if(!(description.equals("")))
+			defi.setDescription(description);
+
+		if(!(points == -1))
+			defi.setPoints(points);
+		
+		if(!(dateDebut.equals("")))
+			defi.setDate(dateDebut);
+		
+		if(!(dateFin.equals("")))
+			defi.setEndDate(dateFin);
+
+
+		System.out.print("\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
+
+	}
+
+	public Collection<String> getClassement(Groupe grp) {
+		Collection<String> resultat = new ArrayList<String>();
+		
+		Collection<Membre> membres = em.find(Groupe.class, grp.getId()).getMembres();
+		System.out.println("\n\n MEMBRES " + membres + " \n\n");
+		if(membres != null) {
+			for(Membre mb : membres) {
+				int somme = 0;
+				TypedQuery<Defi_Valide> req = em.createQuery("select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(), Defi_Valide.class);
+				if(req != null && req.getResultList().size() != 0) {
+					Collection<Defi_Valide> dvs = req.getResultList();
+					for(Defi_Valide dv : dvs) {
+						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+					}
+				}
+				resultat.add(mb.getPrenom() + ":" + somme);
+			}			
+		}else {
+			System.out.println("\n\n AUCUN MEMBRE \n\n");
+		}
+		System.out.println(resultat);
+		return resultat;
+	}
+
+
 	public Membre initialiserTest() {
 		Membre mb = new Membre();
 		mb.setCoeff_sportif(1);
@@ -412,61 +478,6 @@ public class Facade {
 
 		return g;
 	}
-
-	public Groupe getGroupeFromId(int id) {
-		return em.find(Groupe.class, id);
-	}
-
-	public Groupe getGroupeFromMembre(Membre membre) {
-		//A faire en faisant une requete sql
-		return null;
-	}
-
-	public Membre getMembreFromId(int id) {
-		return em.find(Membre.class, id);
-	}
-
-	public void editerDefi(int id_defi, String nom, String description, int points) {
-		Defi defi = em.find(Defi.class, id_defi);
-
-		if(!(nom.equals("")))
-			defi.setNom(nom);
-
-		if(!(description.equals("")))
-			defi.setDescription(description);
-
-		if(!(points == 0))
-			defi.setPoints(points);
-
-		System.out.print("\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
-
-	}
-
-	public Collection<String> getClassement(Groupe grp) {
-		Collection<String> resultat = new ArrayList<String>();
-		
-		Collection<Membre> membres = em.find(Groupe.class, grp.getId()).getMembres();
-		System.out.println("\n\n MEMBRES " + membres + " \n\n");
-		if(membres != null) {
-			for(Membre mb : membres) {
-				int somme = 0;
-				TypedQuery<Defi_Valide> req = em.createQuery("select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(), Defi_Valide.class);
-				if(req != null && req.getResultList().size() != 0) {
-					Collection<Defi_Valide> dvs = req.getResultList();
-					for(Defi_Valide dv : dvs) {
-						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
-					}
-				}
-				resultat.add(mb.getPrenom() + ":" + somme);
-			}			
-		}else {
-			System.out.println("\n\n AUCUN MEMBRE \n\n");
-		}
-		System.out.println(resultat);
-		return resultat;
-	}
-
-
 
 
 

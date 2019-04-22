@@ -210,11 +210,14 @@ public class ServeurGroupe extends HttpServlet {
 
 		String str_points = request.getParameter("points");
 		if (str_points == null) {
-			request.setAttribute("erreur", "Vous n'avez pas donné de nom");
+			request.setAttribute("erreur", "Vous n'avez pas donné de points");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		int points = Integer.parseInt(str_points);
+		
+		int points = -1;
+		if(!(str_points.equals("")))
+			points = Integer.parseInt(str_points);
 
 		String str_id_defi = request.getParameter("id_defi");
 		if (str_id_defi == null) {
@@ -224,8 +227,22 @@ public class ServeurGroupe extends HttpServlet {
 		}
 		int id_defi = Integer.parseInt(str_id_defi);
 		
+		String dateDebut = request.getParameter("dateDebut");
+		if (dateDebut == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de date de début");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		String dateFin = request.getParameter("dateFin");
+		if (dateFin == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de date de fin");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
 		try {
-			facade.editerDefi(id_defi, nom, description, points);
+			facade.editerDefi(id_defi, nom, description, points, dateDebut, dateFin);
 		} catch (Exception e) {
 			request.setAttribute("erreur", e.getStackTrace());
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
@@ -625,11 +642,27 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		int points = Integer.parseInt(str_points);
+		int points = -1;
+		if(!(str_points.equals("")))
+			points = Integer.parseInt(str_points);
 
+		String dateDebut = request.getParameter("dateDebut");
+		if (dateDebut == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de date de début");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		String dateFin = request.getParameter("dateFin");
+		if (dateFin == null) {
+			request.setAttribute("erreur", "Vous n'avez pas donné de date de fin");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
 		Defi defi = null;
 		try {
-			defi = facade.ajouterDefi(nom, description, grp, points);
+			defi = facade.ajouterDefi(nom, description, grp, points, dateDebut, dateFin);
 		} catch (Exception e) {
 			request.setAttribute("erreur", e.getStackTrace());
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
