@@ -4,7 +4,7 @@
 	padding: 40px;
 	text-align: center;
 	background-image: url("arriere-plan-header.jpg");
-	background-size: 1200px 1200px;
+	background-size: 1900px 1200px;
 }
 
 .box {
@@ -39,13 +39,13 @@
 }
 
 body {
-<<<<<<< HEAD
   padding: 20px;
   font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
   background-image: url("arriere-plan.jpg");
   background-size : 1200px 700px;
 }
 
+/*
 .topnav {
 	overflow: hidden;
 	background-color: #3465a4;
@@ -66,7 +66,8 @@ body {
 	background-color: #babdb6;
 	color: white;
 	display: block;
-}
+}*/
+
 a:link, a:visited {
 	background-color: #3465a4;
 	color: white;
@@ -77,7 +78,6 @@ a:link, a:visited {
 }
 
 a:hover, a:active {
-<<<<<<< HEAD
  background-color: #729fcf;
 }
 	
@@ -98,7 +98,6 @@ a:hover, a:active {
 	width: 200px;
 	list-style-position: outside;
 	list-style: none;
-<<<<<<< HEAD
 	-webkit-transition: 1.2s;
 	transition: 1.2s;
 }

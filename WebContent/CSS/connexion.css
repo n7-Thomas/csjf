@@ -1,0 +1,79 @@
+h2 {
+    color: #a6a6a6;
+}
+
+legend {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+form {
+    width: 500px;
+    height: 500px;
+    margin: 50px auto;
+    text-align: center;
+    padding-top: 1px;
+}
+
+ 
+form .text-field {                                                                          /* Input fields; Username, Password etc. */
+    width: 350px;
+    height: 100px;
+    margin-top: 150px;
+    padding-left: 10px;
+    color: #6c6c6c;
+
+    outline: none;
+}
+
+p {
+	font-family: Helvetica, Avant Garde, sans-serif;
+	font-size: 30px;
+	color : white;
+	text-transform: uppercase;
+}
+
+label {
+	color : white;
+}
+.imageDeFond {
+	/* La position est fixée en haut à gauche, en arrière-plan de la page */
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	
+	/* On indique l'image de fond et les dimensions qu'elle occupe */
+	display: block;
+	background-image: url(arriere-plan-connexion.jpg);
+	background-size : 2000px 900px;
+	width: 2000px;
+	height: 900px;
+	
+	/* On applique le filtre CSS3 pour flouter l'image (avec ici les variantes pour les différents moteurs de rendu) */
+	/* Safari */
+	-webkit-filter: blur(5px);
+	
+	/* Firefox */
+	-moz-filter: blur(5px);
+	
+	/* Opera */
+	-o-filter: blur(5px);
+	
+	/* Internet Explorer */
+	-ms-filter: blur(5px);
+	
+	/* Filtre de floutage CSS3 standard */
+	filter: blur(5px);
+}
+
+.contenu {
+	/* Le contenu est fixé en haut de la page */
+	position: fixed;
+	left: 0;
+	right: 0;
+	
+	/* Il est mis au premier plan */
+	z-index: 9999;
+}

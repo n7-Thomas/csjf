@@ -4,25 +4,27 @@
 <html>
 <head>
     <title>Connexion</title>
+    <link type="text/css" rel="stylesheet" href="CSS/connexion.css" />
 </head>
+<div class=imageDeFond></div>
+<div class=contenu>
 <body>
     	<% String status = (String) request.getAttribute("status");
 		if(status != null){ %> <p> Status : <%=status %> </p> <% }
 		%>
         <form method="post" action="ServeurConnexion">
-            <fieldset>
-                <legend>Connexion</legend>
-                <p>Connectez-vous à votre compte pour continuer votre progression.</p>
+
+                <p>Sign in to Competition</p><br /><br /><br />
 
                 <label for="nom">Adresse email <span class="requis">*</span></label>
-                <input type="text" id="email" name="email" value="${utilisateur.email}" size="20" maxlength="60" />
+                <input type="email" id="email" name="email" value="${utilisateur.email}" size="20" maxlength="60" />
                 <span class="erreur">${form.erreurs['email']}</span>
-                <br />
+                <br /><br /><br />
 
                 <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
                 <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
                 <span class="erreur">${form.erreurs['motdepasse']}</span>
-                <br />
+                <br /><br /><br />
 
                 <input type="submit" value="Connexion" class="sansLabel" />
                 <br />
@@ -30,8 +32,9 @@
                 <input type="hidden" name= "action" value="testconnexion">
                 
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
-            </fieldset>
+
         </form>
 	
 </body>
+</div>
 </html>
