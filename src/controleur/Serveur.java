@@ -68,7 +68,7 @@ public class Serveur extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'index
 		if (action == null) {
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
 		}
 

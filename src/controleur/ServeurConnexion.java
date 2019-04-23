@@ -68,7 +68,7 @@ public class ServeurConnexion extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
 		}
 

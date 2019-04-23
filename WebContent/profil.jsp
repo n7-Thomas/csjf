@@ -13,14 +13,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
-<body>
-	<div id="header">
-
-    	<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>    
-    	<%@ include file="navigationBar.jsp" %>    
-	</div>
-	<fieldset>
-			<div class="row">
+	<body>
+		<div id="header">
+    		<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>    
+    		<%@ include file="navigationBar.jsp" %>    
+		</div>
+		<div id="contenu">
             	<div class="rightcolumn">
                 	<div class="card">
                 		<h2>Coordonnées.</h2>
@@ -66,7 +64,5 @@
 					</div>
 				</div>
 			</div>
-	</fieldset>
-
-</body>
+	</body>
 </html>

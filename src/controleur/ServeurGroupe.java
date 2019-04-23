@@ -76,7 +76,7 @@ public class ServeurGroupe extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
 		}
 
@@ -174,7 +174,7 @@ public class ServeurGroupe extends HttpServlet {
 		facade.supprimerGroupe(grp);
 		
 		request.setAttribute("status", "Vous avez bien supprimé ce groupe");
-		request.getRequestDispatcher("accueil.jsp").forward(request, response);
+		request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 				
 	}
 	
@@ -449,10 +449,10 @@ public class ServeurGroupe extends HttpServlet {
 
 		if (facade.demanderRejoindreGroupe(usr, gp)) {
 			request.setAttribute("status", "La demande a été envoyé");
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		} else {
 			request.setAttribute("status", "Vous faites déjà parti de ce groupe");
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 	}
 

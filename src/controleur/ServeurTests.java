@@ -70,7 +70,7 @@ public class ServeurTests extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
 		}
 		
@@ -78,19 +78,19 @@ public class ServeurTests extends HttpServlet {
 			Membre mb = facade.initialiserTest();
 			session.setAttribute("user", mb);
 			System.out.println("Thomas ajouté.");
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 		if (action.equals("init2")) {
 			facade.initialiserTest2();
 			System.out.println("Manu ajouté.");
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 		if (action.equals("init3")) {
 			facade.initialiserTest3();
 			System.out.println("Défi en demande de validation");
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 		if (action.equals("init4")) {
@@ -100,7 +100,7 @@ public class ServeurTests extends HttpServlet {
 			Membre m = facade.getMembreFromId(1);
 			session.setAttribute("user", m);
 			
-			request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 		
 		
