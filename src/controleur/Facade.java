@@ -40,7 +40,9 @@ public class Facade {
 			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
 					Membre.class);
 			Membre mb = req.getSingleResult();
-			if (mb != null && mb.getMotdepasse().equals(motDePasse)) {
+			byte[] salt = mb.getSalt();
+			String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
+			if (mb != null && mb.getMotdepasse().equals(motdepasseCryp)) {
 				member = mb;
 				;
 			} else {
@@ -53,7 +55,7 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
 
 		Membre member = null;
 		try {
@@ -70,6 +72,7 @@ public class Facade {
 			mb.setMotdepasse(motdepasse);
 			mb.setNom(nom);
 			mb.setPrenom(prenom);
+			mb.setSalt(salt);
 			em.persist(mb);
 			member = mb;
 		}
@@ -134,7 +137,7 @@ public class Facade {
 	public void supprimerGroupe(Groupe gp) {
 		em.remove(em.find(Groupe.class, gp.getId()));
 	}
-	
+
 	public Groupe changerNomGroupe(Groupe gp, String nom) {
 		Groupe groupe = em.find(Groupe.class, gp.getId());
 		groupe.setNom(nom);

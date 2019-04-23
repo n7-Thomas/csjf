@@ -1,6 +1,7 @@
 package controleur;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -91,16 +92,29 @@ public class ServeurConnexion extends HttpServlet {
 			String prenom = request.getParameter("prenom");
 			String email = request.getParameter("email");
 			String motdepasse = request.getParameter("motdepasse");
-			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
+
+			String motdepasseCrypte;
+			byte[] salt;
+			try {
+				salt = SHACrypt.getSalt();
+			} catch (NoSuchAlgorithmException e1) {
+				e1.printStackTrace();
+				salt = null;
+			}
+			motdepasseCrypte = SHACrypt.get_SHA_256_SecurePassword(motdepasse, salt);
+			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasseCrypte,salt);
 			System.out.println("MEMBRE TROUVE : " + m);
 			if (m != null) {
 				session.setAttribute("user", m);
 				request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			} else {
-				String erreur = "Un utilisateur utilisant cette email est déjà inscrit.";
+				String erreur = "Un membre utilise déjà cette email.";
 				Boolean existe = true;
 				request.setAttribute("warning", erreur);
 				request.setAttribute("existe", existe);
+				request.setAttribute("nom_user", nom);
+				request.setAttribute("prenom_user", prenom);
+				request.setAttribute("email_user", email);
 				request.getRequestDispatcher("inscription.jsp").forward(request, response);
 			}
 

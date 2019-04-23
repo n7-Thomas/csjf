@@ -16,7 +16,7 @@
 		%>
         <form method="post" action="ServeurConnexion">
 
-                <h2><p>Sign in to Competition</p></h2><br /><br />
+                <h2><p>connecte-toi</p></h2><br /><br />
 				
 				<div id="field">
                 <label for="nom"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis">     </span></label>

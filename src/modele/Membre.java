@@ -38,6 +38,8 @@ public class Membre {
 
 	private String motdepasse;
 
+	private byte[] salt;
+
 	public Membre() {
 	}
 
@@ -113,4 +115,11 @@ public class Membre {
 		return this.id;
 	}
 
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
 }
