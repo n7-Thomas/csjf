@@ -1,5 +1,17 @@
 h2 {
-    color: #a6a6a6;
+	font-family: Helvetica, Avant Garde, sans-serif;
+	font-size: 35px;
+	color : #c2eafc;
+	text-transform: uppercase;
+}
+
+h4{
+	font-size : 9pt;
+	color : white;
+}
+
+a {
+	color : #c2eafc;
 }
 
 legend {
@@ -14,6 +26,11 @@ form {
     margin: 50px auto;
     text-align: center;
     padding-top: 1px;
+	background : grey;
+	border-radius : 32px;
+	background-color: rgb(0, 0, 0);
+    /* RGBa with 0.6 opacity */
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
  
@@ -22,21 +39,11 @@ form .text-field {                                                              
     height: 100px;
     margin-top: 150px;
     padding-left: 10px;
-    color: #6c6c6c;
+    color: #ffffff;
 
     outline: none;
 }
 
-p {
-	font-family: Helvetica, Avant Garde, sans-serif;
-	font-size: 30px;
-	color : white;
-	text-transform: uppercase;
-}
-
-label {
-	color : white;
-}
 .imageDeFond {
 	/* La position est fixée en haut à gauche, en arrière-plan de la page */
 	position: fixed;
@@ -76,4 +83,50 @@ label {
 	
 	/* Il est mis au premier plan */
 	z-index: 9999;
+}
+
+.button {
+  background-color: #c2eafc;
+  border: none;
+  padding: 10px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 32px;
+  font-family: Helvetica, Avant Garde, sans-serif;
+  font-size: 20px;
+  font-style:bold;
+  color : white;
+  text-transform: uppercase;
+  -webkit-border-radius: 32px;
+  -moz-border-radius: 32px;
+}
+
+.button:hover {
+	background-color: #da9b2f;
+	color : white;
+}
+
+#field {
+  border: none;
+  padding : 15px;
+  color : white;
+  background : none;
+}
+
+input[type=email] {
+  border: none;
+  font-size : 12pt;
+  background : none;
+  padding : 0px 15px;
+  border-bottom : 2px;
+}
+
+input[type=password] {
+  border: none;
+  font-size : 12pt;
+  background : none;
+  padding : 0px 15px;
 }
