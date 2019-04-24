@@ -31,6 +31,18 @@ public class Facade {
 	/**
 	 * FROM PAGE CONNEXION
 	 */
+	public boolean checkPassword(String motDePasse, Membre m) {
+		byte[] salt = m.getSalt();
+		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
+		boolean ok;
+		if (m.getMotdepasse().equals(motdepasseCryp)) {
+			ok = true;
+		} else {
+			ok = false;
+		}
+		return ok;
+	}
+
 	public Membre checkConnexion(String email, String motDePasse) {
 
 		System.out.println("select * from Membre WHERE email='" + email + "'");
@@ -40,11 +52,8 @@ public class Facade {
 			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
 					Membre.class);
 			Membre mb = req.getSingleResult();
-			byte[] salt = mb.getSalt();
-			String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-			if (mb != null && mb.getMotdepasse().equals(motdepasseCryp)) {
+			if (mb != null) {
 				member = mb;
-				;
 			} else {
 				member = null;
 			}

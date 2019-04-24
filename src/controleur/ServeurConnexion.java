@@ -79,11 +79,26 @@ public class ServeurConnexion extends HttpServlet {
 			Membre m = facade.checkConnexion(email, motdepasse);
 			System.out.println("MEMBRE TROUVE : " + m);
 			if (m == null) {
-				request.setAttribute("erreur", "Pas de membre trouvé");
+				boolean connecte = false;
+				String msg = "L'email entré ne correspond à aucun compte.";
+				request.setAttribute("connecte", connecte);
+				request.setAttribute("email_faux", email);
+				request.setAttribute("message", msg);
+				request.setAttribute("erreur", "");
 				request.getRequestDispatcher("connexion.jsp").forward(request, response);
 			} else {
-				session.setAttribute("user", m);
-				actionAfficherGroupe(request,response,session);
+				request.setAttribute("message","");
+				if (facade.checkPassword(motdepasse,m) == true) {
+					session.setAttribute("user", m);
+					actionAfficherGroupe(request,response,session);
+				} else {
+					boolean connecte = false;
+					request.setAttribute("erreur", "Mot de passe incorrect");
+					request.setAttribute("connecte", connecte);
+					request.setAttribute("email_faux", email);
+					request.getRequestDispatcher("connexion.jsp").forward(request, response);
+				}
+
 			}
 		}
 
@@ -109,7 +124,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			} else {
 				String erreur = "Un membre utilise déjà cette email.";
-				Boolean existe = true;
+				boolean existe = true;
 				request.setAttribute("warning", erreur);
 				request.setAttribute("existe", existe);
 				request.setAttribute("nom_user", nom);

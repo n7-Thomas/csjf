@@ -11,22 +11,52 @@
 <div class=imageDeFond></div>
 <div class=contenu id="fondu">
 <body>
+		<% boolean connecte = true; %>
     	<% String status = (String) request.getAttribute("status");
 		if(status != null){ %> <p> Status : <%=status %> </p> <% }
 		%>
+		
+		<% try {
+			connecte = ((Boolean) request.getAttribute("connecte"));
+			if(connecte == false){	
+		%> <% String message = (String) request.getAttribute("message");
+			if(message != "") { %> <h3><p><%=message%> </p></h3> 
+			<% } else {
+				String erreur = (String) request.getAttribute("erreur"); %>
+				<h3><p><%= erreur %></p></h3> <%
+				} %>
+		<% }
+			} catch(Exception e) {
+				connecte = true;
+			}
+		%>
+		
         <form method="post" action="ServeurConnexion">
 
                 <h2><p>connecte-toi</p></h2><br /><br />
 				
-				<div id="field">
-                <label for="nom"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis">     </span></label>
-                <input type="email" id="email" placeHolder="adresse email" name="email" value="${utilisateur.email}" size="20" maxlength="60" />
-                <span class="erreur">${form.erreurs['email']}</span>
-                <div style="width:80%;margin-left: auto;
-  					margin-right: auto;">
-                <hr>
-                </div>
-                </div><br />
+				<% if (connecte == false) { %>
+					<div id="field">
+	                <label for="nom"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis">     </span></label>
+	                <input type="email" id="email" placeHolder="adresse email" name="email" value="<%= request.getAttribute("email_faux") %>" size="20" maxlength="60" />
+	                <span class="erreur">${form.erreurs['email']}</span>
+	                <div style="width:80%;margin-left: auto;
+	  					margin-right: auto;">
+	                <hr>
+	                </div>
+	                </div><br />
+	           <% } else { %>
+	           
+	           		<div id="field">
+	                <label for="nom"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis">     </span></label>
+	                <input type="email" id="email" placeHolder="adresse email" name="email" value="" size="20" maxlength="60" />
+	                <span class="erreur">${form.erreurs['email']}</span>
+	                <div style="width:80%;margin-left: auto;
+	  					margin-right: auto;">
+	                <hr>
+	                </div>
+	                </div><br />
+	           <% } %>
 
 				<div id="field">
                 <label for="motdepasse"><i class="glyphicon glyphicon-lock" style="font-size:25px;"></i><span class="requis">    </span></label>
