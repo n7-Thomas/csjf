@@ -509,4 +509,10 @@ public class Facade {
 		em.remove(defi);
 	}
 
+	public void refuserDefi(int id_dav) {
+		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
+		em.remove(dav);
+		
+	}
+
 }

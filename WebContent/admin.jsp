@@ -132,7 +132,8 @@
 						<% } %>
 						
 								  <div>
-								  <input type="submit" value="Valider ces défis">
+								  <input type="submit" value="Valider ces défis" name="valider">
+								  <input type="submit" value="Refuser ces défis" name="refuser">
 								  <input type="hidden" name="action" value="validerDefis">
 								  <input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 								  </div>

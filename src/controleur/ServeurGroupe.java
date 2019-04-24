@@ -483,6 +483,11 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
+		
+		boolean valider = true;
+		if (request.getAttribute("refuser")!= null)
+			valider = false;
+		
 
 		Map<String, String[]> hm = request.getParameterMap();
 		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
@@ -491,7 +496,11 @@ public class ServeurGroupe extends HttpServlet {
 
 			if (key.contains("defi_")) {
 				int id_dav = Integer.parseInt(key.substring(5));
-				facade.validerDefi(id_dav);
+				if (valider)	
+					facade.validerDefi(id_dav);
+				else 
+					facade.refuserDefi(id_dav);
+				
 			}
 		}
 
