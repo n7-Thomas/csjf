@@ -3,7 +3,8 @@ body {
     padding: 0;
     font-family:'Abel', arial, serif;
     color: white;
-    background:#313131 no-repeat top center;
+    background-image: url("arriere-plan-pageGroupe.jpeg");
+    background-repeat: no-repeat;
 }
  
 #conteneur-menu2 {

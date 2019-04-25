@@ -74,6 +74,7 @@
 			ultricies eros. Duis ullamcorper pretium ex sed dignissim. Donec nibh
 			ligula, tempor non feugiat et, viverra eget massa.</p>
 		<h3>Tests</h3>
+		<a href="testPageGroupe.jsp">Test page du groupe</a> <br>
 		<a href="ServeurTests?action=init1">Init Test 1 : Création de
 			Thomas, Connexion avec Thomas</a> <br> <a
 			href="ServeurTests?action=init2">Init Test 2 : Création de Manu</a>
