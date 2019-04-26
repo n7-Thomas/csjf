@@ -2,7 +2,6 @@ package modele;
 
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -83,11 +82,11 @@ public class Membre {
 	}
 
 	public Collection<Groupe> getGroupesAppartenus() {
-		return groupes_appartenus;
+		return this.groupes_appartenus;
 	}
 
-	public void setGroupesAppartenus(Collection<Groupe> id_groupes_app) {
-		this.groupes_appartenus = id_groupes_app;
+	public void setGroupesAppartenus(Collection<Groupe> groupes_app) {
+		this.groupes_appartenus = groupes_app;
 	}
 
 	public Collection<Groupe> getGroupesAdministres() {

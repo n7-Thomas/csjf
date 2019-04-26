@@ -1,6 +1,7 @@
 package controleur;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import modele.Groupe;
+import modele.Membre;
 
 
 /**
@@ -80,7 +83,14 @@ public class Serveur extends HttpServlet {
 
 		//AFFICHER LA PAGE D'ACCUEIL
 		if(action.equals("afficher_pageAccueil")){
-			request.setAttribute("groupes", facade.getGroupes());
+			Membre usr = (Membre) session.getAttribute("user");
+
+			Collection<Groupe> groupes_appartenus = facade.getGroupesAppartenus(usr);
+			Collection<Groupe> groupes_administres = facade.getGroupesAdmin(usr);
+
+			request.setAttribute("groupesAppartenus", groupes_appartenus);
+			request.setAttribute("groupesAdmin", groupes_administres);
+
 			request.getRequestDispatcher("pageAccueil.jsp").forward(request, response);
 		}
 

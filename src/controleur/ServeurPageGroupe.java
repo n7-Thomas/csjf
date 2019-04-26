@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modele.Groupe;
 import modele.Membre;
 
 /**
@@ -64,26 +63,42 @@ public class ServeurPageGroupe extends HttpServlet {
 
 		// ACTION Afficher le fil d'actualité
 		if (action.equals("afficher_filActu")) {
-			Groupe grp =  (Groupe) session.getAttribute("grp");
+			String str_id_grp = request.getParameter("id_grp");
+			if(str_id_grp != null){
+				request.setAttribute("erreur", "pas de groupe");
+				request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			}
+			int id_grp = Integer.parseInt(str_id_grp);
+			System.out.println("ID GROUPE ! " + id_grp);
 			try {
-				//request.setAttribute("listeNotif", facade.getFilActu(grp).getNotifications());
-			    //request.setAttribute("listePubli", facade.getFilActu(grp).getPublications());
+				request.setAttribute("id_grp", id_grp);
+			    request.setAttribute("listePubli", facade.getPublications(id_grp));
 				request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
+
 			} catch (Exception e) {
 				request.setAttribute("erreur", e.getStackTrace());
 				request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			}
 
-
 		}
 
 		// Publier une Publication
 		if (action.equals("publier")){
-			String contenu = request.getParameter("contenu");
+			String str_id_grp = request.getParameter("id_grp");
+
+			if(str_id_grp == null){
+				request.setAttribute("erreur", "pas de groupe");
+				request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			}
+			int id_grp = Integer.parseInt(str_id_grp);
+
+			System.out.println("GROUPE ::: " + id_grp);
+
 			Membre mbr = (Membre) session.getAttribute("usr");
+			String contenu = request.getParameter("contenu");
 
 			try {
-				facade.creerPublication( mbr, contenu);
+				facade.creerPublication(id_grp, mbr, contenu);
 			}catch (Exception e) {
 				request.setAttribute("erreur", e.getStackTrace());
 				request.getRequestDispatcher("erreur.jsp").forward(request, response);

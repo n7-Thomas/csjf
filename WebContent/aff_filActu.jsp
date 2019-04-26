@@ -11,46 +11,30 @@
 
 Fil d'Actualité <br>
 
-
-
-<% Collection<Notification> listeNotif = (Collection<Notification>) request.getAttribute("listeNotifications");
 	
-	for (Notification n: listeNotif){
-
-			String notif = n.getMessage();
-			%>
-			<%=notif %> <br>
-			
-			<% 			
-	}%>
+<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePubli");
+	if(listePubli == null){
+		%> <p> Pas de publication </p> <%
+	}else {
+		for (Publication p: listePubli){
 	
-<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublication");
-	
-	for (Publication p: listePubli){
-
-			String publi = p.getMembre().getPrenom() + ": " + p.getContenu();
-			%>
-			<%=publi %> <br>
-			
-			<% 			
+				String publi = p.getMembre().getPrenom() + ": " + p.getContenu();
+				%>
+				<%=publi %> <br>
+				
+				<% 			
+		}
 	}%>
 
 
 <form action= "ServeurPageGroupe" method="post">
 
-	Votre commentaire: <input type= "text" name= "contenu"><br/> 
+	Créer une publication: <input type= "text" name= "contenu"><br/> 
 	
-	%> 
 	<input type= "submit"  value= "OK">
+	<input type= "hidden" name= "action" value= "publier">	
+	<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
 	
-	<input type= "hidden" name= "action" value= "publier">
-	
-	
-
-%>
-	
-	
-
 </form>
 
 </body>

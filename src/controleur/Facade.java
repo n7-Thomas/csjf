@@ -154,17 +154,6 @@ public class Facade {
 
 	}
 
-	public Publication creerPublication(Membre mbr, String contenu) {
-		Publication publi = new Publication();
-		// publi.setGroupe(grp);
-		publi.setMembre(mbr);
-		publi.setContenu(contenu);
-
-		em.persist(publi);
-
-		return publi;
-	}
-
 	public void commenter() {
 
 	}
@@ -187,9 +176,12 @@ public class Facade {
 	 */
 	public Groupe creerGroupe(String nom, Membre usr) throws ExceptionUserNonDefini {
 		Groupe g = new Groupe();
-		em.persist(g);
+
 		g.setNom(nom);
 		g.setAdministrateur(usr);
+		em.persist(g);
+
+		//usr.setGroupesAdministres(g);
 
 		return g;
 	}
@@ -201,18 +193,18 @@ public class Facade {
 	public boolean appartientGroupe(int id_mb, int id_grp) {
 		Membre mb = em.find(Membre.class, id_mb);
 		Groupe gp = em.find(Groupe.class, id_grp);
-		
+
 		return mb.getGroupesAppartenus().contains(gp);
 	}
-	
+
 	public boolean administreGroupe(int id_mb, int id_grp) {
 		Membre mb = em.find(Membre.class, id_mb);
 		Groupe gp = em.find(Groupe.class, id_grp);
-		
+
 		return mb.getGroupesAdministres().contains(gp);
 	}
-	
-	
+
+
 	/**
 	 * Récupérer le groupe dans la base de données avec son nom.
 	 *
@@ -233,6 +225,40 @@ public class Facade {
 		Collection<Groupe> groupes = req.getResultList();
 		return groupes;
 
+	}
+
+	public Collection<Groupe> getGroupesAdmin(Membre usr){
+		Membre mbr = em.find(Membre.class, usr.getId());
+		return mbr.getGroupesAdministres();
+	}
+
+	public Collection<Groupe> getGroupesAppartenus(Membre usr){
+		Membre mbr = em.find(Membre.class, usr.getId());
+		return mbr.getGroupesAppartenus();
+	}
+
+	/**
+	 *Récuperer la liste des publications d'un groupe
+	 */
+	public Collection<Publication> getPublications(int id_grp){
+		Groupe g = em.find(Groupe.class, id_grp);
+		return g.getPublications();
+	}
+
+	/***
+	 * Creer une nouvelle publication
+	 */
+	public Publication creerPublication(int id_groupe, Membre membre, String contenu){
+		Publication publication = new Publication();
+		publication.setContenu(contenu);
+		publication.setMembre(membre);
+
+		Groupe gp = em.find(Groupe.class, id_groupe);
+		publication.setGroupe(gp);
+
+		em.persist(publication);
+
+		return publication;
 	}
 
 	/**
@@ -324,18 +350,6 @@ public class Facade {
 
 		em.persist(g);
 
-		System.out.println("Groupe : " + g);
-		System.out.println("Membres : " + g.getMembres());
-
-		g.getMembres().add(mb2);
-
-		System.out.println("Membre.getGroupes " + mb2.getGroupesAppartenus());
-		System.out.println("Admin.getGroupesAdmin " + mb.getGroupesAdministres());
-		System.out.println("Groupe by em : " + em.find(Groupe.class, g.getId()));
-
-		// mb2.getGroupesAppartenus().add(g);
-		// g.getMembres().add(mb2);
-
 		Defi d = new Defi();
 		d.setDescription("Description");
 		d.setNom("Defi test");
@@ -371,5 +385,7 @@ public class Facade {
 
 		return g;
 	}
+
+
 
 }

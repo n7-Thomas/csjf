@@ -13,13 +13,16 @@
 
 <fieldset>
 	<% Membre mbr_co = (Membre) session.getAttribute("user");%>
-	<h1><p> Hello <%=mbr_co.getPrenom() %>, bienvenu sur ta page d'Accueil ! <p></h1>
+	<h1><p> Hello <%=mbr_co.getPrenom() %>, bienvenue sur ta page d'Accueil ! <p></h1>
 	
 	<a href="profil.jsp"> Voir mon profil</a> <br>
 	
-	<h2> Mes groupes</h2>
+	<h2> Mes groupes:</h2>
+	
                 <%
-                Collection<Groupe> groupes = mb.getGroupesAppartenus(); 
+                System.out.println("\n\n\n bda: ");
+                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupesAppartenus"); 
+            	System.out.println("\n\n\n AH : " + groupes);
 				if (groupes != null){
        				for (Groupe g : groupes) {
                 		String groupe_nom = g.getNom(); 
@@ -30,7 +33,7 @@
        			%>
                 <p> Vous n'êtes dans aucun groupe actuellement</p>
                 <% }
-                Collection<Groupe> groupes_admin = mb.getGroupesAdministres();
+				Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupesAdmin");
                 if (groupes_admin != null){
            			for (Groupe g : groupes_admin) {
                     	String groupe_nom = g.getNom(); 
@@ -40,20 +43,25 @@
                 %><p> Vous n'administrez aucun groupe actuellement. <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
 				<%} 
 				%>
-	
-	
+
 	<h2> Les Groupes existant: <br> <h2/>
 	<br/>
 	
-	<%Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); %>
+	<%Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); 
+	if(Autresgroupes != null){
+	%>
 	<ul>
 	<% 
+	
 	for(Groupe g: Autresgroupes){
 				
 		String groupe = g.getNom();
 		%>
-		<p><li><%=groupe%> <li/></p> 			
-		<%}%> </ul>
+		<li><%=groupe%> <li/>		
+		<%
+	}
+	}%> 
+	</ul>
 		
 	<a href="demande_a_rejoindre.jsp"> Rejoindre un groupe</a> <br>
 	

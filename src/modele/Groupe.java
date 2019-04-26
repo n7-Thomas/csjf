@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Groupe {
@@ -35,6 +34,9 @@ public class Groupe {
 
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
+
+	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
+	private Collection<Publication> publications;
 
 	public Groupe() {}
 
@@ -147,6 +149,14 @@ public class Groupe {
 
 	public void addMembre(Membre mb) {
 		this.membres.add(mb);
+	}
+
+	public Collection<Publication> getPublications() {
+		return publications;
+	}
+
+	public void setPublications(Collection<Publication> publications) {
+		this.publications = publications;
 	}
 
 }
