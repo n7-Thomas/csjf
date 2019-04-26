@@ -1,5 +1,6 @@
 package controleur;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ejb.Singleton;
@@ -14,6 +15,7 @@ import modele.Defi_Valide;
 import modele.Demande_A_Rejoindre;
 import modele.Groupe;
 import modele.Membre;
+import modele.PrivateDate;
 import modele.Publication;
 import modele.TypeDefi;
 
@@ -29,6 +31,18 @@ public class Facade {
 	/**
 	 * FROM PAGE CONNEXION
 	 */
+	public boolean checkPassword(String motDePasse, Membre m) {
+		byte[] salt = m.getSalt();
+		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
+		boolean ok;
+		if (m.getMotdepasse().equals(motdepasseCryp)) {
+			ok = true;
+		} else {
+			ok = false;
+		}
+		return ok;
+	}
+
 	public Membre checkConnexion(String email, String motDePasse) {
 
 		System.out.println("select * from Membre WHERE email='" + email + "'");
@@ -38,9 +52,8 @@ public class Facade {
 			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
 					Membre.class);
 			Membre mb = req.getSingleResult();
-			if (mb != null && mb.getMotdepasse().equals(motDePasse)) {
+			if (mb != null) {
 				member = mb;
-				;
 			} else {
 				member = null;
 			}
@@ -51,15 +64,28 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail(email);
-		mb.setMotdepasse(motdepasse);
-		mb.setNom(nom);
-		mb.setPrenom(prenom);
-		em.persist(mb);
-		return mb;
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
+
+		Membre member = null;
+		try {
+			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
+					Membre.class);
+			Membre mr = req.getSingleResult();
+			if (mr.equals(null))
+				member = null;
+		} catch (Exception e) {
+			System.out.println("Utilisateur n'existe pas");
+			Membre mb = new Membre();
+			mb.setCoeff_sportif(1);
+			mb.setEmail(email);
+			mb.setMotdepasse(motdepasse);
+			mb.setNom(nom);
+			mb.setPrenom(prenom);
+			mb.setSalt(salt);
+			em.persist(mb);
+			member = mb;
+		}
+		return member;
 	}
 
 	/**
@@ -71,14 +97,27 @@ public class Facade {
 	 * @param nom
 	 * @return
 	 */
-	public Defi ajouterDefi(String nom, String description, Membre usr, Groupe grp, int points) {
+	public Defi ajouterDefi(String nom, String description, Groupe grp, int points, String dateDebut, String dateFin) {
 		Defi defi = new Defi();
 		defi.setDescription(description);
 		defi.setGroupe(grp);
 		defi.setNom(nom);
+
 		defi.setPoints(points);
+
 		defi.setType(TypeDefi.Sport);
 
+		if (dateDebut.equals("")) {
+			PrivateDate debutNow = PrivateDate.getNow();
+			dateDebut = debutNow.toString();
+		}
+		if (dateFin.equals("")) {
+			PrivateDate end1week = PrivateDate.getNow();
+			end1week.setJour(end1week.getJour() + 7);
+			dateFin = end1week.toString();
+		}
+		defi.setDate(dateDebut);
+		defi.setEndDate(dateFin);
 		em.persist(defi);
 
 		return defi;
@@ -96,12 +135,22 @@ public class Facade {
 		em.remove(dav);
 	}
 
-	public void modifierDefi() {
-
+	public void validerDemande(int id_dar) {
+		Demande_A_Rejoindre dar = em.find(Demande_A_Rejoindre.class, id_dar);
+		Membre mb = em.find(Membre.class, dar.getMembre().getId());
+		Groupe gp = em.find(Groupe.class, dar.getGroupe().getId());
+		mb.getGroupesAppartenus().add(gp);
+		em.remove(dar);
 	}
 
-	public void supprimerGroupe() {
+	public void supprimerGroupe(Groupe gp) {
+		em.remove(em.find(Groupe.class, gp.getId()));
+	}
 
+	public Groupe changerNomGroupe(Groupe gp, String nom) {
+		Groupe groupe = em.find(Groupe.class, gp.getId());
+		groupe.setNom(nom);
+		return groupe;
 	}
 
 	public boolean ajouterMembre(String email, Groupe grp) {
@@ -135,19 +184,32 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
-	public void demandeValidationDefi(Defi defi, Membre membre) throws Exception {
-		TypedQuery<Defi_A_Valider> req = em.createQuery(
-				"select d from Defi_A_Valider d WHERE defi='" + defi + "' && membre='" + membre + "'",
-				Defi_A_Valider.class);
-		if (req.getResultList().size() == 0) { // alors le défi est déjà en
-												// cours de validation ou rien
-												// n'a été sélectionné
-			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
-			defi_a_valider.setDefi(defi);
-			defi_a_valider.setMembre(membre);
-		} else {
-			throw new Exception("Ce défi est déjà en cours de validation !");
+	public void ajouterDefiAValider(int idGroupe, int idDefiAValider, Membre membre) throws Exception {
+		Defi defi1 = em.find(Defi.class, idDefiAValider);
+		Groupe groupe = em.find(Groupe.class, idGroupe);
+		Membre m = em.find(Membre.class, membre.getId());
+		TypedQuery<Defi_A_Valider> req = em
+				.createQuery("select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider, Defi_A_Valider.class);
+		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
+			throw new Exception("Ce défi a déjà été envoyer pour être validé, vous ne pouvez pas le réenvoyer !");
 		}
+		if (defi1 != null && m != null && groupe != null) {
+			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+			defi_a_valider.setDefi(defi1);
+			defi_a_valider.setMembre(m);
+			defi_a_valider.setGroupe(groupe);
+			em.persist(defi_a_valider);
+		} else {
+			throw new Exception("probbb facade ajouter defi a valider");
+		}
+	}
+
+	/**
+	 * FROM PAGE GROUPE, on demande les défis d'un groupe
+	 */
+	public Collection<Defi> getDefis(Groupe grp) {
+		Groupe g = em.find(Groupe.class, grp.getId());
+		return g.getDefis();
 	}
 
 	public void demandeValidationCSJF() {
@@ -161,11 +223,16 @@ public class Facade {
 	/**
 	 * FROM PAGE ACCUEIL
 	 */
-	public void demanderRejoindreGroupe(Membre mb, Groupe gr) {
-		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
-		dar.setGroupe(gr);
-		dar.setMembre(mb);
-		em.persist(dar);
+	public boolean demanderRejoindreGroupe(Membre mb, Groupe gr) {
+		if (mb.getGroupesAppartenus() == null || !mb.getGroupesAppartenus().contains(gr)) {
+			Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
+			dar.setGroupe(gr);
+			dar.setMembre(mb);
+			em.persist(dar);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -212,8 +279,12 @@ public class Facade {
 	 * @return
 	 */
 	public Groupe getGroupeFromNom(String nom) {
+		Groupe grp = null;
 		TypedQuery<Groupe> req = em.createQuery("select g from Groupe g WHERE nom='" + nom + "'", Groupe.class);
-		Groupe grp = req.getSingleResult();
+		if (req != null && req.getResultList().size() != 0) {
+			grp = req.getSingleResult();
+		}
+
 		return grp;
 	}
 
@@ -221,21 +292,11 @@ public class Facade {
 	 * Récupérer tous les groupes dans la base de données
 	 */
 	public Collection<Groupe> getGroupes() {
-		TypedQuery<Groupe> req = (TypedQuery<Groupe>) em.createQuery("select g from Groupe g");
+		TypedQuery<Groupe> req = em.createQuery("select g from Groupe g", Groupe.class);
 		Collection<Groupe> groupes = req.getResultList();
 		return groupes;
-
 	}
 
-	public Collection<Groupe> getGroupesAdmin(Membre usr){
-		Membre mbr = em.find(Membre.class, usr.getId());
-		return mbr.getGroupesAdministres();
-	}
-
-	public Collection<Groupe> getGroupesAppartenus(Membre usr){
-		Membre mbr = em.find(Membre.class, usr.getId());
-		return mbr.getGroupesAppartenus();
-	}
 
 	/**
 	 *Récuperer la liste des publications d'un groupe
@@ -268,16 +329,36 @@ public class Facade {
 
 	}
 
+	public Collection<Groupe> getGroupesAppartenus(Membre m) {
+		Membre mb = em.find(Membre.class, m.getId());
+		return mb.getGroupesAppartenus();
+	}
+
+
+	public Collection<Groupe> getGroupesAdministres(Membre m) {
+		Membre mb = em.find(Membre.class, m.getId());
+		return mb.getGroupesAdministres();
+	}
+
 	/**
 	 * FROM PROFIL
 	 */
-	public void modifierProfil() {
-
+	public void modifierProfil(Membre mb, String nom, String prenom, String email, String motdepasse) {
+		mb.setNom(nom);
+		mb.setPrenom(prenom);
+		mb.setEmail(email);
+		mb.setMotdepasse(motdepasse);
+		em.merge(mb);
 	}
 
 	public Collection<Defi_A_Valider> getDefisAValider(Groupe grp) {
 		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE groupe=" + grp.getId(),
 				Defi_A_Valider.class);
+		return req.getResultList();
+	}
+
+	public Collection<Defi> getDefisEnCours(Groupe grp) {
+		TypedQuery<Defi> req = em.createQuery("select d from Defi d WHERE groupe=" + grp.getId(), Defi.class);
 		return req.getResultList();
 	}
 
@@ -290,6 +371,63 @@ public class Facade {
 	public Collection<Membre> getMembres(Groupe grp) {
 		Groupe g = em.find(Groupe.class, grp.getId());
 		return g.getMembres();
+	}
+
+	public Groupe getGroupeFromId(int id) {
+		return em.find(Groupe.class, id);
+	}
+
+	public Membre getMembreFromId(int id) {
+		return em.find(Membre.class, id);
+	}
+
+	public void editerDefi(int id_defi, String nom, String description, int points, String dateDebut, String dateFin) {
+		Defi defi = em.find(Defi.class, id_defi);
+
+		if (!(nom.equals("")))
+			defi.setNom(nom);
+
+		if (!(description.equals("")))
+			defi.setDescription(description);
+
+		if (!(points == -1))
+			defi.setPoints(points);
+
+		if (!(dateDebut.equals("")))
+			defi.setDate(dateDebut);
+
+		if (!(dateFin.equals("")))
+			defi.setEndDate(dateFin);
+
+		System.out.print(
+				"\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
+
+	}
+
+	public Collection<String> getClassement(Groupe grp) {
+		Collection<String> resultat = new ArrayList<String>();
+
+		Collection<Membre> membres = em.find(Groupe.class, grp.getId()).getMembres();
+		System.out.println("\n\n MEMBRES " + membres + " \n\n");
+		if (membres != null) {
+			for (Membre mb : membres) {
+				int somme = 0;
+				TypedQuery<Defi_Valide> req = em.createQuery(
+						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
+						Defi_Valide.class);
+				if (req != null && req.getResultList().size() != 0) {
+					Collection<Defi_Valide> dvs = req.getResultList();
+					for (Defi_Valide dv : dvs) {
+						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+					}
+				}
+				resultat.add(mb.getPrenom() + ":" + somme);
+			}
+		} else {
+			System.out.println("\n\n AUCUN MEMBRE \n\n");
+		}
+		System.out.println(resultat);
+		return resultat;
 	}
 
 	public Membre initialiserTest() {
@@ -347,7 +485,6 @@ public class Facade {
 		Groupe g = new Groupe();
 		g.setAdministrateur(mb);
 		g.setNom("Groupe1");
-
 		em.persist(g);
 
 		Defi d = new Defi();
@@ -386,6 +523,24 @@ public class Facade {
 		return g;
 	}
 
+
+	public void enleverMembre(Groupe grp, int id_mbr) {
+		Groupe gp = em.find(Groupe.class, grp.getId());
+		Membre mb = em.find(Membre.class, id_mbr);
+		mb.getGroupesAppartenus().remove(gp);
+		em.merge(mb);
+	}
+
+	public void enleverDefi(int id_defi) {
+		Defi defi = em.find(Defi.class, id_defi);
+		em.remove(defi);
+	}
+
+	public void refuserDefi(int id_dav) {
+		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
+		em.remove(dav);
+
+	}
 
 
 }

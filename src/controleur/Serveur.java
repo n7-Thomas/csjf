@@ -1,7 +1,6 @@
 package controleur;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modele.Groupe;
 import modele.Membre;
 
 
@@ -70,31 +68,45 @@ public class Serveur extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'index
 		if (action == null) {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
-		}
-
-		// ACTION AFFICHER PAGE GROUPE
-		if (action.equals("pageGroupe")) {
-			Groupe grp = (Groupe) session.getAttribute("groupe");
-			request.setAttribute("groupe", grp);
-			request.getRequestDispatcher("groupe.jsp").forward(request, response);
 		}
 
 		//AFFICHER LA PAGE D'ACCUEIL
 		if(action.equals("afficher_pageAccueil")){
+
+			// Récupération du membre connecté
 			Membre usr = (Membre) session.getAttribute("user");
+			if (usr == null) {
+				request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			} else {
+				request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
+				request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
+				request.setAttribute("groupes", facade.getGroupes());
+				request.getRequestDispatcher("accueil.jsp").forward(request, response);
+			}
 
-			Collection<Groupe> groupes_appartenus = facade.getGroupesAppartenus(usr);
-			Collection<Groupe> groupes_administres = facade.getGroupesAdmin(usr);
 
-			request.setAttribute("groupesAppartenus", groupes_appartenus);
-			request.setAttribute("groupesAdmin", groupes_administres);
-
-			request.getRequestDispatcher("pageAccueil.jsp").forward(request, response);
 		}
 
+		if(action.equals("deconnexion")) {
+			session.invalidate();
+			request.getRequestDispatcher("connexion.jsp").forward(request, response);
+		}
 
+		if (action.equals("modifier_profil")) {
+			request.getRequestDispatcher("modifier_profil.jsp").forward(request, response);
+		}
+
+		if (action.equals("enregistrer_modif")) {
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String email = request.getParameter("email");
+			String motdepasse = request.getParameter("motdepasse");
+			Membre mb = ((Membre) session.getAttribute("user"));
+			facade.modifierProfil(mb, nom, prenom, email, motdepasse);
+			request.getRequestDispatcher("ServeurConnexion?action=afficher_profil").forward(request, response);
+		}
 
 	}
 

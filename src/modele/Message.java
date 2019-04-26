@@ -19,7 +19,7 @@ public class Message {
 
 	private String contenu;
 
-	private Date date;
+	private PrivateDate date;
 
 	public String getContenu() {
 		return contenu;
@@ -29,11 +29,11 @@ public class Message {
 		this.contenu = contenu;
 	}
 
-	public Date getDate() {
+	public PrivateDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(PrivateDate date) {
 		this.date = date;
 	}
 

@@ -12,18 +12,16 @@
 Fil d'Actualité <br>
 
 	
-<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePubli");
-	if(listePubli == null){
-		%> <p> Pas de publication </p> <%
-	}else {
-		for (Publication p: listePubli){
+<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublication");
 	
-				String publi = p.getMembre().getPrenom() + ": " + p.getContenu();
-				%>
-				<%=publi %> <br>
-				
-				<% 			
-		}
+	for (Publication p: listePubli){
+
+			String publi = p.getMembre().getPrenom() + ": " + p.getContenu();
+			%>
+			<%=publi %> <br>
+			
+			<% 			
+
 	}%>
 
 

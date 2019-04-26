@@ -1,0 +1,130 @@
+body {
+	margin-top: -20px;
+}
+
+#header {
+	text-align: center;
+	vertical-align: middle;
+	background:#313131;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+#header h1{
+	font-family:'Abel', arial, serif;
+	font-size: 6em;
+	text-align: center;
+	vertical-align: middle;
+	color: white;
+	
+}
+
+
+#contenu {
+	margin: 20px;
+	text-align: justify;
+	padding: 10px;
+}
+
+
+
+.box {
+  display: flex;
+  flex-direction: column;
+}
+
+a:link, a:visited {
+	background-color: #22BBEE;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}
+
+a:hover, a:active {
+ background-color: #225577;
+}
+
+#main_nav ul {
+	background-color: #22BBEE;
+	float: left;
+	list-style-type: none;
+	width: 100%;
+}
+
+.top_puce {
+	height: 52.5px;
+	font: normal 13pt verdana, helvetica, sans-serif;
+	font-style: bold;
+	float: left;
+	position: relative;
+
+	list-style-position: outside;
+	list-style: none;
+
+	background-color:
+}
+
+.lil_puce {
+	font: normal 10pt verdana, helvetica, sans-serif;
+	height: 40px;
+	margin-left: -40px;
+	-webkit-transition: 2s;
+}
+
+#main_nav > ul > li > a, h1 {
+	text-transform: uppercase;
+}
+
+#main_nav a {
+	display: block;
+	padding: absolute;
+	text-decoration: none;
+	color: white;
+}
+
+#main_nav ul ul {
+	position: absolute;
+	top: 100%;
+	visibility: hidden;
+	opacity: 0;
+}
+
+#main_nav li:hover > ul {
+	visibility: visible;
+	opacity: 1;
+	transition: 0.7s;
+}
+
+#main_nav ul li ul li {
+	text-decoration : none;
+	background : #22BBEE;
+}
+
+/* ORGANISATION DE LA PAGE */
+.leftcolumn {
+    float: left;
+    width: 65%;
+    padding-left: 20px;
+}
+
+.rightcolumn {
+	margin-right: 13px;
+	float: right;
+	width: 33%;
+	padding-left: 20px;
+}
+
+.card {
+	background-color: #729fcf;
+	padding: 20px;
+	margin-top: 20px;
+}
+
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}

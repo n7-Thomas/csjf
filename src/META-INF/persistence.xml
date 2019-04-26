@@ -16,6 +16,7 @@
         <class>modele.Membre</class>
         <class>modele.Groupe</class>
         <class>modele.Message</class>
+        <class>modele.Membre_Groupe</class>
         
         
         

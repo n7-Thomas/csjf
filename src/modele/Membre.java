@@ -22,7 +22,7 @@ public class Membre {
 
 	private String prenom;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "membre_groupe")
 	private Collection<Groupe> groupes_appartenus;
 
@@ -37,6 +37,8 @@ public class Membre {
 	private String email;
 
 	private String motdepasse;
+
+	private byte[] salt;
 
 	public Membre() {
 	}
@@ -113,4 +115,11 @@ public class Membre {
 		return this.id;
 	}
 
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
 }

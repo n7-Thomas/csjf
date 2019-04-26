@@ -72,8 +72,6 @@ public class Groupe {
 		this.admin = admin;
 	}
 
-
-
 	/**
 	 * Donner un nom au groupe.
 	 * @param nom

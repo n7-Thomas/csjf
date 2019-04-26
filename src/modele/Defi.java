@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Defi {
@@ -25,10 +24,16 @@ public class Defi {
 	
 	private String nom;
 
+	private String date;
+	
+	private String endDate;
+	
 	public Defi() {
-		this.description = "";
-		this.nom = "";
-		this.points = 0;
+		this.setDescription("");
+		this.setNom("");
+		this.setDate("");
+		this.setEndDate("");
+		this.setPoints(0);
 	}
 	
 	/**
@@ -115,6 +120,22 @@ public class Defi {
 	 */
 	public int getId() {
 		return this.id;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 	
 	

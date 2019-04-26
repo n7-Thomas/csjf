@@ -13,9 +13,10 @@
 
 <fieldset>
 	<% Membre mbr_co = (Membre) session.getAttribute("user");%>
-	<h1><p> Hello <%=mbr_co.getPrenom() %>, bienvenue sur ta page d'Accueil ! <p></h1>
-	
-	<a href="profil.jsp"> Voir mon profil</a> <br>
+
+	<h1> Hello <%=mbr_co.getPrenom() %>, bienvenue sur ta page d'Accueil ! </h1>
+
+	<a href="ServeurConnexion?action=afficher_profil"> Voir mon profil</a> <br>
 	
 	<h2> Mes groupes:</h2>
 	
@@ -44,12 +45,12 @@
 				<%} 
 				%>
 
-	<h2> Les Groupes existant: <br> <h2/>
-	<br/>
 	
-	<%Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); 
-	if(Autresgroupes != null){
-	%>
+	
+	<h2> Les Groupes existant: </h2>
+
+	<%Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); %>
+
 	<ul>
 	<% 
 	
@@ -58,10 +59,9 @@
 		String groupe = g.getNom();
 		%>
 		<li><%=groupe%> <li/>		
-		<%
-	}
-	}%> 
-	</ul>
+
+		<%}%> </ul>
+
 		
 	<a href="demande_a_rejoindre.jsp"> Rejoindre un groupe</a> <br>
 	

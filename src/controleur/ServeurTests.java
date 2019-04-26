@@ -68,9 +68,9 @@ public class ServeurTests extends HttpServlet {
 
 		System.out.println("Serveur action : " + action);
 
-		// Si pas d'action on envoie sur l'index
+		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
 		}
 		
@@ -78,26 +78,29 @@ public class ServeurTests extends HttpServlet {
 			Membre mb = facade.initialiserTest();
 			session.setAttribute("user", mb);
 			System.out.println("Thomas ajouté.");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 		if (action.equals("init2")) {
 			facade.initialiserTest2();
 			System.out.println("Manu ajouté.");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 		if (action.equals("init3")) {
 			facade.initialiserTest3();
 			System.out.println("Défi en demande de validation");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 
 		if (action.equals("init4")) {
 			Groupe g = facade.initialiserTest4();
-			session.setAttribute("groupe", g);
+			request.setAttribute("groupe", g);
 			System.out.println("Initialisation bdd");
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			Membre m = facade.getMembreFromId(1);
+			session.setAttribute("user", m);
+			
+			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 		}
 		
 		

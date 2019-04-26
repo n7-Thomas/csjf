@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family:'Abel', arial, serif;
+    color: white;
+    background-image: url("arriere-plan-pageGroupe.jpeg");
+    background-repeat: no-repeat;
+}
+ 
+#conteneur-menu2 {
+    height: 150px;
+    width: 220px;
+    margin-top: 50px;
+    margin-left: -70px;
+    /* background-color: blue; */
+}
+ 
+#conteneur-menu2 ul {
+    padding: 0;
+    margin: 0;
+    /* background-color: yellow; */
+    margin-left: 50px;
+    float: left;
+}
+ 
+#conteneur-menu2 ul li {
+    list-style: none;
+    /* background-color: red; */
+    padding: 0px;
+}
+ 
+#conteneur-menu2 ul li a {
+    text-decoration: none;
+    font-size: 15px;
+    padding: 4px;
+    display: block;
+    color: white;
+    background: transparent;
+    width: 430px;
+    -moz-transition: all .5s; 
+    -webkit-transition: all .5s; 
+    -o-transition: all .5s; 
+    transition: all .5s;
+    line-height: 20px;
+}
+ 
+ 
+#conteneur-menu2 ul li a:hover {
+    background: #54B6A8;
+    padding-left: 20px;
+    width: 230px;
+    -moz-transition: all .5s; 
+    -webkit-transition: all .5s; 
+    -o-transition: all .5s; 
+    transition: all .5s;
+}
+
+#titre {
+    height: 100px;
+    background-color: black;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#corps {
+    display: flex;
+    justify-content: space-around;
+}
+
+#bloc_gauche {
+    display: flex;
+    flex-direction: column;
+}
+
+#demandeValiderDefi {
+    margin-top: 100px;
+    /* background-color: green; */
+}
+
+#bloc_droite {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+/* #afficherMembresGroupe {
+    background: pink;
+} */
+
+#afficherDefisGroupe {
+    /* background-color: aqua; */
+    margin-top: 100px;
+}
