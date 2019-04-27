@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<meta charset="ISO-8859-1">
+		<meta charset="UTF-8">
 		<title>Administration du groupe</title>
         <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
         <link type="text/css" rel="stylesheet" href="CSS/form.css" />
@@ -24,6 +24,8 @@
 	boolean hasDav = (defis_a_valider != null);
 	Collection<Defi> defis_en_cours = (Collection<Defi>) request.getAttribute("defis_en_cours");  
 	boolean hasDec = (defis_en_cours != null);
+	Collection<Defi_Valide> defis_valides = (Collection<Defi_Valide>) request.getAttribute("defis_valides");  
+	boolean hasDv = (defis_valides != null);
 	%>
 	
 	<div id="header">
@@ -181,6 +183,22 @@
 								Depuis <%= defi.getDate() %> jusqu'au <%=defi.getEndDate() %> 
 								<a href="ServeurGroupe?action=del_defi&id_grp=<%=groupe.getId() %>&id_defi=<%=defi.getId() %>" style="color:red; background:none; size:5px;font-family: Verdana, Times, serif;">x</a>
 								</p>	
+							<% } %>
+						</div>
+						<% } %>
+				</fieldset>
+				
+				<fieldset id="DefisValides">
+					<legend>Défis déjà validés</legend>
+						<%  
+						if(!hasDv || defis_valides.size() == 0){ %>	
+							<p>	Aucun défi validé ! </p> <%
+			    	   	} else {
+						%>
+						<div>
+						    <% for (Defi_Valide dv : defis_valides) { 
+						    %>
+								<p> <em><%=dv.getDefi().getNom()%></em> par <%=dv.getMembre().getPrenom() %> </p>	
 							<% } %>
 						</div>
 						<% } %>

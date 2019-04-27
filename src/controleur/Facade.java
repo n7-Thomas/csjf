@@ -18,6 +18,9 @@ import modele.Membre;
 import modele.PrivateDate;
 import modele.Publication;
 import modele.TypeDefi;
+import tests.Tests_Defis;
+import tests.Tests_Groupes;
+import tests.Tests_Membres;
 
 @Singleton
 public class Facade {
@@ -260,7 +263,7 @@ public class Facade {
 		Groupe g = new Groupe();
 		em.persist(g);
 		g.setNom(nom);
-		g.setAdministrateur(usr);
+		g.setAdmin(usr);
 
 		return g;
 	}
@@ -408,148 +411,6 @@ public class Facade {
 		return resultat;
 	}
 
-	public Membre initialiserTest() {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail("thomasdarget@hotmail.fr");
-		mb.setMotdepasse("abc");
-		mb.setNom("Darget");
-		mb.setPrenom("Thomas");
-		mb.setSalt(null);
-	
-		em.persist(mb);
-		return mb;
-	}
-
-	public Membre initialiserTest2() throws Exception {
-		
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail("thomasdarget@hotmail.fr");
-		mb.setMotdepasse("abc");
-		mb.setNom("Darget");
-		mb.setPrenom("Thomas");
-		em.persist(mb);
-		
-		Membre mb2 = new Membre();
-		mb2.setCoeff_sportif(2);
-		mb2.setEmail("manugoncalves@gmail.com");
-		mb2.setMotdepasse("abc");
-		mb2.setNom("Goncalves");
-		mb2.setPrenom("Manu");
-		em.persist(mb2);
-		
-		this.inscriptionNewMember("de Foucaud", "Charlotte", "cha@sfr.fr", "abc", null);
-		this.inscriptionNewMember("Mene", "Grégoire", "greg@wanadoo.fr", "abc", null);
-		this.inscriptionNewMember("Lacoste", "Célia", "celia@gmail.com", "abc", null);
-	
-		Groupe gp = new Groupe();
-		gp.setAdmin(mb);
-		gp.setNom("Groupe 1");
-		em.persist(gp);
-		
-		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
-		this.ajouterMembre("manugoncalves@gmail.com", gp);
-		this.ajouterMembre("celia@gmail.com", gp);
-		this.ajouterMembre("cha@sfr.fr", gp);
-		this.ajouterMembre("greg@wanadoo.fr", gp);
-		
-		Defi defi = new Defi();
-		defi.setDescription("desc");
-		defi.setNom("D1");
-		defi.setPoints(10);
-		defi.setGroupe(gp);
-		em.persist(defi);
-		
-		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
-		defi_a_valider.setDefi(defi);
-		defi_a_valider.setGroupe(gp);
-		defi_a_valider.setMembre(mb);
-		em.persist(defi_a_valider);		
-		
-		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
-		defi_a_valider2.setDefi(defi);
-		defi_a_valider2.setGroupe(gp);
-		defi_a_valider2.setMembre(mb2);
-		em.persist(defi_a_valider2);	
-		
-		this.validerDefi(defi_a_valider.getId());
-		this.validerDefi(defi_a_valider2.getId());
-		
-		return mb;
-	}
-
-	public void initialiserTest3() {
-		Membre mb = em.find(Membre.class, 2);
-		Groupe gp = em.find(Groupe.class, 1);
-		Defi defi = em.find(Defi.class, 1);
-
-		Defi_A_Valider dav = new Defi_A_Valider();
-		dav.setDefi(defi);
-		dav.setMembre(mb);
-		dav.setGroupe(gp);
-
-		em.persist(dav);
-	}
-
-	public Groupe initialiserTest4() {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail("thomasdarget@hotmail.fr");
-		mb.setMotdepasse("abc");
-		mb.setNom("Darget");
-		mb.setPrenom("Thomas");
-		em.persist(mb);
-
-		Membre mb2 = new Membre();
-		mb2.setCoeff_sportif(1);
-		mb2.setEmail("manugoncalves@gmail.com");
-		mb2.setMotdepasse("abc");
-		mb2.setNom("Goncalves");
-		mb2.setPrenom("Manu");
-		em.persist(mb2);
-
-		Groupe g = new Groupe();
-		g.setAdministrateur(mb);
-		g.setNom("Groupe1");
-		em.persist(g);
-
-		Defi d = new Defi();
-		d.setDescription("Description");
-		d.setNom("Defi test");
-		d.setPoints(10);
-		d.setType(TypeDefi.Sport);
-		d.setGroupe(g);
-		em.persist(d);
-
-		Defi_A_Valider dav = new Defi_A_Valider();
-		dav.setDefi(d);
-		dav.setMembre(mb2);
-		dav.setGroupe(g);
-		em.persist(dav);
-
-		Membre mb3 = new Membre();
-		mb3.setCoeff_sportif(1);
-		mb3.setEmail("cha@sfr.fr");
-		mb3.setMotdepasse("abc");
-		mb3.setNom("De Foucaud");
-		mb3.setPrenom("Charlotte");
-		em.persist(mb3);
-
-		Defi_A_Valider dav2 = new Defi_A_Valider();
-		dav2.setDefi(d);
-		dav2.setMembre(mb3);
-		dav2.setGroupe(g);
-		em.persist(dav2);
-
-		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
-		dar.setGroupe(g);
-		dar.setMembre(mb3);
-		em.persist(dar);
-
-		return g;
-	}
-
 	public void enleverMembre(Groupe grp, int id_mbr) {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		Membre mb = em.find(Membre.class, id_mbr);
@@ -565,7 +426,77 @@ public class Facade {
 	public void refuserDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 		em.remove(dav);
+	}
+	
+	public Membre initialiserTest() {
+		Membre mb = new Membre();
+		mb.setCoeff_sportif(1);
+		mb.setEmail("thomasdarget@hotmail.fr");
+		mb.setMotdepasse("abc");
+		mb.setNom("Darget");
+		mb.setPrenom("Thomas");
+		mb.setSalt(null);
+	
+		em.persist(mb);
+		return mb;
+	}
+
+	public Membre initialiserTest2() throws Exception {
 		
+		Membre thomas = Tests_Membres.thomas();
+		em.persist(thomas);
+		
+		Membre manu = Tests_Membres.manu();
+		em.persist(manu);
+		
+		Membre charlotte = Tests_Membres.cha();
+		em.persist(charlotte);
+		
+		Membre gregoire = Tests_Membres.gregoire();
+		em.persist(gregoire);
+	
+		Membre celia = Tests_Membres.celia();
+		em.persist(celia);
+		
+		Groupe gp = Tests_Groupes.groupe1(thomas);
+		em.persist(gp);
+		
+		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		this.ajouterMembre("manugoncalves@gmail.com", gp);
+		this.ajouterMembre("celia@gmail.com", gp);
+		this.ajouterMembre("cha@sfr.fr", gp);
+		
+		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
+		dar.setGroupe(gp);
+		dar.setMembre(gregoire);
+		em.persist(dar);
+		
+		Defi defi = Tests_Defis.defi1(gp);
+		em.persist(defi);
+		
+		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+		defi_a_valider.setDefi(defi);
+		defi_a_valider.setGroupe(gp);
+		defi_a_valider.setMembre(thomas);
+		em.persist(defi_a_valider);
+		
+		this.validerDefi(defi_a_valider.getId());
+		
+		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
+		defi_a_valider2.setDefi(defi);
+		defi_a_valider2.setGroupe(gp);
+		defi_a_valider2.setMembre(manu);
+		em.persist(defi_a_valider2);	
+		
+		
+		
+		
+		return thomas;
+	}
+
+	public Object getDefisValides(Groupe grp) {
+		Groupe gp = em.find(Groupe.class, grp.getId());
+		return gp.getDefis_valides();
 	}
 
 }

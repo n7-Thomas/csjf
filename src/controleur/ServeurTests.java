@@ -73,7 +73,7 @@ public class ServeurTests extends HttpServlet {
 			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
 			return;
 		}
-		
+	
 		if (action.equals("init1")) {
 			Membre mb = facade.initialiserTest();
 			session.setAttribute("user", mb);
@@ -91,7 +91,7 @@ public class ServeurTests extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-
+/*
 		if (action.equals("init3")) {
 			facade.initialiserTest3();
 			System.out.println("Défi en demande de validation");
@@ -109,7 +109,7 @@ public class ServeurTests extends HttpServlet {
 		}
 		
 		
-		
+		*/
 	}
 
 }

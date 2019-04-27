@@ -78,22 +78,6 @@ public class Groupe {
 	}
 
 	/**
-	 * Donner un administrateur au groupe
-	 * @param membre
-	 */
-	public void setAdministrateur(Membre membre) {
-		this.admin = membre;
-	}
-
-	/**
-	 * Retourner l'admin du groupe.
-	 * @return
-	 */
-	public Membre getAdministrateur() {
-		return this.admin;
-	}
-
-	/**
 	 * Retourner la liste des membres.
 	 * @return
 	 */

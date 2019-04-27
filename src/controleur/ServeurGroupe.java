@@ -535,7 +535,8 @@ public class ServeurGroupe extends HttpServlet {
 		// Récupération du membre connecté pour la topbar
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
-				
+		
+		request.setAttribute("defis_valides", facade.getDefisValides(grp));
 		request.setAttribute("defis_en_cours", facade.getDefisEnCours(grp));
 		request.setAttribute("demandes_a_rejoindre", facade.getDemandeARejoindre(grp));
 		request.setAttribute("defis_a_valider", facade.getDefisAValider(grp));
