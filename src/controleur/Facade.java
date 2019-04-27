@@ -160,7 +160,11 @@ public class Facade {
 			return false;
 		}
 		Membre mb = req.getSingleResult();
-		mb.getGroupesAppartenus().add(grp);
+		if(mb == null)
+			return false;
+		
+		if(mb.getGroupesAppartenus() != null && !mb.getGroupesAppartenus().contains(grp))
+			mb.getGroupesAppartenus().add(grp);
 
 		TypedQuery<Demande_A_Rejoindre> req2 = em.createQuery(
 				"select d from Demande_A_Rejoindre d WHERE GROUPE_ID=" + grp.getId() + " AND MEMBRE_ID=" + mb.getId(),
@@ -411,18 +415,67 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
+		mb.setSalt(null);
+	
 		em.persist(mb);
 		return mb;
 	}
 
-	public Membre initialiserTest2() {
+	public Membre initialiserTest2() throws Exception {
+		
 		Membre mb = new Membre();
 		mb.setCoeff_sportif(1);
-		mb.setEmail("manugoncalves@gmail.com");
+		mb.setEmail("thomasdarget@hotmail.fr");
 		mb.setMotdepasse("abc");
-		mb.setNom("Goncalves");
-		mb.setPrenom("Manu");
+		mb.setNom("Darget");
+		mb.setPrenom("Thomas");
 		em.persist(mb);
+		
+		Membre mb2 = new Membre();
+		mb2.setCoeff_sportif(2);
+		mb2.setEmail("manugoncalves@gmail.com");
+		mb2.setMotdepasse("abc");
+		mb2.setNom("Goncalves");
+		mb2.setPrenom("Manu");
+		em.persist(mb2);
+		
+		this.inscriptionNewMember("de Foucaud", "Charlotte", "cha@sfr.fr", "abc", null);
+		this.inscriptionNewMember("Mene", "Grégoire", "greg@wanadoo.fr", "abc", null);
+		this.inscriptionNewMember("Lacoste", "Célia", "celia@gmail.com", "abc", null);
+	
+		Groupe gp = new Groupe();
+		gp.setAdmin(mb);
+		gp.setNom("Groupe 1");
+		em.persist(gp);
+		
+		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		this.ajouterMembre("manugoncalves@gmail.com", gp);
+		this.ajouterMembre("celia@gmail.com", gp);
+		this.ajouterMembre("cha@sfr.fr", gp);
+		this.ajouterMembre("greg@wanadoo.fr", gp);
+		
+		Defi defi = new Defi();
+		defi.setDescription("desc");
+		defi.setNom("D1");
+		defi.setPoints(10);
+		defi.setGroupe(gp);
+		em.persist(defi);
+		
+		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+		defi_a_valider.setDefi(defi);
+		defi_a_valider.setGroupe(gp);
+		defi_a_valider.setMembre(mb);
+		em.persist(defi_a_valider);		
+		
+		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
+		defi_a_valider2.setDefi(defi);
+		defi_a_valider2.setGroupe(gp);
+		defi_a_valider2.setMembre(mb2);
+		em.persist(defi_a_valider2);	
+		
+		this.validerDefi(defi_a_valider.getId());
+		this.validerDefi(defi_a_valider2.getId());
+		
 		return mb;
 	}
 

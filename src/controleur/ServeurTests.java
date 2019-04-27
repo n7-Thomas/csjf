@@ -82,9 +82,14 @@ public class ServeurTests extends HttpServlet {
 		}
 
 		if (action.equals("init2")) {
-			facade.initialiserTest2();
-			System.out.println("Manu ajouté.");
-			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
+			try {
+				Membre mb = facade.initialiserTest2();
+				session.setAttribute("user", mb);
+				System.out.println("BDD initialisé.");
+				request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (action.equals("init3")) {
