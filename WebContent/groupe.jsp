@@ -41,9 +41,10 @@
 		</div>
 		
 		<div id="demandeValiderDefi">
-			<p> Remplissez le formulaire suivant pour demander à valider un de vos défis. </p>
+			<p id="titre_demande">Remplissez le formulaire suivant pour demander <br/> à valider un
+				de vos défis.</p>
 			<form method="post" action="ServeurGroupe">
-				<label for="defi">Quel défi voulez-vous valider ?</label><br/>
+				<label for="defi" id ="label">Quel défi voulez-vous valider ?</label><br/>
 	       			<%
 	       			if (defis == null) {
 	       				%>
@@ -51,8 +52,7 @@
 	   					<%
 	       			} else {
 	       				%>
-	       				<label for="defi">Quel défi voulez-vous valider ?</label><br/>
-	       			 	<select name="id_defi" id="defi">
+	       				<select name="id_defi" id="liste">
 	       			<%
 		       			for (Defi defi : defis) {
 		       				%>
@@ -62,13 +62,9 @@
 	           		}
 	           		%>
 	       				</select>
-	       		<input type="submit" value="Envoyer!" />
-	       		<input type="hidden" value="ajouterDefiAValider" name="action">
-	       		<input type="hidden" value="<%=groupe.getId() %>" name="id_groupe">
-	       		<% //String err = (String) request.getAttribute("erreur");
-	       		//String succ = (String) request.getAttribute("succes"); %>
-	       		<span class="erreur"><%//=err %></span>
-	       		<span class="succes"><%//=succ %></span>
+	       			<input type="submit" value="Envoyer!" id="bouton_envoyer"/> 
+					<input type="hidden" value="ajouterDefiAValider" name="action"> 
+					<input type="hidden" value="idDefi" name="id_groupe">
 			</form>
 		</div>
 	</div>
@@ -76,74 +72,116 @@
 	<div id="bloc_droite">
 					
 		<div id="afficherMembresGroupe">
-			<table>
-   				<tr>
-   					<th>Nom</th>
-    				<th>Prénom</th>
-       				<th>Email</th>
-   				</tr>
+			<div id="afficherMembresGroupe">
+				<div id="titre_membres">
+					<div class="nom1_aff">
+						Nom
+					</div>
+					<div class="prenom_aff">
+						Prénom
+					</div>
+					<div class="email_aff">
+						Email
+					</div>
+				</div>
 <%
 				Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
 				if(membres != null) {
 					for (Membre m : membres) {
 						if (m == null) {				
 %>
-							<tr>
-								<td>Aucun membre à afficher</td>
-								<td>RIEN</td>
-					       		<td>RIEN</td>
-					       	</tr>
+							<div class="membre_afficher">
+								<div class="nom1_aff">
+									Aucun membre
+								</div>
+								<div class="prenom_aff">
+									Rien
+								</div>
+								<div class="email_aff">
+									Rien
+								</div>
+							</div>
 		<%
 						} else {
 		%>
-							<tr>
-								<td><%=m.getNom() %></td>
-						       	<td><%=m.getPrenom() %></td>
-						       	<td><%=m.getEmail() %></td>
-						   	</tr>
+							<div class="membre_afficher">
+								<div class="nom1_aff">
+									<%=m.getNom() %>
+								</div>
+								<div class="prenom_aff">
+									<%=m.getPrenom() %>
+								</div>
+								<div class="email_aff">
+									<%=m.getEmail() %>
+								</div>
+							</div>
 		<% 	
 						}
 					}
 				}
 		%>
-			</table>
+			</div>
 		</div>
 
 		<div id="afficherDefisGroupe">
-			<table>
-   				<tr>
-   					<th>Défi</th>
-    				<th>Description</th>
-       				<th>Points à gagner</th>
-       				<th>Type</th>
-   				</tr>
+			<div id="afficherDefisGroupe">
+				<div id="titre_defis">
+					<div class="nom_aff">
+						Nom
+					</div>
+					<div class="desc_aff">
+						Description
+					</div>
+					<div class="points_aff">
+						Points
+					</div>
+					<div class="type_aff">
+						Catégorie
+					</div>
+				</div>
 <%
 				
 				if(defis != null) {
 					for (Defi defi : defis) {
 						if (defi == null) {				
 %>
-							<tr>
-								<td>Aucun défi à afficher</td>
-								<td>RIEN</td>
-					       		<td>RIEN</td>
-					       		<td>RIEN</td>
-					       	</tr>
+							<div class="defi_afficher">
+								<div class="nom_aff">
+									Aucun défi
+								</div>
+								<div class="desc_aff">
+									Rien
+								</div>
+								<div class="points_aff">
+									Rien
+								</div>
+								<div class="type_aff">
+									Rien
+								</div>
+							</div>
 		<%
 						} else {
 		%>
-							<tr>
-								<td><%=defi.getNom() %></td>
-						       	<td><%=defi.getDescription() %></td>
-						       	<td><%=defi.getPoints() %></td>
-						       	<td><%=defi.getType() %></td>
-						   	</tr>
+							<div class="defi_afficher">
+								<div class="nom_aff">
+									<%=defi.getNom() %>
+								</div>
+								<div class="desc_aff">
+									<%=defi.getDescription() %>
+								</div>
+								<div class="points_aff">
+									<%=defi.getPoints() %>
+								</div>
+								<div class="type_aff">
+									<%=defi.getType() %>
+								</div>
+							</div>
 		<% 	
 						}
 					}
 				}
 		%>
-			</table>
+			</div>
 		</div>
 		</div>
 <%
