@@ -123,7 +123,6 @@
 			</div>
 		</div>
 
-		<div id="afficherDefisGroupe">
 			<div id="afficherDefisGroupe">
 				<div id="titre_defis">
 					<div class="nom_aff">
@@ -143,7 +142,7 @@
 				
 				if(defis != null) {
 					for (Defi defi : defis) {
-						if (defi == null) {				
+						if (defi == null) {
 %>
 							<div class="defi_afficher">
 								<div class="nom_aff">
@@ -182,7 +181,6 @@
 				}
 		%>
 			</div>
-		</div>
 		</div>
 <%
 		}
