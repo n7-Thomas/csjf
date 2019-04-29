@@ -34,9 +34,10 @@
 		<% if(status != null){ %> <p> Status : <%=status %> </p> <% } %>
 		<div id="conteneur-menu2">
 			<ul>
-				<li><a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a></li>
-				<li><a href="ServeurGroupe?action=admin&id_grp=<%=groupe.getId()%>"><%=groupe.getNom()%></a></li>
 				<li><a href="Serveur?action=afficher_pageAccueil">Accueil</a></li>
+				<li><a href="creer_groupe.jsp">Créer un groupe</a></li>
+				<li><a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a></li>
+				<li class="top_puce"><a href="ServeurConnexion?action=afficher_profil">Mon Profil</a></li>				
 			</ul>
 		</div>
 		
@@ -66,6 +67,10 @@
 					<input type="hidden" value="ajouterDefiAValider" name="action"> 
 					<input type="hidden" value="<%=groupe.getId() %>" name="id_groupe">
 			</form>
+		</div>
+		
+		<div id="histogramme">
+			<%@ include file="histogramme.jsp" %>		
 		</div>
 	</div>
 	

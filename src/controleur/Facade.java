@@ -15,6 +15,7 @@ import modele.Defi_Valide;
 import modele.Demande_A_Rejoindre;
 import modele.Groupe;
 import modele.Membre;
+import modele.Message;
 import modele.PrivateDate;
 import modele.Publication;
 import modele.TypeDefi;
@@ -163,10 +164,10 @@ public class Facade {
 			return false;
 		}
 		Membre mb = req.getSingleResult();
-		if(mb == null)
+		if (mb == null)
 			return false;
-		
-		if(mb.getGroupesAppartenus() != null && !mb.getGroupesAppartenus().contains(grp))
+
+		if (mb.getGroupesAppartenus() != null && !mb.getGroupesAppartenus().contains(grp))
 			mb.getGroupesAppartenus().add(grp);
 
 		TypedQuery<Demande_A_Rejoindre> req2 = em.createQuery(
@@ -427,7 +428,7 @@ public class Facade {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 		em.remove(dav);
 	}
-	
+
 	public Membre initialiserTest() {
 		Membre mb = new Membre();
 		mb.setCoeff_sportif(1);
@@ -436,67 +437,76 @@ public class Facade {
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
 		mb.setSalt(null);
-	
+
 		em.persist(mb);
 		return mb;
 	}
 
 	public Membre initialiserTest2() throws Exception {
-		
+
 		Membre thomas = Tests_Membres.thomas();
 		em.persist(thomas);
-		
+
 		Membre manu = Tests_Membres.manu();
 		em.persist(manu);
-		
+
 		Membre charlotte = Tests_Membres.cha();
 		em.persist(charlotte);
-		
+
 		Membre gregoire = Tests_Membres.gregoire();
 		em.persist(gregoire);
-	
+
 		Membre celia = Tests_Membres.celia();
 		em.persist(celia);
-		
+
 		Groupe gp = Tests_Groupes.groupe1(thomas);
 		em.persist(gp);
-		
+
 		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
 		this.ajouterMembre("manugoncalves@gmail.com", gp);
 		this.ajouterMembre("celia@gmail.com", gp);
 		this.ajouterMembre("cha@sfr.fr", gp);
-		
+
 		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
 		dar.setGroupe(gp);
 		dar.setMembre(gregoire);
 		em.persist(dar);
-		
+
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
-		
+
 		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 		defi_a_valider.setDefi(defi);
 		defi_a_valider.setGroupe(gp);
 		defi_a_valider.setMembre(thomas);
 		em.persist(defi_a_valider);
-		
+
 		this.validerDefi(defi_a_valider.getId());
-		
+
 		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
 		defi_a_valider2.setDefi(defi);
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
-		em.persist(defi_a_valider2);	
-		
-		
-		
-		
+		em.persist(defi_a_valider2);
+
 		return thomas;
 	}
 
-	public Object getDefisValides(Groupe grp) {
+	public Collection<Defi_Valide> getDefisValides(Groupe grp) {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		return gp.getDefis_valides();
+	}
+
+	public Collection<Message> getMessages(int id_usr, int id_conv) {
+		String rq = "select m from Message m WHERE (m.sender=" + id_usr + " and m.receiver=" + id_conv
+				+ ") OR (m.sender=" + id_conv + " and m.receiver=" + id_conv + ")";
+		TypedQuery<Message> req = em.createQuery(rq, Message.class);
+
+		if (req != null && req.getResultList().size() != 0) {
+			return req.getResultList();
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -21,8 +21,7 @@
 		<!-- FIELDSET DE BONJOUR -->
 		<fieldset>
 			<h2>
-				Bonjour
-				<%=user.getPrenom()%>, comment allez vous ?
+				Bonjour <%=user.getPrenom()%>, comment allez vous ?
 			</h2>
 		</fieldset>
 		<%

@@ -400,16 +400,11 @@ public class ServeurGroupe extends HttpServlet {
 		try {
 			facade.ajouterDefiAValider(idGroupe, idDefiAValider, usr);
 			request.setAttribute("status", "Votre défi a été envoyé !");
-			request.setAttribute("membres", membres);
-			request.setAttribute("groupe", grp);
-			request.setAttribute("defis", defis);
-			request.getRequestDispatcher("groupe.jsp").forward(request, response);
+			actionAfficherGroupe(request, response, session);
+			
 		} catch (Exception e) {
 			request.setAttribute("status", e.getMessage());
-			request.setAttribute("membres", membres);
-			request.setAttribute("groupe", grp);
-			request.setAttribute("defis", defis);
-			request.getRequestDispatcher("groupe.jsp").forward(request, response);
+			actionAfficherGroupe(request, response, session);
 		}
 	}
 
@@ -572,9 +567,7 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-		Collection<Membre> membres = grp.getMembres();
-
-		request.setAttribute("membres", membres);
+		request.setAttribute("classement", facade.getClassement(grp));
 		request.setAttribute("groupe", grp);
 		request.setAttribute("defis", facade.getDefis(grp));
 		request.setAttribute("membres", facade.getMembres(grp));
