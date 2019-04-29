@@ -29,14 +29,14 @@
 				Groupe groupe = (Groupe) request.getAttribute("groupe");
 				
     			String status = (String) request.getAttribute("status");
-				if(status != null){ %> <p> Status : <%=status %> </p> <% } 
 				Collection<Defi> defis = (Collection<Defi>) request.getAttribute("defis"); %>
 	<div id="bloc_gauche">
+		<% if(status != null){ %> <p> Status : <%=status %> </p> <% } %>
 		<div id="conteneur-menu2">
 			<ul>
 				<li><a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a></li>
-				<li><a href="ServeurGroupe?action=admin&id_grp=1">Administration du groupe 1</a></li>
-				<li><a href="ServeurGroupe">Accueil</a></li>
+				<li><a href="ServeurGroupe?action=admin&id_grp=<%=groupe.getId()%>"><%=groupe.getNom()%></a></li>
+				<li><a href="Serveur?action=afficher_pageAccueil">Accueil</a></li>
 			</ul>
 		</div>
 		
@@ -56,7 +56,7 @@
 	       			<%
 		       			for (Defi defi : defis) {
 		       				%>
-		           			<option value="<%=defi.getId() %>"><%=defi.getNom() %></option>
+		           			<option value="<%=defi.getId() %>" name="id_defi"><%=defi.getNom() %></option>
 		           			<%
 		       			}
 	           		}
@@ -64,7 +64,7 @@
 	       				</select>
 	       			<input type="submit" value="Envoyer!" id="bouton_envoyer"/> 
 					<input type="hidden" value="ajouterDefiAValider" name="action"> 
-					<input type="hidden" value="idDefi" name="id_groupe">
+					<input type="hidden" value="<%=groupe.getId() %>" name="id_groupe">
 			</form>
 		</div>
 	</div>
