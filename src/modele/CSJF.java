@@ -28,7 +28,7 @@ public class CSJF {
 	private Etats etat;
 
 	public CSJF() {
-		this.etat = Etats.NonValide;
+		this.etat = Etats.EnCoursDeValidation;
 	}
 	
 	/**
