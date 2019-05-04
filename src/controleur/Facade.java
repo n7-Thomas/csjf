@@ -536,4 +536,9 @@ public class Facade {
 		csjf.setEtat(Etats.Valide);
 	}
 
+	public void refuserCSJF(int id_csjf) {
+		CSJF csjf = em.find(CSJF.class, id_csjf);
+		csjf.setEtat(Etats.NonValide);
+	}
+
 }
