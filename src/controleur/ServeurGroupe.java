@@ -159,6 +159,48 @@ public class ServeurGroupe extends HttpServlet {
 			actionEditerNomGroupe(request, response, session);
 		}
 		
+		if (action.equals("envoyerCSJF")) {
+			actionEnvoyerCSJF(request, response, session);
+		}
+		
+	}
+	
+	/**
+	 * Ajouter un défi à valider à la liste pour le faire valider par l'admin
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void actionEnvoyerCSJF(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws ServletException, IOException {
+
+		Membre usr = (Membre) session.getAttribute("user");
+		Groupe groupe = (Groupe) request.getAttribute("groupe");
+
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		if (groupe == null) {
+			request.setAttribute("erreur", "Aucun groupe présent");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		try {
+			facade.envoyerCSJF(groupe, usr);
+			request.setAttribute("status", "Votre CSJF a été envoyé !");
+			actionAfficherGroupe(request, response, session);
+			
+		} catch (Exception e) {
+			request.setAttribute("status", e.getMessage());
+			actionAfficherGroupe(request, response, session);
+		}
 	}
 
 	private void actionSupprimerGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
@@ -370,8 +412,8 @@ public class ServeurGroupe extends HttpServlet {
 			HttpSession session) throws ServletException, IOException {
 
 		String defiAValider = (String) request.getParameter("id_defi");
-		String groupe = (String) request.getParameter("id_groupe");
 		Membre usr = (Membre) session.getAttribute("user");
+		Groupe groupe = (Groupe) request.getAttribute("groupe");
 
 		if (usr == null) {
 			request.setAttribute("erreur", "Vous n'êtes pas connecté");
@@ -384,21 +426,17 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
+		
 		if (groupe == null) {
-			request.setAttribute("erreur", "Aucun groupe présent");
+			request.setAttribute("erreur", "Aucun groupe sélectionné dans AjouterDefiAValider");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
 
 		int idDefiAValider = Integer.parseInt(defiAValider);
-		int idGroupe = Integer.parseInt(groupe);
-		Groupe grp = facade.getGroupeFromId(idGroupe);
-		Collection<Membre> membres = grp.getMembres();
-		Collection<Defi> defis = facade.getDefis(grp);
 
 		try {
-			facade.ajouterDefiAValider(idGroupe, idDefiAValider, usr);
+			facade.ajouterDefiAValider(groupe, idDefiAValider, usr);
 			request.setAttribute("status", "Votre défi a été envoyé !");
 			actionAfficherGroupe(request, response, session);
 			
@@ -554,7 +592,7 @@ public class ServeurGroupe extends HttpServlet {
 		// Récupération du groupe lié
 		String id_grp = (String) request.getParameter("id_grp");
 		if (id_grp == null) {
-			request.setAttribute("erreur", "Pas de groupe selectionné");
+			request.setAttribute("erreur", "Pas de groupe selectionné dans actionAfficherGroupe");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}

@@ -9,10 +9,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import exceptions.ExceptionUserNonDefini;
+import modele.CSJF;
 import modele.Defi;
 import modele.Defi_A_Valider;
 import modele.Defi_Valide;
 import modele.Demande_A_Rejoindre;
+import modele.Etats;
 import modele.Groupe;
 import modele.Membre;
 import modele.Message;
@@ -192,9 +194,8 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
-	public void ajouterDefiAValider(int idGroupe, int idDefiAValider, Membre membre) throws Exception {
+	public void ajouterDefiAValider(Groupe groupe, int idDefiAValider, Membre membre) throws Exception {
 		Defi defi1 = em.find(Defi.class, idDefiAValider);
-		Groupe groupe = em.find(Groupe.class, idGroupe);
 		Membre m = em.find(Membre.class, membre.getId());
 		TypedQuery<Defi_A_Valider> req = em
 				.createQuery("select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider, Defi_A_Valider.class);
@@ -209,6 +210,27 @@ public class Facade {
 			em.persist(defi_a_valider);
 		} else {
 			throw new Exception("probbb facade ajouter defi a valider");
+		}
+	}
+	
+	/**
+	 * FROM PAGE GROUPE, on crée un CSJF pour le membre concerné
+	 */
+	public void envoyerCSJF(Groupe groupe, Membre membre) throws Exception {
+		Groupe g = em.find(Groupe.class, groupe.getId());
+		Membre m = em.find(Membre.class, membre.getId());
+		TypedQuery<CSJF> req = em
+				.createQuery("select c from CSJF c WHERE MEMBRE_ID=" + membre.getId(), CSJF.class);
+		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
+			throw new Exception("Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
+		}
+		if (m != null && groupe != null) {
+			CSJF csjf = new CSJF();
+			csjf.setGroupe(g);
+			csjf.setMembre(m);
+			em.persist(csjf);
+		} else {
+			throw new Exception("probbb facade créer CSJF");
 		}
 	}
 

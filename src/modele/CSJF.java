@@ -24,8 +24,26 @@ public class CSJF {
 	private int difficulte;
 
 	private String sport;
+	
+	private Etats etat;
 
-	public CSJF(){}
+	public CSJF() {
+		this.etat = Etats.NonValide;
+	}
+	
+	/**
+	 * @return the etat
+	 */
+	public Etats getEtat() {
+		return this.etat;
+	}
+	
+	/**
+	 * @param new_etat the new etat
+	 */
+	public Etats setEtat(Etats new_etat) {
+		return this.etat = new_etat;
+	}
 	
 	/**
 	 * @return the nb_min
