@@ -422,7 +422,7 @@ public class Facade {
 						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
 						Defi_Valide.class);
 				TypedQuery<CSJF> req2 = em.createQuery(
-						"select c from CSJF c where c.membre" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=1",
+						"select c from CSJF c where c.membre=" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=1",
 						CSJF.class);
 				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
