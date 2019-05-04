@@ -18,38 +18,59 @@
 		<canvas id="chart"></canvas>
 		<script>	
 			var labelsGene = new Array(<%= prenomsToGene.size() %>);
-			var csjfGene = new Array(<%= defisToGene.size() %>);
-			var defiGene = new Array(<%= csjfsToGene.size() %>);
+			var csjfsGene = new Array(<%= defisToGene.size() %>);
+			var defisGene = new Array(<%= csjfsToGene.size() %>);
 			<%
 			for(int i = 0; i < prenomsToGene.size(); i++){
 				%> labelsGene[<%=i%>] = "<%=prenomsToGene.get(i)%>";<%
-				%> csjfGene[<%=i%>] = "<%=defisToGene.get(i)%>";<%
-				%> defiGene[<%=i%>] = <%=csjfsToGene.get(i)%>;<%
+				%> csjfsGene[<%=i%>] = <%=defisToGene.get(i)%>;<%
+				%> defisGene[<%=i%>] = <%=csjfsToGene.get(i)%>;<%
 			}
 			%>
 			
-			var ctx = document.getElementById('chart').getContext('2d');
-			var chart = new Chart(ctx, {
-			// The type of chart we want to create
-			type: 'bar',
-		    // The data for our dataset
-		    data: {
-			    labels: labelsGene,
-			    datasets: [{
+			var barChartData = 
+			{
+			labels: labelsGene,
+			datasets: 
+				[{
 			    	label: 'Défis',
-			    	backgroundColor: window.chartColors.green,
-			    	borderColor: window.chartColors.green,
+			    	backgroundColor: 'rgb(255,0,0)',
+			    	borderColor: 'rgb(255,0,0)',
 			    	data: defisGene
 		   		},{
 			    	label: 'CSJF',
-			    	backgroundColor: window.chartColors.red,
-			    	borderColor: window.chartColors.red,
-			    	data: csjfGene
+			    	backgroundColor: 'rgb(255,255,0)',
+			    	borderColor: 'rgb(255,255,0)',
+			    	data: csjfsGene
 		   		} ]
-		   },
-		   // Configuration options go here
-		   options: {}
-		   });	
+		   };
+		   window.onload = function() {
+				var ctx = document.getElementById('chart').getContext('2d');
+				window.myBar = new Chart(ctx, {
+					type: 'bar',
+					data: barChartData,
+					options: {
+						title: {
+							display: true,
+							text: 'Classement'
+						},
+						tooltips: {
+							mode: 'index',
+							intersect: false
+						},
+						responsive: true,
+						scales: {
+							xAxes: [{
+								stacked: true,
+							}],
+							yAxes: [{
+								stacked: true
+							}]
+						}
+					}
+				});
+			};
+
 		</script>
 	<%
 	}
