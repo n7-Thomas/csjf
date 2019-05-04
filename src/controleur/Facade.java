@@ -531,4 +531,9 @@ public class Facade {
 		}
 	}
 
+	public void validerCSJF(int id_csjf) {
+		CSJF csjf = em.find(CSJF.class, id_csjf);
+		csjf.setEtat(Etats.Valide);
+	}
+
 }

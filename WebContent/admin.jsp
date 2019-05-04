@@ -26,6 +26,8 @@
 	boolean hasDec = (defis_en_cours != null);
 	Collection<Defi_Valide> defis_valides = (Collection<Defi_Valide>) request.getAttribute("defis_valides");  
 	boolean hasDv = (defis_valides != null);
+	Collection<CSJF> csjf_a_valider = (Collection<CSJF>) request.getAttribute("csjf_a_valider");  
+	boolean hasCSJF = (defis_valides != null);
 	%>
 	
 	<div id="header">
@@ -36,7 +38,7 @@
 	 
 	<div id="contenu">
 	<% if(isConnected && hasGroupe) { %>
-		<div class="rightcolumn">   
+		<div class="rightcolumn" style="width: 49%;">   
    			
    			<fieldset id="afficherMembres">
 				<legend>Membres du groupes</legend>
@@ -114,7 +116,7 @@
 		
 		
 	
-		<div class="leftcolumn">	
+		<div class="leftcolumn" style="width: 49%;">	
 		    <fieldset id="ValiderDesDefis">
 		    	<legend>Valider des défis</legend>
 		    
@@ -137,6 +139,34 @@
 								  <input type="submit" value="Valider ces défis" name="valider">
 								  <input type="submit" value="Refuser ces défis" name="refuser">
 								  <input type="hidden" name="action" value="validerDefis">
+								  <input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
+								  </div>
+						</form>
+					<% } %>
+				</fieldset>
+				
+				<fieldset id="ValiderDesCSJF">
+		    	<legend>Valider des CSJF</legend>
+		    
+					<% 
+			   		if(!hasCSJF || csjf_a_valider.size() == 0){ %>	
+			   			<p>	Aucune demande en cours ! </p> <%
+		       		} else {
+					%>
+						<form method="get" action="ServeurGroupe">
+						<% for (CSJF csjf : csjf_a_valider) { 
+						       String id_pour_dav = "csjf_" + csjf.getId();
+						%>
+						    	  <div>
+								  <input type="checkbox" id="<%=id_pour_dav%>" name="<%=id_pour_dav%>" value="ok">
+								  <label for="<%=id_pour_dav%>"><%=csjf.getMembre().getPrenom() %> :  </label>	
+							      </div>
+						<% } %>
+						
+								  <div>
+								  <input type="submit" value="Valider ces CSJF" name="valider">
+								  <input type="submit" value="Refuser ces CSJF" name="refuser">
+								  <input type="hidden" name="action" value="validerCSJF">
 								  <input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 								  </div>
 						</form>

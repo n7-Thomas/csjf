@@ -159,8 +159,14 @@ public class ServeurGroupe extends HttpServlet {
 			actionEditerNomGroupe(request, response, session);
 		}
 		
+		// ACTION ENVOYER CSJF
 		if (action.equals("envoyerCSJF")) {
 			actionEnvoyerCSJF(request, response, session);
+		}
+		
+		// ACTION VALIDER CSJF
+		if (action.equals("validerCSJF")) {
+			actionValiderCSJF(request, response, session);
 		}
 		
 	}
@@ -533,6 +539,48 @@ public class ServeurGroupe extends HttpServlet {
 					facade.validerDefi(id_dav);
 				else 
 					facade.refuserDefi(id_dav);
+				
+			}
+		}
+
+		actionAfficherAdmin(request, response, session);
+	}
+	
+	private void actionValiderCSJF(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+
+		// Récupération du membre connecté
+		Membre usr = (Membre) session.getAttribute("user");
+		if (usr == null) {
+			request.setAttribute("erreur", "Vous n'êtes pas connecté");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
+		// Récupération du groupe lié
+		Groupe grp = (Groupe) request.getAttribute("groupe");
+		if (grp == null) {
+			request.setAttribute("erreur", "Pas de groupe actif");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+		
+		boolean valider = true;
+		if (request.getAttribute("refuser")!= null)
+			valider = false;
+		
+
+		Map<String, String[]> hm = request.getParameterMap();
+		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
+		while (iter.hasNext()) {
+			String key = iter.next().getKey();
+			
+			if (key.contains("csjf_")) {
+				int id_csjf = Integer.parseInt(key.substring(5));
+				if (valider)	
+					facade.validerCSJF(id_csjf);
+				else 
+					facade.refuserCSJF(id_csjf);
 				
 			}
 		}
