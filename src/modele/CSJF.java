@@ -18,6 +18,8 @@ public class CSJF {
 
 	@OneToOne
 	private Groupe groupe;
+	
+	private String texte;
 
 	private int nb_min;
 
@@ -32,6 +34,20 @@ public class CSJF {
 	}
 	
 	/**
+	 * @return the texte
+	 */
+	public String getTexte() {
+		return this.texte;
+	}
+	
+	/**
+	 * @param new_texte the new texte
+	 */
+	public void setTexte(String new_texte) {
+		this.texte = new_texte;
+	}
+	
+	/**
 	 * @return the etat
 	 */
 	public Etats getEtat() {
@@ -41,8 +57,8 @@ public class CSJF {
 	/**
 	 * @param new_etat the new etat
 	 */
-	public Etats setEtat(Etats new_etat) {
-		return this.etat = new_etat;
+	public void setEtat(Etats new_etat) {
+		this.etat = new_etat;
 	}
 	
 	/**

@@ -216,7 +216,7 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on crée un CSJF pour le membre concerné
 	 */
-	public void envoyerCSJF(Groupe groupe, Membre membre) throws Exception {
+	public void envoyerCSJF(String texte, Groupe groupe, Membre membre) throws Exception {
 		Groupe g = em.find(Groupe.class, groupe.getId());
 		Membre m = em.find(Membre.class, membre.getId());
 		TypedQuery<CSJF> req = em
@@ -228,6 +228,7 @@ public class Facade {
 			CSJF csjf = new CSJF();
 			csjf.setGroupe(g);
 			csjf.setMembre(m);
+			csjf.setTexte(texte);
 			em.persist(csjf);
 		} else {
 			throw new Exception("probbb facade créer CSJF");

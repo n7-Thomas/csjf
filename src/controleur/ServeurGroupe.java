@@ -179,6 +179,7 @@ public class ServeurGroupe extends HttpServlet {
 
 		Membre usr = (Membre) session.getAttribute("user");
 		Groupe groupe = (Groupe) request.getAttribute("groupe");
+		String texte = (String) request.getParameter("csjf");
 
 		if (usr == null) {
 			request.setAttribute("erreur", "Vous n'êtes pas connecté");
@@ -191,9 +192,14 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
+		
+		if (texte == null) {
+			request.setAttribute("status", "Vous n'avez pas saisi de csjf !");
+			actionAfficherGroupe(request, response, session);
+		}
 
 		try {
-			facade.envoyerCSJF(groupe, usr);
+			facade.envoyerCSJF(texte, groupe, usr);
 			request.setAttribute("status", "Votre CSJF a été envoyé !");
 			actionAfficherGroupe(request, response, session);
 			
