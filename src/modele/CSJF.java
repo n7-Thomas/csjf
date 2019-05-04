@@ -20,12 +20,8 @@ public class CSJF {
 	private Groupe groupe;
 	
 	private String texte;
-
-	private int nb_min;
-
-	private int difficulte;
-
-	private String sport;
+	
+	private int points;
 	
 	private Etats etat;
 
@@ -60,48 +56,6 @@ public class CSJF {
 	public void setEtat(Etats new_etat) {
 		this.etat = new_etat;
 	}
-	
-	/**
-	 * @return the nb_min
-	 */
-	public int getNb_min() {
-		return nb_min;
-	}
-
-	/**
-	 * @param nb_min the nb_min to set
-	 */
-	public void setNb_min(int nb_min) {
-		this.nb_min = nb_min;
-	}
-
-	/**
-	 * @return the difficulte
-	 */
-	public int getDifficulte() {
-		return difficulte;
-	}
-
-	/**
-	 * @param difficulte the difficulte to set
-	 */
-	public void setDifficulte(int difficulte) {
-		this.difficulte = difficulte;
-	}
-
-	/**
-	 * @return the sport
-	 */
-	public String getSport() {
-		return sport;
-	}
-
-	/**
-	 * @param sport the sport to set
-	 */
-	public void setSport(String sport) {
-		this.sport = sport;
-	}
 
 	/**
 	 * @return the groupe
@@ -133,5 +87,13 @@ public class CSJF {
 	
 	public int getId() {
 		return this.id;
+	}
+
+	public void setPoints(int valeur) {
+		this.points = valeur;
+	}
+	
+	public int getPoints() {
+		return this.points;
 	}
 }

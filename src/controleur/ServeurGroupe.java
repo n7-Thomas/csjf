@@ -570,24 +570,20 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
-		boolean valider = true;
-		if (request.getAttribute("refuser")!= null)
-			valider = false;
-		
-
+	
 		Map<String, String[]> hm = request.getParameterMap();
 		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
 		while (iter.hasNext()) {
-			String key = iter.next().getKey();
+			Entry<String, String[]> next = iter.next();
+			String key = next.getKey();
 			
 			if (key.contains("csjf_")) {
-				int id_csjf = Integer.parseInt(key.substring(5));
-				if (valider)	
-					facade.validerCSJF(id_csjf);
-				else 
-					facade.refuserCSJF(id_csjf);
-				
+				String value[] = next.getValue();
+				if(value != null && value.length == 1) {
+					int valeur = Integer.parseInt(value[0]);
+					int id_csjf = Integer.parseInt(key.substring(5));
+					facade.validerCSJF(id_csjf, valeur);
+				}
 			}
 		}
 
@@ -623,6 +619,7 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
 		
+		request.setAttribute("csjf_a_valider", facade.getCSJFAValider(grp));
 		request.setAttribute("defis_valides", facade.getDefisValides(grp));
 		request.setAttribute("defis_en_cours", facade.getDefisEnCours(grp));
 		request.setAttribute("demandes_a_rejoindre", facade.getDemandeARejoindre(grp));

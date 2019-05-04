@@ -417,16 +417,27 @@ public class Facade {
 		if (membres != null) {
 			for (Membre mb : membres) {
 				int somme = 0;
+				int somme2 = 0;
 				TypedQuery<Defi_Valide> req = em.createQuery(
 						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
 						Defi_Valide.class);
+				TypedQuery<CSJF> req2 = em.createQuery(
+						"select c from CSJF c where c.membre" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=1",
+						CSJF.class);
 				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
 					for (Defi_Valide dv : dvs) {
 						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
-				resultat.add(mb.getPrenom() + ":" + somme);
+				if (req2 != null && req2.getResultList().size() != 0) {
+					Collection<CSJF> csjfs = req2.getResultList();
+					for (CSJF csjf : csjfs) {
+						somme2 += csjf.getPoints();
+					}
+				}
+				
+				resultat.add(mb.getPrenom() + ":" + somme + ":" + somme2);
 			}
 		} else {
 			System.out.println("\n\n AUCUN MEMBRE \n\n");
@@ -511,7 +522,14 @@ public class Facade {
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
 		em.persist(defi_a_valider2);
-
+		
+		CSJF csjf = new CSJF();
+		csjf.setEtat(Etats.EnCoursDeValidation);
+		csjf.setGroupe(gp);
+		csjf.setMembre(celia);
+		csjf.setTexte("J'ai fait des pâtes");
+		em.persist(csjf);
+		
 		return thomas;
 	}
 
@@ -532,14 +550,29 @@ public class Facade {
 		}
 	}
 
-	public void validerCSJF(int id_csjf) {
+	public void validerCSJF(int id_csjf, int valeur) {
 		CSJF csjf = em.find(CSJF.class, id_csjf);
 		csjf.setEtat(Etats.Valide);
+		csjf.setPoints(valeur);
+		System.out.println("\n\n CHANGEMENT CSJF " + csjf.getId() + " -> " + csjf.getEtat() + " " + csjf.getPoints());
 	}
 
 	public void refuserCSJF(int id_csjf) {
 		CSJF csjf = em.find(CSJF.class, id_csjf);
 		csjf.setEtat(Etats.NonValide);
+		em.merge(csjf);
+	}
+	
+	public Collection<CSJF> getCSJFAValider(Groupe gp){
+		Collection<CSJF> csjf_a_valider = null;
+		String rq = "select c from CSJF c where c.groupe=" + gp.getId() + " and c.etat=2"; // 2 pour EnCoursDeValidation 
+		TypedQuery<CSJF> req = em.createQuery(rq, CSJF.class);
+		
+		if(req != null && req.getResultList().size() != 0)
+			csjf_a_valider = req.getResultList();
+		
+		
+		return csjf_a_valider;
 	}
 
 }

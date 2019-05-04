@@ -27,7 +27,8 @@
 	Collection<Defi_Valide> defis_valides = (Collection<Defi_Valide>) request.getAttribute("defis_valides");  
 	boolean hasDv = (defis_valides != null);
 	Collection<CSJF> csjf_a_valider = (Collection<CSJF>) request.getAttribute("csjf_a_valider");  
-	boolean hasCSJF = (defis_valides != null);
+	boolean hasCSJF = (csjf_a_valider != null);
+	
 	%>
 	
 	<div id="header">
@@ -158,14 +159,13 @@
 						       String id_pour_dav = "csjf_" + csjf.getId();
 						%>
 						    	  <div>
-								  <input type="checkbox" id="<%=id_pour_dav%>" name="<%=id_pour_dav%>" value="ok">
-								  <label for="<%=id_pour_dav%>"><%=csjf.getMembre().getPrenom() %> :  </label>	
+								  <input type="number" id="<%=id_pour_dav%>" name="<%=id_pour_dav%>">
+								  <label for="<%=id_pour_dav%>"><%=csjf.getMembre().getPrenom() %> : <%= csjf.getTexte() %>  </label>	
 							      </div>
 						<% } %>
 						
 								  <div>
 								  <input type="submit" value="Valider ces CSJF" name="valider">
-								  <input type="submit" value="Refuser ces CSJF" name="refuser">
 								  <input type="hidden" name="action" value="validerCSJF">
 								  <input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
 								  </div>
@@ -183,7 +183,7 @@
 				            <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
 				            <br />
 				          	<label for="points">Nombre de points: <span class="requis">*</span></label>
-				            <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
+				            <input type="number" id="points" name="points" value="" size="20" maxlength="60" />
 				            <br />
 				            <label for="dateDebut">Date de début: </label>
 			            	<input type="date" id="dateDebut" name="dateDebut" />
@@ -265,7 +265,7 @@
 			            <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
 			            <br />
 			          	<label for="points">Nombre de points: </label>
-			            <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
+			            <input type="number" id="points" name="points" value="" size="20" maxlength="60" />
 			            <br />
 			            <label for="dateDebut">Date de début: </label>
 			            <input type="date" id="dateDebut" name="dateDebut" value="" size="20" maxlength="60" />

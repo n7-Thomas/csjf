@@ -4,23 +4,27 @@
 	Collection<String> classement = (Collection<String>) request.getAttribute("classement");
 	boolean hasNP = (classement != null);
 	if(hasNP) { 
-		List<String> prenoms = new ArrayList<String>();
-		List<Integer> scores = new ArrayList<Integer>();
+		List<String> prenomsToGene = new ArrayList<String>();
+		List<Integer> defisToGene = new ArrayList<Integer>();
+		List<Integer> csjfsToGene = new ArrayList<Integer>();
 		for(String str : classement){
 			String[] tokens = str.split(":");
-			prenoms.add(tokens[0]);
-			scores.add(Integer.parseInt(tokens[1]));
+			prenomsToGene.add(tokens[0]);
+			defisToGene.add(Integer.parseInt(tokens[1]));
+			csjfsToGene.add(Integer.parseInt(tokens[2]));
 		}
 		%>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 		<canvas id="chart"></canvas>
 		<script>	
-			var labelsGene = new Array(<%= prenoms.size() %>);
-			var dataGene = new Array(<%= scores.size() %>);
+			var labelsGene = new Array(<%= prenomsToGene.size() %>);
+			var csjfGene = new Array(<%= defisToGene.size() %>);
+			var defiGene = new Array(<%= csjfsToGene.size() %>);
 			<%
-			for(int i = 0; i < prenoms.size(); i++){
-				%> labelsGene[<%=i%>] = "<%=prenoms.get(i)%>";<%
-				%> dataGene[<%=i%>] = <%=scores.get(i)%>;<%
+			for(int i = 0; i < prenomsToGene.size(); i++){
+				%> labelsGene[<%=i%>] = "<%=prenomsToGene.get(i)%>";<%
+				%> csjfGene[<%=i%>] = "<%=defisToGene.get(i)%>";<%
+				%> defiGene[<%=i%>] = <%=csjfsToGene.get(i)%>;<%
 			}
 			%>
 			
@@ -32,11 +36,16 @@
 		    data: {
 			    labels: labelsGene,
 			    datasets: [{
-			    label: 'Classement',
-			    backgroundColor: 'rgb(255, 99, 132)',
-			    borderColor: 'rgb(255, 99, 132)',
-			    data: dataGene
-		   }]
+			    	label: 'Défis',
+			    	backgroundColor: window.chartColors.green,
+			    	borderColor: window.chartColors.green,
+			    	data: defisGene
+		   		},{
+			    	label: 'CSJF',
+			    	backgroundColor: window.chartColors.red,
+			    	borderColor: window.chartColors.red,
+			    	data: csjfGene
+		   		} ]
 		   },
 		   // Configuration options go here
 		   options: {}
