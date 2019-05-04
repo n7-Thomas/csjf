@@ -3,6 +3,7 @@ package tests;
 import modele.Defi;
 import modele.Groupe;
 import modele.PrivateDate;
+import modele.TypeDefi;
 
 public class Tests_Defis {
 
@@ -15,6 +16,7 @@ public class Tests_Defis {
 		defi.setDate(date);
 		defi.setEndDate(endDate);
 		defi.setGroupe(groupe);
+		defi.setType(TypeDefi.Sport);
 		return defi;
 	}
 

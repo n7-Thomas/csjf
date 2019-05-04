@@ -137,7 +137,7 @@ public class Facade {
 		dv.setDefi(dav.getDefi());
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
-
+		dv.setDateValidation(PrivateDate.getNow().toString());
 		em.remove(dav);
 	}
 
@@ -199,9 +199,18 @@ public class Facade {
 		Membre m = em.find(Membre.class, membre.getId());
 		TypedQuery<Defi_A_Valider> req = em
 				.createQuery("select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider, Defi_A_Valider.class);
+
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
-			throw new Exception("Ce défi a déjà été envoyer pour être validé, vous ne pouvez pas le réenvoyer !");
+			throw new Exception("Ce défi a déjà été envoyé pour être validé, vous ne pouvez pas le renvoyer !");
 		}
+		
+		TypedQuery<Defi_Valide> req2 = em
+				.createQuery("select d from Defi_Valide d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(), Defi_Valide.class);
+		
+		if (req2.getResultList().size() != 0) { 
+			throw new Exception("Ce défi a déjà été validé !");
+		}
+		
 		if (defi1 != null && m != null && groupe != null) {
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 			defi_a_valider.setDefi(defi1);
@@ -209,7 +218,7 @@ public class Facade {
 			defi_a_valider.setGroupe(groupe);
 			em.persist(defi_a_valider);
 		} else {
-			throw new Exception("probbb facade ajouter defi a valider");
+			throw new Exception("Problème facade ajouter defi a valider");
 		}
 	}
 	
@@ -220,7 +229,7 @@ public class Facade {
 		Groupe g = em.find(Groupe.class, groupe.getId());
 		Membre m = em.find(Membre.class, membre.getId());
 		TypedQuery<CSJF> req = em
-				.createQuery("select c from CSJF c WHERE MEMBRE_ID=" + membre.getId(), CSJF.class);
+				.createQuery("select c from CSJF c WHERE MEMBRE_ID=" + membre.getId() + " and c.etat=2", CSJF.class);
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
 			throw new Exception("Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
 		}
@@ -416,28 +425,43 @@ public class Facade {
 		System.out.println("\n\n MEMBRES " + membres + " \n\n");
 		if (membres != null) {
 			for (Membre mb : membres) {
-				int somme = 0;
-				int somme2 = 0;
+				int somme_defi_before = 0;
+				int somme_csjf_before = 0;
+				int somme_defi_cette_semaine = 0;
+				int somme_csjf_cette_semaine = 0;
 				TypedQuery<Defi_Valide> req = em.createQuery(
 						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
 						Defi_Valide.class);
 				TypedQuery<CSJF> req2 = em.createQuery(
 						"select c from CSJF c where c.membre=" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=0",
 						CSJF.class);
+				
+				PrivateDate date_prec = PrivateDate.getNow();
+				date_prec.setJour(date_prec.getJour() - 7);
+				
+			
 				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
 					for (Defi_Valide dv : dvs) {
-						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+						PrivateDate date = new PrivateDate(dv.getDateValidation());
+						if(date.isBefore(date_prec))						
+							somme_defi_before += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+						else
+							somme_defi_cette_semaine += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
 				if (req2 != null && req2.getResultList().size() != 0) {
 					Collection<CSJF> csjfs = req2.getResultList();
 					for (CSJF csjf : csjfs) {
-						somme2 += csjf.getPoints();
+						PrivateDate date = new PrivateDate(csjf.getDateValidation());
+						if(date.isBefore(date_prec))						
+							somme_csjf_before += csjf.getPoints();
+						else
+							somme_csjf_cette_semaine += csjf.getPoints();
 					}
 				}
 				
-				resultat.add(mb.getPrenom() + ":" + somme + ":" + somme2);
+				resultat.add(mb.getPrenom() + ":" + somme_defi_before + ":" + somme_defi_cette_semaine + ":" + somme_csjf_before + ":" + somme_csjf_cette_semaine);
 			}
 		} else {
 			System.out.println("\n\n AUCUN MEMBRE \n\n");
@@ -530,6 +554,15 @@ public class Facade {
 		csjf.setTexte("J'ai fait des pâtes");
 		em.persist(csjf);
 		
+		CSJF csjf_deja_valide = new CSJF();
+		csjf.setEtat(Etats.Valide);
+		csjf.setGroupe(gp);
+		csjf.setMembre(thomas);
+		csjf.setTexte("Je suis né");
+		csjf.setDateValidation("19970723");
+		csjf.setPoints(100);
+		em.persist(csjf_deja_valide);
+		
 		return thomas;
 	}
 
@@ -554,13 +587,13 @@ public class Facade {
 		CSJF csjf = em.find(CSJF.class, id_csjf);
 		csjf.setEtat(Etats.Valide);
 		csjf.setPoints(valeur);
-		System.out.println("\n\n CHANGEMENT CSJF " + csjf.getId() + " -> " + csjf.getEtat() + " " + csjf.getPoints());
+		csjf.setDateValidation(PrivateDate.getNow().toString());
 	}
 
 	public void refuserCSJF(int id_csjf) {
 		CSJF csjf = em.find(CSJF.class, id_csjf);
 		csjf.setEtat(Etats.NonValide);
-		em.merge(csjf);
+		csjf.setDateValidation(PrivateDate.getNow().toString());
 	}
 	
 	public Collection<CSJF> getCSJFAValider(Groupe gp){

@@ -24,6 +24,8 @@ public class CSJF {
 	private int points;
 	
 	private Etats etat;
+	
+	private String dateValidation;
 
 	public CSJF() {
 		this.etat = Etats.EnCoursDeValidation;
@@ -95,5 +97,13 @@ public class CSJF {
 	
 	public int getPoints() {
 		return this.points;
+	}
+
+	public String getDateValidation() {
+		return dateValidation;
+	}
+
+	public void setDateValidation(String dateValidation) {
+		this.dateValidation = dateValidation;
 	}
 }
