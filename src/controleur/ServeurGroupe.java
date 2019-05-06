@@ -630,6 +630,7 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
 
+
 		request.setAttribute("csjf_a_valider", facade.getCSJFAValider(grp));
 		request.setAttribute("defis_valides", facade.getDefisValides(grp));
 		request.setAttribute("defis_en_cours", facade.getDefisEnCours(grp));
