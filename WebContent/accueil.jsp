@@ -31,48 +31,48 @@
 		<h2>CSJF, qu'est ce que c'est ?</h2>
 		<p>Ceci est une page d'accueil de qualité, nous mettrons des trucs
 			cools dessus j'vous jure</p>
-		<h3>Tests</h3>
-		<p>Ca faisait vide alors je mets un Lorem
-		<p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			Phasellus eleifend sed eros nec viverra. Etiam ipsum enim, pulvinar
-			ac pulvinar ac, pretium feugiat dolor. Vestibulum quis placerat
-			tellus. Morbi eget accumsan ligula. Mauris tincidunt orci felis, sed
-			dignissim eros dapibus et. Proin in tincidunt eros. Donec ac volutpat
-			orci. Aliquam sollicitudin tempor neque, a pretium metus ultrices
-			feugiat. Suspendisse potenti. Etiam ultricies lectus lobortis
-			fringilla sagittis. Quisque egestas pretium dolor, sed blandit tortor
-			accumsan non. Quisque ipsum nulla, faucibus in mollis a, pharetra
-			ultricies eros. Duis ullamcorper pretium ex sed dignissim. Donec nibh
-			ligula, tempor non feugiat et, viverra eget massa.</p>
-		<h3>Tests</h3>
-		<p>Ca faisait vide alors je mets un Lorem
-		<p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			Phasellus eleifend sed eros nec viverra. Etiam ipsum enim, pulvinar
-			ac pulvinar ac, pretium feugiat dolor. Vestibulum quis placerat
-			tellus. Morbi eget accumsan ligula. Mauris tincidunt orci felis, sed
-			dignissim eros dapibus et. Proin in tincidunt eros. Donec ac volutpat
-			orci. Aliquam sollicitudin tempor neque, a pretium metus ultrices
-			feugiat. Suspendisse potenti. Etiam ultricies lectus lobortis
-			fringilla sagittis. Quisque egestas pretium dolor, sed blandit tortor
-			accumsan non. Quisque ipsum nulla, faucibus in mollis a, pharetra
-			ultricies eros. Duis ullamcorper pretium ex sed dignissim. Donec nibh
-			ligula, tempor non feugiat et, viverra eget massa.</p>
-		<h3>Tests</h3>
-		<p>Ca faisait vide alors je mets un Lorem
-		<p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			Phasellus eleifend sed eros nec viverra. Etiam ipsum enim, pulvinar
-			ac pulvinar ac, pretium feugiat dolor. Vestibulum quis placerat
-			tellus. Morbi eget accumsan ligula. Mauris tincidunt orci felis, sed
-			dignissim eros dapibus et. Proin in tincidunt eros. Donec ac volutpat
-			orci. Aliquam sollicitudin tempor neque, a pretium metus ultrices
-			feugiat. Suspendisse potenti. Etiam ultricies lectus lobortis
-			fringilla sagittis. Quisque egestas pretium dolor, sed blandit tortor
-			accumsan non. Quisque ipsum nulla, faucibus in mollis a, pharetra
-			ultricies eros. Duis ullamcorper pretium ex sed dignissim. Donec nibh
-			ligula, tempor non feugiat et, viverra eget massa.</p>
+		<h3>Mes groupes:</h3>
+	
+         <%
+ 
+                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus"); 
+   
+				if (groupes != null){%>
+					<h5>Auquels j'appartiens</h5>
+       				<% for (Groupe g : groupes) {
+                		String groupe_nom = g.getNom(); 
+               			%>
+               			<p> <%= groupe_nom %> </p>
+                	<%} 
+       			} else { 
+       			%>
+                <p> Vous n'êtes dans aucun groupe actuellement</p>
+                <% }
+				Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
+                if (groupes_admin != null){%>
+                	<h5>Que j'administre</h5>
+           			<% for (Groupe g : groupes_admin) {
+                    	String groupe_nom = g.getNom(); 
+                %>		<p><%= groupe_nom %></p>
+                <%}  
+           		  } else {
+                %><p> Vous n'administrez aucun groupe actuellement. </p>
+				<%} 
+				%>
+		
+		<h3>Les groupes existants:</h3>
+		
+		
+		<p>	
+
+		<%Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); %>
+		<ul> <% for(Groupe g: Autresgroupes){
+				String groupe = g.getNom(); %>
+		<li><%=groupe%> <li/>		
+		<%}%> </ul>
+		</p>
+						
+				
 		<h3>Tests</h3>
 		<a href="testPageGroupe.jsp">Test page du groupe</a> <br>
 		<a href="ServeurTests?action=init1">Init Test 1 : Création de

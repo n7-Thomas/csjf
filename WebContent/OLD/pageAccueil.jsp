@@ -23,7 +23,6 @@
                 <%
                 System.out.println("\n\n\n bda: ");
                 Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupesAppartenus"); 
-            	System.out.println("\n\n\n AH : " + groupes);
 				if (groupes != null){
        				for (Groupe g : groupes) {
                 		String groupe_nom = g.getNom(); 
