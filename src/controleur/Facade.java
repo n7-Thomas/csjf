@@ -251,6 +251,33 @@ public class Facade {
 		Groupe g = em.find(Groupe.class, grp.getId());
 		return g.getDefis();
 	}
+	
+	/**
+	 * FROM PAGE GROUPE, on demande les défis d'un membres, ie. tous les défis mais aussi les défis validés et à valider
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ArrayList getDefisMembre(Membre membre, Groupe grp) {
+		Groupe g = em.find(Groupe.class, grp.getId());
+		Membre m = em.find(Membre.class, membre.getId());
+		ArrayList l = new ArrayList();
+		Collection<Defi> defis = g.getDefis();
+		l.addAll(defis);
+		for (Defi_Valide d : m.getDefis_valides()) {
+			if (defis.contains(d.getDefi())) {
+				l.remove(d.getDefi());
+				l.add(d);
+			}
+		}
+		TypedQuery<Defi_A_Valider> req = em
+				.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(), Defi_A_Valider.class);
+		for (Defi_A_Valider d : req.getResultList()) {
+			if (defis.contains(d.getDefi())) {
+				l.remove(d.getDefi());
+				l.add(d);
+			}
+		}
+		return l;
+	}
 
 	public void demandeValidationCSJF() {
 

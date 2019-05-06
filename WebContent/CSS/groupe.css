@@ -97,8 +97,10 @@ body {
 	color: rgb(205, 55, 67);
 	letter-spacing: .1rem;
 	position: absolute;
-	left: 30px;
+	padding: 8px;
+	left: 34px;
 	top: 274px;
+	z-index: 2;
 }
 
 
@@ -222,6 +224,7 @@ body {
     text-align: center;
     background-color: black;
     position: absolute;
+    z-index: 1;
 	left: 434px;
 	top: 137px;
     border-radius: 5px;

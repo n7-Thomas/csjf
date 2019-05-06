@@ -28,7 +28,7 @@
 					Groupe groupe = (Groupe) request.getAttribute("groupe");
 
 					String status = (String) request.getAttribute("status");
-					Collection<Defi> defis = (Collection<Defi>) request.getAttribute("defis");
+					ArrayList defis = (ArrayList) request.getAttribute("defis");
 		%>
 		<div id="bloc_gauche">
 			<div id="conteneur-menu2">
@@ -69,12 +69,15 @@
 					%>
 					<select name="id_defi" id="liste">
 						<%
-							for (Defi defi : defis) {
+							for (Object o : defis) {
+								if (o instanceof Defi) {
+									Defi defi = (Defi) o;
 						%>
 						<option value="<%=defi.getId()%>" name="id_defi"><%=defi.getNom()%></option>
 						<%
+								}
 							}
-									}
+						}
 						%>
 					</select> <input type="submit" value="Envoyer!" class="bouton_envoyer" /> 
 					<input type="hidden" value="ajouterDefiAValider" name="action"> 
@@ -98,8 +101,8 @@
 				</div>
 				<%
 					if (defis != null) {
-								for (Defi defi : defis) {
-									if (defi == null) {
+						for (Object o : defis) {
+							if (o == null) {
 				%>
 				<div class="defi_afficher">
 					<div class="nom_aff">Aucun défi</div>
@@ -108,7 +111,8 @@
 					<div class="type_aff">Rien</div>
 				</div>
 				<%
-									} else {
+							} else if (o instanceof Defi) {
+								Defi defi = (Defi) o;
 				%>
 				<div class="defi_afficher">
 					<div class="nom_aff">
@@ -121,12 +125,50 @@
 						<%=defi.getPoints()%>
 					</div>
 					<div class="type_aff">
-						<%=defi.getType()%>
+						Non validé
 					</div>
 				</div>
 				<%
-									}
-								}
+							} else if (o instanceof Defi_A_Valider) {
+								Defi_A_Valider defi_a_valider = (Defi_A_Valider) o;
+								Defi defi = defi_a_valider.getDefi();
+				%>
+				<div class="defi_afficher">
+					<div class="nom_aff">
+						<%=defi.getNom()%>
+					</div>
+					<div class="desc_aff">
+						<%=defi.getDescription()%>
+					</div>
+					<div class="points_aff">
+						<%=defi.getPoints()%>
+					</div>
+					<div class="type_aff">
+						En cours de validation
+					</div>
+				</div>
+				<%
+							} else {
+								Defi_Valide defi_valide = (Defi_Valide) o;
+								Defi defi = defi_valide.getDefi();
+				%>
+				<div class="defi_afficher">
+					<div class="nom_aff">
+						<%=defi.getNom()%>
+					</div>
+					<div class="desc_aff">
+						<%=defi.getDescription()%>
+					</div>
+					<div class="points_aff">
+						<%=defi.getPoints()%>
+					</div>
+					<div class="type_aff">
+						Validé
+					</div>
+				</div>
+				<%
+							}
+						}
 					}
 				%>
 			</div>
