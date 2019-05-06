@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class Membre {
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "membre_groupe")
-	private Collection<Groupe> groupes_appartenus;
+	private Collection<Groupe> groupes_appartenus = new ArrayList<Groupe>();
 
 	@OneToMany(mappedBy = "admin", fetch = FetchType.EAGER)
 	private Collection<Groupe> groupes_administres;

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<meta charset="ISO-8859-1">
+		<meta charset="UTF-8">
 		<title>Administration du groupe</title>
         <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
         <link type="text/css" rel="stylesheet" href="CSS/form.css" />
@@ -24,6 +24,11 @@
 	boolean hasDav = (defis_a_valider != null);
 	Collection<Defi> defis_en_cours = (Collection<Defi>) request.getAttribute("defis_en_cours");  
 	boolean hasDec = (defis_en_cours != null);
+	Collection<Defi_Valide> defis_valides = (Collection<Defi_Valide>) request.getAttribute("defis_valides");  
+	boolean hasDv = (defis_valides != null);
+	Collection<CSJF> csjf_a_valider = (Collection<CSJF>) request.getAttribute("csjf_a_valider");  
+	boolean hasCSJF = (csjf_a_valider != null);
+	
 	%>
 	
 	<div id="header">
@@ -34,7 +39,7 @@
 	 
 	<div id="contenu">
 	<% if(isConnected && hasGroupe) { %>
-		<div class="rightcolumn">   
+		<div class="rightcolumn" style="width: 49%;">   
    			
    			<fieldset id="afficherMembres">
 				<legend>Membres du groupes</legend>
@@ -112,7 +117,7 @@
 		
 		
 	
-		<div class="leftcolumn">	
+		<div class="leftcolumn" style="width: 49%;">	
 		    <fieldset id="ValiderDesDefis">
 		    	<legend>Valider des défis</legend>
 		    
@@ -140,6 +145,33 @@
 						</form>
 					<% } %>
 				</fieldset>
+				
+				<fieldset id="ValiderDesCSJF">
+		    	<legend>Valider des CSJF</legend>
+		    
+					<% 
+			   		if(!hasCSJF || csjf_a_valider.size() == 0){ %>	
+			   			<p>	Aucune demande en cours ! </p> <%
+		       		} else {
+					%>
+						<form method="get" action="ServeurGroupe">
+						<% for (CSJF csjf : csjf_a_valider) { 
+						       String id_pour_dav = "csjf_" + csjf.getId();
+						%>
+						    	  <div>
+								  <input type="number" id="<%=id_pour_dav%>" name="<%=id_pour_dav%>">
+								  <label for="<%=id_pour_dav%>"><%=csjf.getMembre().getPrenom() %> : <%= csjf.getTexte() %>  </label>	
+							      </div>
+						<% } %>
+						
+								  <div>
+								  <input type="submit" value="Valider ces CSJF" name="valider">
+								  <input type="hidden" name="action" value="validerCSJF">
+								  <input type="hidden" name="id_grp" value="<%=groupe.getId() %>">
+								  </div>
+						</form>
+					<% } %>
+				</fieldset>
 		
 				<fieldset id="AjouterDefi">
 				    <legend>Ajouter un défi</legend>
@@ -151,7 +183,7 @@
 				            <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
 				            <br />
 				          	<label for="points">Nombre de points: <span class="requis">*</span></label>
-				            <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
+				            <input type="number" id="points" name="points" value="" size="20" maxlength="60" />
 				            <br />
 				            <label for="dateDebut">Date de début: </label>
 			            	<input type="date" id="dateDebut" name="dateDebut" />
@@ -181,6 +213,22 @@
 								Depuis <%= defi.getDate() %> jusqu'au <%=defi.getEndDate() %> 
 								<a href="ServeurGroupe?action=del_defi&id_grp=<%=groupe.getId() %>&id_defi=<%=defi.getId() %>" style="color:red; background:none; size:5px;font-family: Verdana, Times, serif;">x</a>
 								</p>	
+							<% } %>
+						</div>
+						<% } %>
+				</fieldset>
+				
+				<fieldset id="DefisValides">
+					<legend>Défis déjà validés</legend>
+						<%  
+						if(!hasDv || defis_valides.size() == 0){ %>	
+							<p>	Aucun défi validé ! </p> <%
+			    	   	} else {
+						%>
+						<div>
+						    <% for (Defi_Valide dv : defis_valides) { 
+						    %>
+								<p> <em><%=dv.getDefi().getNom()%></em> par <%=dv.getMembre().getPrenom() %> </p>	
 							<% } %>
 						</div>
 						<% } %>
@@ -217,7 +265,7 @@
 			            <input type="text" id="description" name="description" value="" size="20" maxlength="60" />
 			            <br />
 			          	<label for="points">Nombre de points: </label>
-			            <input type="text" id="points" name="points" value="" size="20" maxlength="60" />
+			            <input type="number" id="points" name="points" value="" size="20" maxlength="60" />
 			            <br />
 			            <label for="dateDebut">Date de début: </label>
 			            <input type="date" id="dateDebut" name="dateDebut" value="" size="20" maxlength="60" />

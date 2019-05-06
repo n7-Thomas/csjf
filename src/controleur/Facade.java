@@ -9,15 +9,21 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import exceptions.ExceptionUserNonDefini;
+import modele.CSJF;
 import modele.Defi;
 import modele.Defi_A_Valider;
 import modele.Defi_Valide;
 import modele.Demande_A_Rejoindre;
+import modele.Etats;
 import modele.Groupe;
 import modele.Membre;
+import modele.Message;
 import modele.PrivateDate;
 import modele.Publication;
 import modele.TypeDefi;
+import tests.Tests_Defis;
+import tests.Tests_Groupes;
+import tests.Tests_Membres;
 
 @Singleton
 public class Facade {
@@ -131,7 +137,7 @@ public class Facade {
 		dv.setDefi(dav.getDefi());
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
-
+		dv.setDateValidation(PrivateDate.getNow().toString());
 		em.remove(dav);
 	}
 
@@ -160,7 +166,11 @@ public class Facade {
 			return false;
 		}
 		Membre mb = req.getSingleResult();
-		mb.getGroupesAppartenus().add(grp);
+		if (mb == null)
+			return false;
+
+		if (mb.getGroupesAppartenus() != null && !mb.getGroupesAppartenus().contains(grp))
+			mb.getGroupesAppartenus().add(grp);
 
 		TypedQuery<Demande_A_Rejoindre> req2 = em.createQuery(
 				"select d from Demande_A_Rejoindre d WHERE GROUPE_ID=" + grp.getId() + " AND MEMBRE_ID=" + mb.getId(),
@@ -184,15 +194,23 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on demande à valider un défi
 	 */
-	public void ajouterDefiAValider(int idGroupe, int idDefiAValider, Membre membre) throws Exception {
+	public void ajouterDefiAValider(Groupe groupe, int idDefiAValider, Membre membre) throws Exception {
 		Defi defi1 = em.find(Defi.class, idDefiAValider);
-		Groupe groupe = em.find(Groupe.class, idGroupe);
 		Membre m = em.find(Membre.class, membre.getId());
 		TypedQuery<Defi_A_Valider> req = em
 				.createQuery("select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider, Defi_A_Valider.class);
+
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
-			throw new Exception("Ce défi a déjà été envoyer pour être validé, vous ne pouvez pas le réenvoyer !");
+			throw new Exception("Ce défi a déjà été envoyé pour être validé, vous ne pouvez pas le renvoyer !");
 		}
+
+		TypedQuery<Defi_Valide> req2 = em
+				.createQuery("select d from Defi_Valide d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(), Defi_Valide.class);
+
+		if (req2.getResultList().size() != 0) {
+			throw new Exception("Ce défi a déjà été validé !");
+		}
+
 		if (defi1 != null && m != null && groupe != null) {
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 			defi_a_valider.setDefi(defi1);
@@ -200,7 +218,29 @@ public class Facade {
 			defi_a_valider.setGroupe(groupe);
 			em.persist(defi_a_valider);
 		} else {
-			throw new Exception("probbb facade ajouter defi a valider");
+			throw new Exception("Problème facade ajouter defi a valider");
+		}
+	}
+
+	/**
+	 * FROM PAGE GROUPE, on crée un CSJF pour le membre concerné
+	 */
+	public void envoyerCSJF(String texte, Groupe groupe, Membre membre) throws Exception {
+		Groupe g = em.find(Groupe.class, groupe.getId());
+		Membre m = em.find(Membre.class, membre.getId());
+		TypedQuery<CSJF> req = em
+				.createQuery("select c from CSJF c WHERE MEMBRE_ID=" + membre.getId() + " and c.etat=2", CSJF.class);
+		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
+			throw new Exception("Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
+		}
+		if (m != null && groupe != null) {
+			CSJF csjf = new CSJF();
+			csjf.setGroupe(g);
+			csjf.setMembre(m);
+			csjf.setTexte(texte);
+			em.persist(csjf);
+		} else {
+			throw new Exception("probbb facade créer CSJF");
 		}
 	}
 
@@ -210,6 +250,33 @@ public class Facade {
 	public Collection<Defi> getDefis(Groupe grp) {
 		Groupe g = em.find(Groupe.class, grp.getId());
 		return g.getDefis();
+	}
+
+	/**
+	 * FROM PAGE GROUPE, on demande les défis d'un membres, ie. tous les défis mais aussi les défis validés et à valider
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ArrayList getDefisMembre(Membre membre, Groupe grp) {
+		Groupe g = em.find(Groupe.class, grp.getId());
+		Membre m = em.find(Membre.class, membre.getId());
+		ArrayList l = new ArrayList();
+		Collection<Defi> defis = g.getDefis();
+		l.addAll(defis);
+		for (Defi_Valide d : m.getDefis_valides()) {
+			if (defis.contains(d.getDefi())) {
+				l.remove(d.getDefi());
+				l.add(d);
+			}
+		}
+		TypedQuery<Defi_A_Valider> req = em
+				.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(), Defi_A_Valider.class);
+		for (Defi_A_Valider d : req.getResultList()) {
+			if (defis.contains(d.getDefi())) {
+				l.remove(d.getDefi());
+				l.add(d);
+			}
+		}
+		return l;
 	}
 
 	public void demandeValidationCSJF() {
@@ -245,10 +312,8 @@ public class Facade {
 		Groupe g = new Groupe();
 
 		g.setNom(nom);
-		g.setAdministrateur(usr);
+		g.setAdmin(usr);
 		em.persist(g);
-
-		//usr.setGroupesAdministres(g);
 
 		return g;
 	}
@@ -411,17 +476,43 @@ public class Facade {
 		System.out.println("\n\n MEMBRES " + membres + " \n\n");
 		if (membres != null) {
 			for (Membre mb : membres) {
-				int somme = 0;
+				int somme_defi_before = 0;
+				int somme_csjf_before = 0;
+				int somme_defi_cette_semaine = 0;
+				int somme_csjf_cette_semaine = 0;
 				TypedQuery<Defi_Valide> req = em.createQuery(
 						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
 						Defi_Valide.class);
+				TypedQuery<CSJF> req2 = em.createQuery(
+						"select c from CSJF c where c.membre=" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=0",
+						CSJF.class);
+
+				PrivateDate date_prec = PrivateDate.getNow();
+				date_prec.setJour(date_prec.getJour() - 7);
+
+
 				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
 					for (Defi_Valide dv : dvs) {
-						somme += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+						PrivateDate date = new PrivateDate(dv.getDateValidation());
+						if(date.isBefore(date_prec))
+							somme_defi_before += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+						else
+							somme_defi_cette_semaine += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
-				resultat.add(mb.getPrenom() + ":" + somme);
+				if (req2 != null && req2.getResultList().size() != 0) {
+					Collection<CSJF> csjfs = req2.getResultList();
+					for (CSJF csjf : csjfs) {
+						PrivateDate date = new PrivateDate(csjf.getDateValidation());
+						if(date.isBefore(date_prec))
+							somme_csjf_before += csjf.getPoints();
+						else
+							somme_csjf_cette_semaine += csjf.getPoints();
+					}
+				}
+
+				resultat.add(mb.getPrenom() + ":" + somme_defi_before + ":" + somme_defi_cette_semaine + ":" + somme_csjf_before + ":" + somme_csjf_cette_semaine);
 			}
 		} else {
 			System.out.println("\n\n AUCUN MEMBRE \n\n");
@@ -429,100 +520,6 @@ public class Facade {
 		System.out.println(resultat);
 		return resultat;
 	}
-
-	public Membre initialiserTest() {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail("thomasdarget@hotmail.fr");
-		mb.setMotdepasse("abc");
-		mb.setNom("Darget");
-		mb.setPrenom("Thomas");
-		em.persist(mb);
-		return mb;
-	}
-
-	public Membre initialiserTest2() {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail("manugoncalves@gmail.com");
-		mb.setMotdepasse("abc");
-		mb.setNom("Goncalves");
-		mb.setPrenom("Manu");
-		em.persist(mb);
-		return mb;
-	}
-
-	public void initialiserTest3() {
-		Membre mb = em.find(Membre.class, 2);
-		Groupe gp = em.find(Groupe.class, 1);
-		Defi defi = em.find(Defi.class, 1);
-
-		Defi_A_Valider dav = new Defi_A_Valider();
-		dav.setDefi(defi);
-		dav.setMembre(mb);
-		dav.setGroupe(gp);
-
-		em.persist(dav);
-	}
-
-	public Groupe initialiserTest4() {
-		Membre mb = new Membre();
-		mb.setCoeff_sportif(1);
-		mb.setEmail("thomasdarget@hotmail.fr");
-		mb.setMotdepasse("abc");
-		mb.setNom("Darget");
-		mb.setPrenom("Thomas");
-		em.persist(mb);
-
-		Membre mb2 = new Membre();
-		mb2.setCoeff_sportif(1);
-		mb2.setEmail("manugoncalves@gmail.com");
-		mb2.setMotdepasse("abc");
-		mb2.setNom("Goncalves");
-		mb2.setPrenom("Manu");
-		em.persist(mb2);
-
-		Groupe g = new Groupe();
-		g.setAdministrateur(mb);
-		g.setNom("Groupe1");
-		em.persist(g);
-
-		Defi d = new Defi();
-		d.setDescription("Description");
-		d.setNom("Defi test");
-		d.setPoints(10);
-		d.setType(TypeDefi.Sport);
-		d.setGroupe(g);
-		em.persist(d);
-
-		Defi_A_Valider dav = new Defi_A_Valider();
-		dav.setDefi(d);
-		dav.setMembre(mb2);
-		dav.setGroupe(g);
-		em.persist(dav);
-
-		Membre mb3 = new Membre();
-		mb3.setCoeff_sportif(1);
-		mb3.setEmail("cha@sfr.fr");
-		mb3.setMotdepasse("abc");
-		mb3.setNom("De Foucaud");
-		mb3.setPrenom("Charlotte");
-		em.persist(mb3);
-
-		Defi_A_Valider dav2 = new Defi_A_Valider();
-		dav2.setDefi(d);
-		dav2.setMembre(mb3);
-		dav2.setGroupe(g);
-		em.persist(dav2);
-
-		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
-		dar.setGroupe(g);
-		dar.setMembre(mb3);
-		em.persist(dar);
-
-		return g;
-	}
-
 
 	public void enleverMembre(Groupe grp, int id_mbr) {
 		Groupe gp = em.find(Groupe.class, grp.getId());
@@ -539,7 +536,129 @@ public class Facade {
 	public void refuserDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 		em.remove(dav);
+	}
 
+	public Membre initialiserTest() {
+		Membre mb = new Membre();
+		mb.setCoeff_sportif(1);
+		mb.setEmail("thomasdarget@hotmail.fr");
+		mb.setMotdepasse("abc");
+		mb.setNom("Darget");
+		mb.setPrenom("Thomas");
+		mb.setSalt(null);
+
+		em.persist(mb);
+		return mb;
+	}
+
+	public Membre initialiserTest2() throws Exception {
+
+		Membre thomas = Tests_Membres.thomas();
+		em.persist(thomas);
+
+		Membre manu = Tests_Membres.manu();
+		em.persist(manu);
+
+		Membre charlotte = Tests_Membres.cha();
+		em.persist(charlotte);
+
+		Membre gregoire = Tests_Membres.gregoire();
+		em.persist(gregoire);
+
+		Membre celia = Tests_Membres.celia();
+		em.persist(celia);
+
+		Groupe gp = Tests_Groupes.groupe1(thomas);
+		em.persist(gp);
+
+		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		this.ajouterMembre("manugoncalves@gmail.com", gp);
+		this.ajouterMembre("celia@gmail.com", gp);
+		this.ajouterMembre("cha@sfr.fr", gp);
+
+		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
+		dar.setGroupe(gp);
+		dar.setMembre(gregoire);
+		em.persist(dar);
+
+		Defi defi = Tests_Defis.defi1(gp);
+		em.persist(defi);
+
+		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+		defi_a_valider.setDefi(defi);
+		defi_a_valider.setGroupe(gp);
+		defi_a_valider.setMembre(thomas);
+		em.persist(defi_a_valider);
+
+		this.validerDefi(defi_a_valider.getId());
+
+		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
+		defi_a_valider2.setDefi(defi);
+		defi_a_valider2.setGroupe(gp);
+		defi_a_valider2.setMembre(manu);
+		em.persist(defi_a_valider2);
+
+		CSJF csjf = new CSJF();
+		csjf.setEtat(Etats.EnCoursDeValidation);
+		csjf.setGroupe(gp);
+		csjf.setMembre(celia);
+		csjf.setTexte("J'ai fait des pâtes");
+		em.persist(csjf);
+
+		CSJF csjf_deja_valide = new CSJF();
+		csjf.setEtat(Etats.Valide);
+		csjf.setGroupe(gp);
+		csjf.setMembre(thomas);
+		csjf.setTexte("Je suis né");
+		csjf.setDateValidation("19970723");
+		csjf.setPoints(100);
+		em.persist(csjf_deja_valide);
+
+		return thomas;
+	}
+
+
+	public Collection<Defi_Valide> getDefisValides(Groupe grp) {
+		Groupe gp = em.find(Groupe.class, grp.getId());
+		return gp.getDefis_valides();
+	}
+
+	public Collection<Message> getMessages(int id_usr, int id_conv) {
+		String rq = "select m from Message m WHERE (m.sender=" + id_usr + " and m.receiver=" + id_conv
+				+ ") OR (m.sender=" + id_conv + " and m.receiver=" + id_conv + ")";
+		TypedQuery<Message> req = em.createQuery(rq, Message.class);
+
+		if (req != null && req.getResultList().size() != 0) {
+			return req.getResultList();
+		} else {
+			return null;
+		}
+	}
+
+
+	public void validerCSJF(int id_csjf, int valeur) {
+		CSJF csjf = em.find(CSJF.class, id_csjf);
+		csjf.setEtat(Etats.Valide);
+		csjf.setPoints(valeur);
+		csjf.setDateValidation(PrivateDate.getNow().toString());
+	}
+
+	public void refuserCSJF(int id_csjf) {
+		CSJF csjf = em.find(CSJF.class, id_csjf);
+		csjf.setEtat(Etats.NonValide);
+		csjf.setDateValidation(PrivateDate.getNow().toString());
+	}
+
+	public Collection<CSJF> getCSJFAValider(Groupe gp){
+		Collection<CSJF> csjf_a_valider = null;
+		String rq = "select c from CSJF c where c.groupe=" + gp.getId() + " and c.etat=2"; // 2 pour EnCoursDeValidation
+		TypedQuery<CSJF> req = em.createQuery(rq, CSJF.class);
+
+		if(req != null && req.getResultList().size() != 0)
+			csjf_a_valider = req.getResultList();
+
+
+		return csjf_a_valider;
 	}
 
 

@@ -23,6 +23,8 @@ public class Defi_Valide {
 	@ManyToOne
 	private Groupe groupe;
 	
+	private String dateValidation;
+	
 	public Defi_Valide(){}
 	
 	/**
@@ -67,5 +69,13 @@ public class Defi_Valide {
 
 	public void setGroupe(Groupe groupe) {
 		this.groupe = groupe;
+	}
+
+	public String getDateValidation() {
+		return dateValidation;
+	}
+
+	public void setDateValidation(String dateValidation) {
+		this.dateValidation = dateValidation;
 	}
 }

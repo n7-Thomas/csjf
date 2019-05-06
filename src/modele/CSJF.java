@@ -18,55 +18,45 @@ public class CSJF {
 
 	@OneToOne
 	private Groupe groupe;
+	
+	private String texte;
+	
+	private int points;
+	
+	private Etats etat;
+	
+	private String dateValidation;
 
-	private int nb_min;
-
-	private int difficulte;
-
-	private String sport;
-
-	public CSJF(){}
+	public CSJF() {
+		this.etat = Etats.EnCoursDeValidation;
+	}
 	
 	/**
-	 * @return the nb_min
+	 * @return the texte
 	 */
-	public int getNb_min() {
-		return nb_min;
+	public String getTexte() {
+		return this.texte;
 	}
-
+	
 	/**
-	 * @param nb_min the nb_min to set
+	 * @param new_texte the new texte
 	 */
-	public void setNb_min(int nb_min) {
-		this.nb_min = nb_min;
+	public void setTexte(String new_texte) {
+		this.texte = new_texte;
 	}
-
+	
 	/**
-	 * @return the difficulte
+	 * @return the etat
 	 */
-	public int getDifficulte() {
-		return difficulte;
+	public Etats getEtat() {
+		return this.etat;
 	}
-
+	
 	/**
-	 * @param difficulte the difficulte to set
+	 * @param new_etat the new etat
 	 */
-	public void setDifficulte(int difficulte) {
-		this.difficulte = difficulte;
-	}
-
-	/**
-	 * @return the sport
-	 */
-	public String getSport() {
-		return sport;
-	}
-
-	/**
-	 * @param sport the sport to set
-	 */
-	public void setSport(String sport) {
-		this.sport = sport;
+	public void setEtat(Etats new_etat) {
+		this.etat = new_etat;
 	}
 
 	/**
@@ -99,5 +89,21 @@ public class CSJF {
 	
 	public int getId() {
 		return this.id;
+	}
+
+	public void setPoints(int valeur) {
+		this.points = valeur;
+	}
+	
+	public int getPoints() {
+		return this.points;
+	}
+
+	public String getDateValidation() {
+		return dateValidation;
+	}
+
+	public void setDateValidation(String dateValidation) {
+		this.dateValidation = dateValidation;
 	}
 }
