@@ -1,8 +1,9 @@
 h2 {
-	font-family: Helvetica, Avant Garde, sans-serif;
+	font-family: Expletus Sans, Arial, regular;
 	font-size: 35px;
 	color : #c2eafc;
 	text-transform: uppercase;
+	letter-spacing: .5rem;
 }
 
 h4{
@@ -107,13 +108,14 @@ form .text-field {                                                              
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 32px;
-  font-family: Helvetica, Avant Garde, sans-serif;
+  font-family: Expletus Sans, Arial;
   font-size: 20px;
   font-style:bold;
   color : white;
   text-transform: uppercase;
   -webkit-border-radius: 32px;
   -moz-border-radius: 32px;
+  letter-spacing: .5rem;
 }
 
 .button:hover {

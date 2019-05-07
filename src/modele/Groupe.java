@@ -35,6 +35,9 @@ public class Groupe {
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
 
+	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
+	private Collection<Publication> publications;
+
 	public Groupe() {}
 
 	public Collection<Defi_A_Valider> getDefis_a_valider() {
@@ -128,6 +131,14 @@ public class Groupe {
 
 	public void addMembre(Membre mb) {
 		this.membres.add(mb);
+	}
+
+	public Collection<Publication> getPublications() {
+		return this.publications;
+	}
+
+	public void setPublications(Collection<Publication> publications) {
+		this.publications = publications;
 	}
 
 }

@@ -11,31 +11,31 @@
 		<h1 id="titre">Page du groupe</h1>
 	</div>
 	<div id="corps">
-		<%
+		<div id="bloc_gauche">
+			<%
 			if (session.getAttribute("user") == null) {
-		%>
-		<p>Vous n'êtes pas connectés.</p>
-		<%
+			%>
+			<p>Vous n'êtes pas connectés.</p>
+			<%
 			} else {
 				Membre mb = (Membre) session.getAttribute("user");
-
 				if (request.getAttribute("groupe") == null) {
-		%>
-		<p>Pas de groupe sélectionné.</p>
-		<a href="index.html">Aller à l'index</a><br>
-		<%
-			} else {
-					Groupe groupe = (Groupe) request.getAttribute("groupe");
-
-					String status = (String) request.getAttribute("status");
-					Collection<Defi> defis = (Collection<Defi>) request.getAttribute("defis");
-		%>
-		<div id="bloc_gauche">
+			%>
+			<p>Pas de groupe sélectionné.</p>
+			<a href="index.html">Aller à l'index</a><br>
+			<%
+				} else {
+						Groupe groupe = (Groupe) request.getAttribute("groupe");
+						String id_grp = (String) request.getAttribute("id_grp");
+						String status = (String) request.getAttribute("status");
+						ArrayList<Object> defis = (ArrayList<Object>) request.getAttribute("defis");
+			%>
 			<div id="conteneur-menu2">
 				<ul>
 					<li><a href="Serveur?action=afficher_pageAccueil">Accueil</a></li>
 					<li><a href="creer_groupe.jsp">Créer un groupe</a></li>
 					<li><a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a></li>
+					<li><a href="ServeurPageGroupe?action=afficher_filActu&id_grp=<%=id_grp%>"> Afficher le fil d'Actualité</a></li> 
 					<li class="top_puce"><a
 						href="ServeurConnexion?action=afficher_profil">Mon Profil</a></li>
 				</ul>
@@ -51,83 +51,30 @@
 			<%
 				}
 			%>
-
-			<div id="demandeValiderDefi">
-				<p id="titre_demande">
-					Remplissez le formulaire suivant pour demander <br /> à valider un
-					de vos défis.
-				</p>
-				<form method="post" action="ServeurGroupe">
-					<label for="defi" id="label">Quel défi voulez-vous valider
-						?</label><br />
-					<%
-						if (defis == null) {
-					%>
-					<p>Pas de défi disponible pour demander validation</p>
-					<%
-						} else {
-					%>
-					<select name="id_defi" id="liste">
-						<%
-							for (Defi defi : defis) {
-						%>
-						<option value="<%=defi.getId()%>" name="id_defi"><%=defi.getNom()%></option>
-						<%
-							}
-									}
-						%>
-					</select> <input type="submit" value="Envoyer!" class="bouton_envoyer" /> 
-					<input type="hidden" value="ajouterDefiAValider" name="action"> 
-					<input type="hidden" value="<%=groupe.getId()%>" name="id_grp">
-				</form>
-			</div>
-
-			<div id="histogramme">
-				<%@ include file="histogramme.jsp"%>
-			</div>
-		</div>
-
-		<div id="bloc_droite">
-		
-			<div id="afficherDefisGroupe">
-				<div id="titre_defis">
-					<div class="nom_aff">Nom</div>
-					<div class="desc_aff">Description</div>
-					<div class="points_aff">Points</div>
-					<div class="type_aff">Catégorie</div>
+			
+			<div id="afficherMembresGroupe">
+				<div id="titre_membres">
+					Membres
 				</div>
 				<%
-					if (defis != null) {
-								for (Defi defi : defis) {
-									if (defi == null) {
+					Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
+							if (membres != null) {
+								for (Membre m : membres) {
+									if (m == null) {
 				%>
-				<div class="defi_afficher">
-					<div class="nom_aff">Aucun défi</div>
-					<div class="desc_aff">Rien</div>
-					<div class="points_aff">Rien</div>
-					<div class="type_aff">Rien</div>
+				<div class="membre_afficher">
+					Aucun membre
 				</div>
 				<%
-									} else {
+					} else {
 				%>
-				<div class="defi_afficher">
-					<div class="nom_aff">
-						<%=defi.getNom()%>
-					</div>
-					<div class="desc_aff">
-						<%=defi.getDescription()%>
-					</div>
-					<div class="points_aff">
-						<%=defi.getPoints()%>
-					</div>
-					<div class="type_aff">
-						<%=defi.getType()%>
-					</div>
+				<div class="membre_afficher">
+						<%=m.getPrenom() + " " + m.getNom().charAt(0) + "."%>
 				</div>
 				<%
-									}
-								}
 					}
+				}
+			}
 				%>
 			</div>
 			
@@ -144,48 +91,117 @@
 					<input type="hidden" value="<%=groupe.getId()%>" name="id_grp">
 				</form>
 			</div>
+		</div>
+		
 
-			<div id="afficherMembresGroupe">
-				<div id="titre_membres">
-					<div class="nom1_aff">Nom</div>
-					<div class="prenom_aff">Prénom</div>
-					<div class="email_aff">Email</div>
-				</div>
-				<%
-					Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
-							if (membres != null) {
-								for (Membre m : membres) {
-									if (m == null) {
-				%>
-				<div class="membre_afficher">
-					<div class="nom1_aff">Aucun membre</div>
-					<div class="prenom_aff">Rien</div>
-					<div class="email_aff">Rien</div>
-				</div>
-				<%
-					} else {
-				%>
-				<div class="membre_afficher">
-					<div class="nom1_aff">
-						<%=m.getNom()%>
+		<div id="bloc_milieu">
+		
+			<div id="afficherDefisGroupe">
+				<form method="post" action="ServeurGroupe">
+					<div id="titre_defis">
+						<div class="nom_aff">Nom</div>
+						<div class="desc_aff">Description</div>
+						<div class="points_aff">Points</div>
+						<div class="type_aff">Catégorie</div>
+						<div class="envoyer_aff">Validation</div>
 					</div>
-					<div class="prenom_aff">
-						<%=m.getPrenom()%>
+					<%
+						if (defis != null) {
+							for (Object o : defis) {
+								if (o == null) {
+					%>
+					<div class="defi_afficher">
+						<div class="nom_aff">Aucun défi</div>
+						<div class="desc_aff">Rien</div>
+						<div class="points_aff">Rien</div>
+						<div class="type_aff">Rien</div>
+						<div class="envoyer_aff">Rien</div>
 					</div>
-					<div class="email_aff">
-						<%=m.getEmail()%>
+					<%
+								} else if (o instanceof Defi) {
+									Defi defi = (Defi) o;
+					%>
+					<div class="defi_afficher">
+						<div class="nom_aff">
+							<%=defi.getNom()%>
+						</div>
+						<div class="desc_aff">
+							<%=defi.getDescription()%>
+						</div>
+						<div class="points_aff">
+							<%=defi.getPoints()%>
+						</div>
+						<div class="type_aff">
+							<%=defi.getType()%>
+						</div>
+						<div class="envoyer_aff">
+							<input type="submit" value="Valider" class="bouton_envoyer" />
+						</div>
 					</div>
-				</div>
-				<%
-					}
+					<%
+								} else if (o instanceof Defi_A_Valider) {
+									Defi_A_Valider defi_a_valider = (Defi_A_Valider) o;
+									Defi defi = defi_a_valider.getDefi();
+					%>
+					<div class="defi_afficher">
+						<div class="nom_aff">
+							<%=defi.getNom()%>
+						</div>
+						<div class="desc_aff">
+							<%=defi.getDescription()%>
+						</div>
+						<div class="points_aff">
+							<%=defi.getPoints()%>
+						</div>
+						<div class="type_aff">
+							<%=defi.getType()%>
+						</div>
+						<div class="envoyer_aff">
+							En cours de validation
+						</div>
+					</div>
+					<%
+								} else {
+									Defi_Valide defi_valide = (Defi_Valide) o;
+									Defi defi = defi_valide.getDefi();
+					%>
+					<div class="defi_afficher">
+						<div class="nom_aff">
+							<%=defi.getNom()%>
+						</div>
+						<div class="desc_aff">
+							<%=defi.getDescription()%>
+						</div>
+						<div class="points_aff">
+							<%=defi.getPoints()%>
+						</div>
+						<div class="type_aff">
+							<%=defi.getType()%>
+						</div>
+						<div class="envoyer_aff">
+							Validé
+						</div>
+					</div>
+					<%
 								}
 							}
-				%>
+						}
+					%>
+				</form>
 			</div>
+			
+			<div id="histogramme">
+				<%@ include file="histogramme.jsp"%>
+			</div>
+		</div>
+		
+		
+		<div id="bloc_droite">
+		
 		</div>
 		<%
 			}
-			}
+		}
 		%>
 	</div>
 </body>

@@ -30,6 +30,7 @@
 		<h2>CSJF, qu'est ce que c'est ?</h2>
 		<p>Ceci est une page d'accueil de qualité, nous mettrons des trucs
 			cools dessus j'vous jure</p>
+
 		<h3>Lorem</h3>
 		<p>Ca faisait vide alors je mets un Lorem
 		<p>
@@ -44,6 +45,25 @@
 			accumsan non. Quisque ipsum nulla, faucibus in mollis a, pharetra
 			ultricies eros. Duis ullamcorper pretium ex sed dignissim. Donec nibh
 			ligula, tempor non feugiat et, viverra eget massa.</p>
+			
+		<h3>Les groupes existants:</h3>
+		
+		<div>	
+		<%
+		Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); 
+		if(Autresgroupes != null){
+		%>	<ul> 
+		
+		<% for(Groupe g: Autresgroupes){
+				%><li><%= g.getNom()%> </li>		
+		<%}%>
+		 </ul> <%			
+		}
+		
+		%>
+		
+		</div>
+
 
 		<h3>Tests</h3>
 		<a href="ServeurTests?action=init1">Test 1</a>

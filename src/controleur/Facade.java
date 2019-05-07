@@ -39,7 +39,7 @@ public class Facade {
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
 		byte[] salt = m.getSalt();
-		
+
 		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
 
 		return m.getMotdepasse().equals(motdepasseCryp);
@@ -122,7 +122,7 @@ public class Facade {
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
 		dv.setDateValidation(PrivateDate.getNow().toString());
-		
+
 		em.persist(dv);
 		em.remove(dav);
 	}
@@ -247,9 +247,41 @@ public class Facade {
 		publi.setContenu(contenu);
 
 		em.persist(publi);
-
+		
 		return publi;
 	}
+
+	/**
+	 * FROM PAGE GROUPE, on demande les défis d'un membres, ie. tous les défis mais
+	 * aussi les défis validés et à valider
+	 */
+	public ArrayList<Object> getDefisMembre(Membre membre, Groupe grp) {
+		Groupe g = em.find(Groupe.class, grp.getId());
+		Membre m = em.find(Membre.class, membre.getId());
+		ArrayList<Object> l = new ArrayList<Object>();
+		Collection<Defi> defis = g.getDefis();
+		l.addAll(defis);
+		for (Defi_Valide d : m.getDefis_valides()) {
+			if (defis.contains(d.getDefi())) {
+				l.remove(d.getDefi());
+				l.add(d);
+			} else {
+				l.add(d);
+			}
+		}
+		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(),
+				Defi_A_Valider.class);
+		for (Defi_A_Valider d : req.getResultList()) {
+			if (defis.contains(d.getDefi())) {
+				l.remove(d.getDefi());
+				l.add(d);
+			} else {
+				l.add(d);
+			}
+		}
+		return l;
+	}
+
 
 	public void commenter() {
 
@@ -278,9 +310,10 @@ public class Facade {
 	 */
 	public Groupe creerGroupe(String nom, Membre usr) throws ExceptionUserNonDefini {
 		Groupe g = new Groupe();
-		em.persist(g);
+
 		g.setNom(nom);
 		g.setAdmin(usr);
+		em.persist(g);
 
 		return g;
 	}
@@ -326,6 +359,38 @@ public class Facade {
 		TypedQuery<Groupe> req = em.createQuery("select g from Groupe g", Groupe.class);
 		Collection<Groupe> groupes = req.getResultList();
 		return groupes;
+	}
+
+	/**
+	 * Récuperer la liste des publications d'un groupe
+	 */
+	public Collection<Publication> getPublications(int id_grp) {
+		Groupe g = em.find(Groupe.class, id_grp);
+		return g.getPublications();
+
+	}
+
+	/***
+	 * Creer une nouvelle publication
+	 */
+	public Publication creerPublication(int id_groupe, Membre membre, String contenu) {
+		Publication publication = new Publication();
+		publication.setContenu(contenu);
+		publication.setMembre(membre);
+
+		Groupe gp = em.find(Groupe.class, id_groupe);
+		publication.setGroupe(gp);
+
+		em.persist(publication);
+
+		return publication;
+	}
+
+	/**
+	 * FROM INSCRIPTION
+	 */
+	public void creerProfil() {
+
 	}
 
 	public Collection<Groupe> getGroupesAppartenus(Membre m) {
@@ -419,15 +484,17 @@ public class Facade {
 				TypedQuery<CSJF> req2 = em.createQuery("select c from CSJF c where c.membre=" + mb.getId()
 						+ " and c.groupe=" + grp.getId() + " and c.etat=0", CSJF.class);
 
+
 				PrivateDate date_prec = PrivateDate.getNow();
 				date_prec.setJour(date_prec.getJour() - 7);
+
 
 				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
 					for (Defi_Valide dv : dvs) {
 						PrivateDate date = new PrivateDate(dv.getDateValidation());
 						somme_defi_total += dv.getDefi().getPoints() * mb.getCoeff_sportif();
-						if (!date.isBefore(date_prec))
+						if(date.isBefore(date_prec))
 							somme_defi_cette_semaine += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
@@ -436,8 +503,10 @@ public class Facade {
 					for (CSJF csjf : csjfs) {
 						PrivateDate date = new PrivateDate(csjf.getDateValidation());
 						somme_csjf_total += csjf.getPoints();
-						if (date.isBefore(date_prec))
-							somme_csjf_cette_semaine += csjf.getPoints();
+
+						if(date.isBefore(date_prec))
+							somme_defi_cette_semaine += csjf.getPoints();
+
 					}
 				}
 
@@ -513,13 +582,13 @@ public class Facade {
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
 
-		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
-		defi_a_valider.setDefi(defi);
-		defi_a_valider.setGroupe(gp);
-		defi_a_valider.setMembre(thomas);
-		em.persist(defi_a_valider);
-
-		this.validerDefi(defi_a_valider.getId());
+		/*
+		 * Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+		 * defi_a_valider.setDefi(defi); defi_a_valider.setGroupe(gp);
+		 * defi_a_valider.setMembre(thomas); em.persist(defi_a_valider);
+		 * 
+		 * this.validerDefi(defi_a_valider.getId());
+		 */
 
 		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
 		defi_a_valider2.setDefi(defi);
@@ -576,12 +645,13 @@ public class Facade {
 		csjf.setDateValidation(PrivateDate.getNow().toString());
 	}
 
-	public Collection<CSJF> getCSJFAValider(Groupe gp) {
+	public Collection<CSJF> getCSJFAValider(Groupe gp){
 		Collection<CSJF> csjf_a_valider = null;
 		String rq = "select c from CSJF c where c.groupe=" + gp.getId() + " and c.etat=2"; // 2 pour EnCoursDeValidation
 		TypedQuery<CSJF> req = em.createQuery(rq, CSJF.class);
 
-		if (req != null && req.getResultList().size() != 0)
+
+		if(req != null && req.getResultList().size() != 0)
 			csjf_a_valider = req.getResultList();
 
 		return csjf_a_valider;

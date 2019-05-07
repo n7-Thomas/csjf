@@ -13,13 +13,16 @@
 
 <fieldset>
 	<% Membre mbr_co = (Membre) session.getAttribute("user");%>
+
 	<h1> Hello <%=mbr_co.getPrenom() %>, bienvenue sur ta page d'Accueil ! </h1>
-	
+
 	<a href="ServeurConnexion?action=afficher_profil"> Voir mon profil</a> <br>
 	
-	<h2> Mes groupes</h2>
+	<h2> Mes groupes:</h2>
+	
                 <%
-                Collection<Groupe> groupes = mb.getGroupesAppartenus(); 
+                System.out.println("\n\n\n bda: ");
+                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupesAppartenus"); 
 				if (groupes != null){
        				for (Groupe g : groupes) {
                 		String groupe_nom = g.getNom(); 
@@ -30,7 +33,7 @@
        			%>
                 <p> Vous n'êtes dans aucun groupe actuellement</p>
                 <% }
-                Collection<Groupe> groupes_admin = mb.getGroupesAdministres();
+				Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupesAdmin");
                 if (groupes_admin != null){
            			for (Groupe g : groupes_admin) {
                     	String groupe_nom = g.getNom(); 
@@ -40,19 +43,24 @@
                 %><p> Vous n'administrez aucun groupe actuellement. <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
 				<%} 
 				%>
+
 	
 	
 	<h2> Les Groupes existant: </h2>
 
 	<%Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); %>
+
 	<ul>
 	<% 
+	
 	for(Groupe g: Autresgroupes){
 				
 		String groupe = g.getNom();
 		%>
 		<li><%=groupe%> <li/>		
+
 		<%}%> </ul>
+
 		
 	<a href="demande_a_rejoindre.jsp"> Rejoindre un groupe</a> <br>
 	

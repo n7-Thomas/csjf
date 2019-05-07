@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modele.Groupe;
 import modele.Membre;
 
 /**
@@ -58,37 +57,61 @@ public class ServeurPageGroupe extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 			return;
 		}
 
+
+
 		// ACTION Afficher le fil d'actualité
 		if (action.equals("afficher_filActu")) {
-			Groupe grp =  (Groupe) session.getAttribute("grp");
+
+			// Récupération du groupe lié
+			String str_id_grp = request.getParameter("id_grp");
+			if (str_id_grp == null) {
+
+				request.setAttribute("erreur", "Pas de groupe selectionné dans actionAfficherGroupe");
+				request.getRequestDispatcher("erreur.jsp").forward(request, response);
+				return;
+			}
+			int id_grp = Integer.parseInt(str_id_grp);
+
 			try {
-				//request.setAttribute("listeNotif", facade.getFilActu(grp).getNotifications());
-			    //request.setAttribute("listePubli", facade.getFilActu(grp).getPublications());
+				request.setAttribute("id_grp", id_grp);
+			    request.setAttribute("listePublications", facade.getPublications(id_grp));
 				request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
+
 			} catch (Exception e) {
 				request.setAttribute("erreur", e.getStackTrace());
 				request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			}
 
-
 		}
 
 		// Publier une Publication
 		if (action.equals("publier")){
+			String str_id_grp = request.getParameter("id_grp");
+
+			if(str_id_grp == null){
+				request.setAttribute("erreur", "pas de groupe");
+				request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			}
+			int id_grp = Integer.parseInt(str_id_grp);
+
+			Membre mbr = (Membre) session.getAttribute("user");
 			String contenu = request.getParameter("contenu");
-			Membre mbr = (Membre) session.getAttribute("usr");
+
+			if(contenu == null){
+				contenu = " ";
+			}
 
 			try {
-				facade.creerPublication( mbr, contenu);
+				facade.creerPublication(id_grp, mbr, contenu);
 			}catch (Exception e) {
 				request.setAttribute("erreur", e.getStackTrace());
 				request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			}
-			request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
+			request.getRequestDispatcher("ServeurPageGroupe?action=afficher_filActu").forward(request, response);
 
 		}
 	}

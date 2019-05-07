@@ -18,6 +18,10 @@ if(mbr_co != null){ %> <p> Bonjour, <%=mbr_co.getNom() %> !</p> <% } else { %> <
 <% } %>
 
 
+
+<a href="aff_filActu.jsp?id_grp=1"> Voir le fil d'actualité de mon groupe </a> <br> 
+
+
 <% if (mbr_co == null){ %>
 <h2>Inscription et Connexion</h2>
 <a href="inscription.jsp">S'inscrire gros</a> <br>

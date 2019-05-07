@@ -74,6 +74,7 @@ public class Serveur extends HttpServlet {
 
 		//AFFICHER LA PAGE D'ACCUEIL
 		if(action.equals("afficher_pageAccueil")){
+
 			// Récupération du membre connecté
 			Membre usr = (Membre) session.getAttribute("user");
 			if (usr == null) {
@@ -84,7 +85,8 @@ public class Serveur extends HttpServlet {
 				request.setAttribute("groupes", facade.getGroupes());
 				request.getRequestDispatcher("accueil.jsp").forward(request, response);
 			}
-			
+
+
 		}
 
 		if(action.equals("deconnexion")) {

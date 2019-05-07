@@ -35,6 +35,9 @@ public class Membre {
 	@OneToMany(mappedBy = "membre", fetch = FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
 
+	//@OneToOne(mappedBy = "membre", fetch = FetchType.EAGER)
+	//private Collection<Publication> publications ;
+
 	private String email;
 
 	private String motdepasse;
@@ -86,11 +89,11 @@ public class Membre {
 	}
 
 	public Collection<Groupe> getGroupesAppartenus() {
-		return groupes_appartenus;
+		return this.groupes_appartenus;
 	}
 
-	public void setGroupesAppartenus(Collection<Groupe> id_groupes_app) {
-		this.groupes_appartenus = id_groupes_app;
+	public void setGroupesAppartenus(Collection<Groupe> groupes_app) {
+		this.groupes_appartenus = groupes_app;
 	}
 
 	public Collection<Groupe> getGroupesAdministres() {

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -16,8 +17,20 @@ public class Publication {
 	@OneToOne
 	private Membre membre;
 
+	@ManyToOne
+	private Groupe groupe;
+	
 	private String contenu;
 
+	public Publication(){}
+
+	public Groupe getGroupe() {
+		return groupe;
+	}
+
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
 
 	/**
 	 * @return the publi
@@ -31,22 +44,6 @@ public class Publication {
 	 */
 	public void setContenu(String contenu) {
 		this.contenu = contenu;
-	}
-
-	/**
-<<<<<<< HEAD
-=======
-	 * @return the date
-
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	/**
