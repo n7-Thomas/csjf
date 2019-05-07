@@ -15,7 +15,7 @@
 </head>
 	<body>
 		<div id="header">
-    		<h1>Profil <i class="material-icons" style="font-size:40px;">computer</i></h1>    
+    		<h1>Profil</h1>    
     		<%@ include file="navigationBar.jsp" %>    
 		</div>
 		<div id="contenu">

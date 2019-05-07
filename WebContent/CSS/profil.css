@@ -4,7 +4,7 @@ body {
 
 #header {
 	text-align: center;
-	vertical-align: middle;
+	vertical-align: text-top;
 	background:#313131;
 	top: 0;
 	left: 0;
@@ -12,8 +12,13 @@ body {
 }
 
 #header h1{
+	margin-top : 0px;
+	padding : 10px 10px;
+	margin-bottom : 30px;
 	font-family:'Abel', arial, serif;
-	font-size: 6em;
+	letter-spacing: .8rem;
+    font-size: 5em;
+    font-weight: bold;
 	text-align: center;
 	vertical-align: middle;
 	color: white;
@@ -28,14 +33,13 @@ body {
 }
 
 
-
 .box {
   display: flex;
   flex-direction: column;
 }
 
 a:link, a:visited {
-	background-color: #22BBEE;
+	background-color: rgb(45,67,108);
 	color: white;
 	padding: 14px 25px;
 	text-align: center;
@@ -45,17 +49,19 @@ a:link, a:visited {
 
 a:hover, a:active {
  background-color: #225577;
+ 
 }
 
 #main_nav ul {
-	background-color: #22BBEE;
+	background-color: rgb(45,67,108);
 	float: left;
 	list-style-type: none;
 	width: 100%;
 }
 
 .top_puce {
-	height: 52.5px;
+	margin-top: 5px;
+	height: 55px;
 	font: normal 13pt verdana, helvetica, sans-serif;
 	font-style: bold;
 	float: left;
@@ -69,20 +75,21 @@ a:hover, a:active {
 
 .lil_puce {
 	font: normal 10pt verdana, helvetica, sans-serif;
-	height: 50px;
+	height: 45px;
 	margin-left: -40px;
-	-webkit-transition: 2s;
+	
 }
-
-#main_nav > ul > li > a, h1 {
-	text-transform: uppercase;
-}
-
+    
 #main_nav a {
 	display: block;
 	padding: absolute;
 	text-decoration: none;
 	color: white;
+	-moz-transition: all 0.7s; 
+	  -webkit-transition: all .7s; 
+	  -o-transition: all .7s; 
+	  transition: all .7s;
+    line-height: 20px;
 }
 
 #main_nav ul ul {
@@ -90,17 +97,17 @@ a:hover, a:active {
 	top: 100%;
 	visibility: hidden;
 	opacity: 0;
+	width : 200px;
 }
 
 #main_nav li:hover > ul {
 	visibility: visible;
 	opacity: 1;
 	transition: 0.7s;
-}
-
-#main_nav ul li ul li {
-	text-decoration : none;
-	background : #22BBEE;
+	-moz-transition: all 0.7s; 
+	  -webkit-transition: all .7s; 
+	  -o-transition: all .7s; 
+	  transition: all .7s;
 }
 
 /* ORGANISATION DE LA PAGE */
