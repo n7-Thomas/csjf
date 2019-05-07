@@ -10,6 +10,9 @@
 </head>
 <body>
 
+<div class=imageDeFond></div>
+<div class=contenu id="fondu">
+
 <h3>Fil d'Actualité </h3>
 
 	
@@ -17,9 +20,11 @@
 	if(listePubli != null) {
 	
 		for (Publication p: listePubli){
-			
-			String publi = p.getMembre().getPrenom() + ": " + p.getContenu();			
-			
+			String publi;
+			if(p.getMembre() != null) {
+				 publi = p.getMembre().getPrenom() + ": " + p.getContenu();			
+				
+			}else {publi = p.getContenu();}
 			%>
 			<%=publi %> <br>
 			
@@ -31,8 +36,7 @@
 <form action= "ServeurPageGroupe" method="post">
 
 	Publier: <input type= "text" name= "contenu">
-	
-	<input type= "submit"  value= "OK">
+		
 	<input type= "hidden" name= "action" value= "publier">	
 	<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
 	

@@ -138,7 +138,11 @@ public class Facade {
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
 		dv.setDateValidation(PrivateDate.getNow().toString());
+		Publication p = creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi " + dav.getDefi().getDescription());
+
 		em.remove(dav);
+
+
 	}
 
 	public void validerDemande(int id_dar) {
@@ -147,6 +151,9 @@ public class Facade {
 		Groupe gp = em.find(Groupe.class, dar.getGroupe().getId());
 		mb.getGroupesAppartenus().add(gp);
 		em.remove(dar);
+
+		Publication p = creerNotification(id_dar, mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe !");
+
 	}
 
 	public void supprimerGroupe(Groupe gp) {
@@ -156,7 +163,9 @@ public class Facade {
 	public Groupe changerNomGroupe(Groupe gp, String nom) {
 		Groupe groupe = em.find(Groupe.class, gp.getId());
 		groupe.setNom(nom);
+		Publication p = creerNotification(gp.getId(), gp.getAdmin().getPrenom() + " à remplacé le nom du groupe par " + nom);
 		return groupe;
+
 	}
 
 	public boolean ajouterMembre(String email, Groupe grp) {
@@ -180,6 +189,7 @@ public class Facade {
 			em.remove(em.find(Demande_A_Rejoindre.class, dar.getId()));
 		}
 
+		Publication p = creerNotification(grp.getId(), mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
 		return true;
 	}
 
@@ -283,9 +293,6 @@ public class Facade {
 
 	}
 
-	public void commenter() {
-
-	}
 
 	/**
 	 * FROM PAGE ACCUEIL
@@ -387,6 +394,23 @@ public class Facade {
 
 		return publication;
 	}
+
+	/***
+	 * Creer une nouvelle notification
+	 */
+	public Publication creerNotification(int id_groupe, String contenu){
+		Publication notification = new Publication();
+		notification.setContenu(contenu);
+
+		Groupe gp = em.find(Groupe.class, id_groupe);
+		notification.setGroupe(gp);
+
+		em.persist(notification);
+
+		return notification;
+	}
+
+
 
 	/**
 	 * FROM INSCRIPTION
@@ -642,6 +666,8 @@ public class Facade {
 		csjf.setEtat(Etats.Valide);
 		csjf.setPoints(valeur);
 		csjf.setDateValidation(PrivateDate.getNow().toString());
+
+		Publication p = creerNotification(csjf.getGroupe().getId(), csjf.getMembre().getPrenom() + " vient de " + csjf.getTexte());
 	}
 
 	public void refuserCSJF(int id_csjf) {

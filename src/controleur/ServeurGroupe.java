@@ -714,6 +714,7 @@ public class ServeurGroupe extends HttpServlet {
 			if (key.contains("dar_")) {
 				int id_dar = Integer.parseInt(key.substring(4));
 				facade.validerDemande(id_dar);
+
 			}
 		}
 
