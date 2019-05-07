@@ -372,6 +372,7 @@ public class Facade {
 	public Collection<Publication> getPublications(int id_grp){
 		Groupe g = em.find(Groupe.class, id_grp);
 		return g.getPublications();
+
 	}
 
 	/***

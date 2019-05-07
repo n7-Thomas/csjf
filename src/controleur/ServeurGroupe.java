@@ -671,6 +671,7 @@ public class ServeurGroupe extends HttpServlet {
 
 		request.setAttribute("classement", facade.getClassement(grp));
 		request.setAttribute("groupe", grp);
+		request.setAttribute("id_grp", id_grp);
 		request.setAttribute("defis", facade.getDefisMembre(usr, grp));
 		request.setAttribute("membres", facade.getMembres(grp));
 

@@ -134,7 +134,7 @@ public class Groupe {
 	}
 
 	public Collection<Publication> getPublications() {
-		return publications;
+		return this.publications;
 	}
 
 	public void setPublications(Collection<Publication> publications) {

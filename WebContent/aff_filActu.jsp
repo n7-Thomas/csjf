@@ -6,28 +6,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>aff_filActu</title>
+<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 </head>
 <body>
 
-Fil d'Actualité <br>
+<h3>Fil d'Actualité </h3>
 
 	
-<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublication");
+<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
+	if(listePubli != null) {
 	
-	for (Publication p: listePubli){
-
-			String publi = p.getMembre().getPrenom() + ": " + p.getContenu();
+		for (Publication p: listePubli){
+			
+			String publi = p.getMembre().getPrenom() + ": " + p.getContenu();			
+			
 			%>
 			<%=publi %> <br>
 			
-			<% 			
+			<%}		
 
-	}%>
+	} else { System.out.println("pas de publi"); } %>
 
 
 <form action= "ServeurPageGroupe" method="post">
 
-	Créer une publication: <input type= "text" name= "contenu"><br/> 
+	Publier: <input type= "text" name= "contenu">
 	
 	<input type= "submit"  value= "OK">
 	<input type= "hidden" name= "action" value= "publier">	
