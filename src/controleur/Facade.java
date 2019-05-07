@@ -255,16 +255,17 @@ public class Facade {
 	/**
 	 * FROM PAGE GROUPE, on demande les défis d'un membres, ie. tous les défis mais aussi les défis validés et à valider
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ArrayList getDefisMembre(Membre membre, Groupe grp) {
+	public ArrayList<Object> getDefisMembre(Membre membre, Groupe grp) {
 		Groupe g = em.find(Groupe.class, grp.getId());
 		Membre m = em.find(Membre.class, membre.getId());
-		ArrayList l = new ArrayList();
+		ArrayList<Object> l = new ArrayList<Object>();
 		Collection<Defi> defis = g.getDefis();
 		l.addAll(defis);
 		for (Defi_Valide d : m.getDefis_valides()) {
 			if (defis.contains(d.getDefi())) {
 				l.remove(d.getDefi());
+				l.add(d);
+			} else {
 				l.add(d);
 			}
 		}
@@ -273,6 +274,8 @@ public class Facade {
 		for (Defi_A_Valider d : req.getResultList()) {
 			if (defis.contains(d.getDefi())) {
 				l.remove(d.getDefi());
+				l.add(d);
+			} else {
 				l.add(d);
 			}
 		}
@@ -585,13 +588,13 @@ public class Facade {
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
 
-		Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+		/*Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 		defi_a_valider.setDefi(defi);
 		defi_a_valider.setGroupe(gp);
 		defi_a_valider.setMembre(thomas);
 		em.persist(defi_a_valider);
 
-		this.validerDefi(defi_a_valider.getId());
+		this.validerDefi(defi_a_valider.getId());*/
 
 		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
 		defi_a_valider2.setDefi(defi);
