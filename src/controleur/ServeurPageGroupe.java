@@ -57,22 +57,28 @@ public class ServeurPageGroupe extends HttpServlet {
 
 		// Si pas d'action on envoie sur l'accueil
 		if (action == null) {
-			request.getRequestDispatcher("Serveur?action=afficher_pageAccueil").forward(request, response);
+			request.getRequestDispatcher("accueil.jsp").forward(request, response);
 			return;
 		}
 
+
+
 		// ACTION Afficher le fil d'actualité
 		if (action.equals("afficher_filActu")) {
+
+			// Récupération du groupe lié
 			String str_id_grp = request.getParameter("id_grp");
-			if(str_id_grp != null){
-				request.setAttribute("erreur", "pas de groupe");
+			if (str_id_grp == null) {
+
+				request.setAttribute("erreur", "Pas de groupe selectionné dans actionAfficherGroupe");
 				request.getRequestDispatcher("erreur.jsp").forward(request, response);
+				return;
 			}
 			int id_grp = Integer.parseInt(str_id_grp);
-			System.out.println("ID GROUPE ! " + id_grp);
+
 			try {
 				request.setAttribute("id_grp", id_grp);
-			    request.setAttribute("listePubli", facade.getPublications(id_grp));
+			    request.setAttribute("listePublications", facade.getPublications(id_grp));
 				request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
 
 			} catch (Exception e) {
@@ -92,10 +98,12 @@ public class ServeurPageGroupe extends HttpServlet {
 			}
 			int id_grp = Integer.parseInt(str_id_grp);
 
-			System.out.println("GROUPE ::: " + id_grp);
-
-			Membre mbr = (Membre) session.getAttribute("usr");
+			Membre mbr = (Membre) session.getAttribute("user");
 			String contenu = request.getParameter("contenu");
+
+			if(contenu == null){
+				contenu = " ";
+			}
 
 			try {
 				facade.creerPublication(id_grp, mbr, contenu);
@@ -103,7 +111,7 @@ public class ServeurPageGroupe extends HttpServlet {
 				request.setAttribute("erreur", e.getStackTrace());
 				request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			}
-			request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
+			request.getRequestDispatcher("ServeurPageGroupe?action=afficher_filActu").forward(request, response);
 
 		}
 	}

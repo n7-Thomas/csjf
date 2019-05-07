@@ -35,6 +35,9 @@ public class Membre {
 	@OneToMany(mappedBy = "membre", fetch = FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
 
+	//@OneToOne(mappedBy = "membre", fetch = FetchType.EAGER)
+	//private Collection<Publication> publications ;
+
 	private String email;
 
 	private String motdepasse;

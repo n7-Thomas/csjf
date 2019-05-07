@@ -19,6 +19,8 @@ public class Publication {
 
 	@ManyToOne
 	private Groupe groupe;
+	
+	private String contenu;
 
 	public Publication(){}
 
@@ -29,8 +31,6 @@ public class Publication {
 	public void setGroupe(Groupe groupe) {
 		this.groupe = groupe;
 	}
-
-	private String contenu;
 
 	/**
 	 * @return the publi

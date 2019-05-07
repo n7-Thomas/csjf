@@ -26,7 +26,7 @@
 		<%
 			} else {
 					Groupe groupe = (Groupe) request.getAttribute("groupe");
-
+					String id_grp = (String) request.getAttribute("id_grp");
 					String status = (String) request.getAttribute("status");
 					ArrayList defis = (ArrayList) request.getAttribute("defis");
 		%>
@@ -36,6 +36,7 @@
 					<li><a href="Serveur?action=afficher_pageAccueil">Accueil</a></li>
 					<li><a href="creer_groupe.jsp">Créer un groupe</a></li>
 					<li><a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a></li>
+					<li><a href="ServeurPageGroupe?action=afficher_filActu&id_grp=<%=id_grp%>"> Afficher le fil d'Actualité</a></li> 
 					<li class="top_puce"><a
 						href="ServeurConnexion?action=afficher_profil">Mon Profil</a></li>
 				</ul>
