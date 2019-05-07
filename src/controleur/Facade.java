@@ -39,33 +39,23 @@ public class Facade {
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
 		byte[] salt = m.getSalt();
+		
 		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-		boolean ok;
-		if (m.getMotdepasse().equals(motdepasseCryp)) {
-			ok = true;
-		} else {
-			ok = false;
-		}
-		return ok;
+
+		return m.getMotdepasse().equals(motdepasseCryp);
 	}
 
 	public Membre checkConnexion(String email, String motDePasse) {
 
-		System.out.println("select * from Membre WHERE email='" + email + "'");
-		Membre member;
+		Membre member = null;
 
-		try {
-			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
-					Membre.class);
-			Membre mb = req.getSingleResult();
-			if (mb != null) {
-				member = mb;
-			} else {
-				member = null;
-			}
-		} catch (Exception e) {
+		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
+
+		if (req == null || req.getResultList().size() != 1) {
 			System.out.println("Utilisateur n'existe pas");
 			member = null;
+		} else {
+			member = req.getSingleResult();
 		}
 		return member;
 	}
@@ -73,23 +63,19 @@ public class Facade {
 	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
 
 		Membre member = null;
-		try {
-			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
-					Membre.class);
-			Membre mr = req.getSingleResult();
-			if (mr.equals(null))
-				member = null;
-		} catch (Exception e) {
-			System.out.println("Utilisateur n'existe pas");
-			Membre mb = new Membre();
-			mb.setCoeff_sportif(1);
-			mb.setEmail(email);
-			mb.setMotdepasse(motdepasse);
-			mb.setNom(nom);
-			mb.setPrenom(prenom);
-			mb.setSalt(salt);
-			em.persist(mb);
-			member = mb;
+		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
+		if (req == null || req.getResultList().size() > 0) {
+			member = null;
+		} else {
+			System.out.println("Nouvel utilisateur");
+			member = new Membre();
+			member.setCoeff_sportif(1);
+			member.setEmail(email);
+			member.setMotdepasse(motdepasse);
+			member.setNom(nom);
+			member.setPrenom(prenom);
+			member.setSalt(salt);
+			em.persist(member);
 		}
 		return member;
 	}
@@ -131,13 +117,13 @@ public class Facade {
 
 	public void validerDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
-
 		Defi_Valide dv = new Defi_Valide();
-		em.persist(dv);
 		dv.setDefi(dav.getDefi());
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
 		dv.setDateValidation(PrivateDate.getNow().toString());
+		
+		em.persist(dv);
 		em.remove(dav);
 	}
 
@@ -203,14 +189,15 @@ public class Facade {
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
 			throw new Exception("Ce défi a déjà été envoyé pour être validé, vous ne pouvez pas le renvoyer !");
 		}
-		
-		TypedQuery<Defi_Valide> req2 = em
-				.createQuery("select d from Defi_Valide d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(), Defi_Valide.class);
-		
-		if (req2.getResultList().size() != 0) { 
+
+		TypedQuery<Defi_Valide> req2 = em.createQuery(
+				"select d from Defi_Valide d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(),
+				Defi_Valide.class);
+
+		if (req2.getResultList().size() != 0) {
 			throw new Exception("Ce défi a déjà été validé !");
 		}
-		
+
 		if (defi1 != null && m != null && groupe != null) {
 			Defi_A_Valider defi_a_valider = new Defi_A_Valider();
 			defi_a_valider.setDefi(defi1);
@@ -221,7 +208,7 @@ public class Facade {
 			throw new Exception("Problème facade ajouter defi a valider");
 		}
 	}
-	
+
 	/**
 	 * FROM PAGE GROUPE, on crée un CSJF pour le membre concerné
 	 */
@@ -231,7 +218,8 @@ public class Facade {
 		TypedQuery<CSJF> req = em
 				.createQuery("select c from CSJF c WHERE MEMBRE_ID=" + membre.getId() + " and c.etat=2", CSJF.class);
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
-			throw new Exception("Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
+			throw new Exception(
+					"Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
 		}
 		if (m != null && groupe != null) {
 			CSJF csjf = new CSJF();
@@ -250,10 +238,6 @@ public class Facade {
 	public Collection<Defi> getDefis(Groupe grp) {
 		Groupe g = em.find(Groupe.class, grp.getId());
 		return g.getDefis();
-	}
-
-	public void demandeValidationCSJF() {
-
 	}
 
 	public Publication creerPublication(Membre mbr, String contenu) {
@@ -358,11 +342,11 @@ public class Facade {
 	 * FROM PROFIL
 	 */
 	public void modifierProfil(Membre mb, String nom, String prenom, String email, String motdepasse) {
-		mb.setNom(nom);
-		mb.setPrenom(prenom);
-		mb.setEmail(email);
-		mb.setMotdepasse(motdepasse);
-		em.merge(mb);
+		Membre mbr = em.find(Membre.class, mb.getId());
+		mbr.setNom(nom);
+		mbr.setPrenom(prenom);
+		mbr.setEmail(email);
+		mbr.setMotdepasse(motdepasse);
 	}
 
 	public Collection<Defi_A_Valider> getDefisAValider(Groupe grp) {
@@ -425,28 +409,25 @@ public class Facade {
 		System.out.println("\n\n MEMBRES " + membres + " \n\n");
 		if (membres != null) {
 			for (Membre mb : membres) {
-				int somme_defi_before = 0;
-				int somme_csjf_before = 0;
+				int somme_defi_total = 0;
+				int somme_csjf_total = 0;
 				int somme_defi_cette_semaine = 0;
 				int somme_csjf_cette_semaine = 0;
 				TypedQuery<Defi_Valide> req = em.createQuery(
 						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
 						Defi_Valide.class);
-				TypedQuery<CSJF> req2 = em.createQuery(
-						"select c from CSJF c where c.membre=" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=0",
-						CSJF.class);
-				
+				TypedQuery<CSJF> req2 = em.createQuery("select c from CSJF c where c.membre=" + mb.getId()
+						+ " and c.groupe=" + grp.getId() + " and c.etat=0", CSJF.class);
+
 				PrivateDate date_prec = PrivateDate.getNow();
 				date_prec.setJour(date_prec.getJour() - 7);
-				
-			
+
 				if (req != null && req.getResultList().size() != 0) {
 					Collection<Defi_Valide> dvs = req.getResultList();
 					for (Defi_Valide dv : dvs) {
 						PrivateDate date = new PrivateDate(dv.getDateValidation());
-						if(date.isBefore(date_prec))						
-							somme_defi_before += dv.getDefi().getPoints() * mb.getCoeff_sportif();
-						else
+						somme_defi_total += dv.getDefi().getPoints() * mb.getCoeff_sportif();
+						if (!date.isBefore(date_prec))
 							somme_defi_cette_semaine += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
@@ -454,14 +435,14 @@ public class Facade {
 					Collection<CSJF> csjfs = req2.getResultList();
 					for (CSJF csjf : csjfs) {
 						PrivateDate date = new PrivateDate(csjf.getDateValidation());
-						if(date.isBefore(date_prec))						
-							somme_csjf_before += csjf.getPoints();
-						else
+						somme_csjf_total += csjf.getPoints();
+						if (date.isBefore(date_prec))
 							somme_csjf_cette_semaine += csjf.getPoints();
 					}
 				}
-				
-				resultat.add(mb.getPrenom() + ":" + somme_defi_before + ":" + somme_defi_cette_semaine + ":" + somme_csjf_before + ":" + somme_csjf_cette_semaine);
+
+				resultat.add(mb.getPrenom() + ":" + somme_defi_total + ":" + somme_defi_cette_semaine + ":"
+						+ somme_csjf_total + ":" + somme_csjf_cette_semaine);
 			}
 		} else {
 			System.out.println("\n\n AUCUN MEMBRE \n\n");
@@ -474,7 +455,6 @@ public class Facade {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		Membre mb = em.find(Membre.class, id_mbr);
 		mb.getGroupesAppartenus().remove(gp);
-		em.merge(mb);
 	}
 
 	public void enleverDefi(int id_defi) {
@@ -546,14 +526,14 @@ public class Facade {
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
 		em.persist(defi_a_valider2);
-		
+
 		CSJF csjf = new CSJF();
 		csjf.setEtat(Etats.EnCoursDeValidation);
 		csjf.setGroupe(gp);
 		csjf.setMembre(celia);
 		csjf.setTexte("J'ai fait des pâtes");
 		em.persist(csjf);
-		
+
 		CSJF csjf_deja_valide = new CSJF();
 		csjf.setEtat(Etats.Valide);
 		csjf.setGroupe(gp);
@@ -562,7 +542,7 @@ public class Facade {
 		csjf.setDateValidation("19970723");
 		csjf.setPoints(100);
 		em.persist(csjf_deja_valide);
-		
+
 		return thomas;
 	}
 
@@ -595,16 +575,15 @@ public class Facade {
 		csjf.setEtat(Etats.NonValide);
 		csjf.setDateValidation(PrivateDate.getNow().toString());
 	}
-	
-	public Collection<CSJF> getCSJFAValider(Groupe gp){
+
+	public Collection<CSJF> getCSJFAValider(Groupe gp) {
 		Collection<CSJF> csjf_a_valider = null;
-		String rq = "select c from CSJF c where c.groupe=" + gp.getId() + " and c.etat=2"; // 2 pour EnCoursDeValidation 
+		String rq = "select c from CSJF c where c.groupe=" + gp.getId() + " and c.etat=2"; // 2 pour EnCoursDeValidation
 		TypedQuery<CSJF> req = em.createQuery(rq, CSJF.class);
-		
-		if(req != null && req.getResultList().size() != 0)
+
+		if (req != null && req.getResultList().size() != 0)
 			csjf_a_valider = req.getResultList();
-		
-		
+
 		return csjf_a_valider;
 	}
 

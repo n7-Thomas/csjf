@@ -8,9 +8,10 @@
 	<link type="text/css" rel="stylesheet" href="CSS/connexion.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
+<body>
 <div class=imageDeFond></div>
 <div class=contenu id="fondu">
-<body>
+
 		<% boolean connecte = true; %>
     	<% String status = (String) request.getAttribute("status");
 		if(status != null){ %> <p> Status : <%=status %> </p> <% }
@@ -78,7 +79,7 @@
 
         </form>
 	
-</body>
+
 </div>
 <script type="text/javascript">
 function fondu(nomDiv){
@@ -101,4 +102,5 @@ function fondu(nomDiv){
 // appel la fonction avec l'id à transmettre
 fondu("fondu");
 </script>
+</body>
 </html>

@@ -46,8 +46,7 @@
 			ligula, tempor non feugiat et, viverra eget massa.</p>
 
 		<h3>Tests</h3>
-		<a href="testPageGroupe.jsp">Test page du groupe</a> <br> <a
-			href="ServeurTests?action=init1">Test 1</a>
+		<a href="ServeurTests?action=init1">Test 1</a>
 		<p>Création de Thomas, Connexion avec Thomas</p>
 		<br> <a href="ServeurTests?action=init2">Test 2</a>
 		<p>Création d'une base de données de 5 membres, 1 demande à rejoindre, 1 groupe, 1 défi, 1 défi validé, 1 défi à valider</p>

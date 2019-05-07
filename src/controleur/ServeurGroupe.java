@@ -16,8 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import exceptions.ExceptionUserNonDefini;
 import modele.Defi;
-import modele.Defi_A_Valider;
-import modele.Demande_A_Rejoindre;
 import modele.Groupe;
 import modele.Membre;
 
@@ -214,7 +212,15 @@ public class ServeurGroupe extends HttpServlet {
 			actionAfficherGroupe(request, response, session);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionSupprimerGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 		
@@ -232,6 +238,14 @@ public class ServeurGroupe extends HttpServlet {
 				
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionEditerNomGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 		
@@ -256,7 +270,15 @@ public class ServeurGroupe extends HttpServlet {
 		actionAfficherAdmin(request, response, session);
 				
 	}
-
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
 			throws ServletException, IOException {
 		
@@ -272,7 +294,15 @@ public class ServeurGroupe extends HttpServlet {
 		
 		actionAfficherAdmin(request, response, session);
 	}
-
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionEnleverMembre(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 		
@@ -530,7 +560,7 @@ public class ServeurGroupe extends HttpServlet {
 		}
 		
 		boolean valider = true;
-		if (request.getAttribute("refuser")!= null)
+		if (request.getParameter("refuser") != null)
 			valider = false;
 		
 
@@ -615,17 +645,19 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 		
+	
+		
 		// Récupération du membre connecté pour la topbar
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
-		
+	
 		request.setAttribute("csjf_a_valider", facade.getCSJFAValider(grp));
 		request.setAttribute("defis_valides", facade.getDefisValides(grp));
 		request.setAttribute("defis_en_cours", facade.getDefisEnCours(grp));
 		request.setAttribute("demandes_a_rejoindre", facade.getDemandeARejoindre(grp));
 		request.setAttribute("defis_a_valider", facade.getDefisAValider(grp));
 		request.setAttribute("membres",  facade.getMembres(grp));
-
+				
 		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}
 
