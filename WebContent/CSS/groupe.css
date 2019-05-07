@@ -1,18 +1,18 @@
 body {
-    margin: 0;
-    padding: 0;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    width: 100%;
+    height: 100%;
     font-family:'Abel', arial, serif;
     color: white;
     background-image: url("arriere-plan-pageGroupe.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
-    margin: 5px;
 }
  
 #conteneur-menu2 {
-    width: 360px;
-    margin-top: 0px;
-    margin-left: 0px;
+    width: 100%;
+    height: 30px;
     background-color: black;
     border: 5px black double;
 }
@@ -60,7 +60,7 @@ body {
 }
 
 #bandeau {
-    height: 10%;
+    height: 8%;
     width: 100%;
     background-color: black;
     color: white;
@@ -70,7 +70,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10%;
+    margin-bottom: 2%;
 }
 
 #corps {
@@ -98,8 +98,6 @@ body {
     width: 30%;
     height: 100%;
     flex-direction: column;
-    align-items: flex-end;
-    margin-top: 0px;
     background-color: yellow;
 }
 
@@ -122,7 +120,6 @@ body {
 /*////////////// Afficher histogramme ////////////////*/
 
 #histogramme {
-	margin: 10%;
 	background-color: black;
 	opacity: 0.65;
 	width: 100%;
@@ -134,7 +131,7 @@ body {
 /*////////////// Afficher les membres du groupe ////////////////*/
 
 #afficherMembresGroupe {
-    height: 35%;
+    height: 30%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -143,7 +140,6 @@ body {
     background: black;
     border-radius: 5px;
     opacity: 0.65;
-    margin: 10%;
 }
 
 .membre_afficher {
@@ -171,12 +167,10 @@ body {
     background-color: black;
     border-radius: 8px;
     opacity: 0.65;
-    margin: 10%;
 }
 
 .defi_afficher {
     display: flex;
-    padding: 8px;
 }
 
 #titre_defis .nom_aff {
@@ -203,46 +197,38 @@ body {
     display: flex;
     flex-direction: center;
     align-items: center;
-    margin-top: 3px;
     font-weight: bold;
-    padding: 8px;
 }
 
 .nom_aff {
     width: 20%;
-    margin: 6px;
 }
 
 .desc_aff {
     width: 40%;
-    margin: 6px;
 }
 
 .points_aff {
     width: 10%;
-    margin: 6px;
 }
 
 .type_aff {
     width: 10%;
-    margin: 6px;
 }
 
 .envoyer_aff {
 	width: 20%;
-	margin: 6px;
 }
 
 /*////////////// Demande CSJF ////////////////*/
 
 #csjf_div {
-	height: 65%;
+	height: 40%;
     width: 100%;
     display: flex;
     flex-direction: column;
     overflow: auto;
     background-color: black;
-    margin: 10%;
     border-radius: 8px;
     opacity: 0.65;
 }

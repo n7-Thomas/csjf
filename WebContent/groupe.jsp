@@ -11,26 +11,25 @@
 		<h1 id="titre">Page du groupe</h1>
 	</div>
 	<div id="corps">
-		<%
+		<div id="bloc_gauche">
+			<%
 			if (session.getAttribute("user") == null) {
-		%>
-		<p>Vous n'êtes pas connectés.</p>
-		<%
+			%>
+			<p>Vous n'êtes pas connectés.</p>
+			<%
 			} else {
 				Membre mb = (Membre) session.getAttribute("user");
-
 				if (request.getAttribute("groupe") == null) {
-		%>
-		<p>Pas de groupe sélectionné.</p>
-		<a href="index.html">Aller à l'index</a><br>
-		<%
-			} else {
-					Groupe groupe = (Groupe) request.getAttribute("groupe");
-					String id_grp = (String) request.getAttribute("id_grp");
-					String status = (String) request.getAttribute("status");
-					ArrayList<Object> defis = (ArrayList<Object>) request.getAttribute("defis");
-		%>
-		<div id="bloc_gauche">
+			%>
+			<p>Pas de groupe sélectionné.</p>
+			<a href="index.html">Aller à l'index</a><br>
+			<%
+				} else {
+						Groupe groupe = (Groupe) request.getAttribute("groupe");
+						String id_grp = (String) request.getAttribute("id_grp");
+						String status = (String) request.getAttribute("status");
+						ArrayList<Object> defis = (ArrayList<Object>) request.getAttribute("defis");
+			%>
 			<div id="conteneur-menu2">
 				<ul>
 					<li><a href="Serveur?action=afficher_pageAccueil">Accueil</a></li>
@@ -197,12 +196,12 @@
 		</div>
 		
 		
-		<div id="fil_actu">
+		<div id="bloc_droite">
 		
 		</div>
 		<%
 			}
-			}
+		}
 		%>
 	</div>
 </body>
