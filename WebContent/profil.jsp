@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
+<div class=imageDeFond></div>
+<div class=contenu2 id="fondu">
 	<body>
 		<div id="header">
     		<h1>Profil</h1>    
@@ -65,4 +67,26 @@
 				</div>
 			</div>
 	</body>
+</div>
+<script type="text/javascript">
+function fondu(nomDiv){
+	  var div = document.getElementById(nomDiv).style;// récupère div
+	  var i = 0;// initialise i
+	  var f = function()// attribut à f une fonction anonyme
+	  {
+	    div.opacity = i;// attribut à l'opacité du div la valeur d'i
+	    i = i+0.02;// l'incrémente
+		
+	    if(i<=1)// si c'est toujours pas égal à 1
+	    {
+	      setTimeout(f,10);// attend 20 ms, et relance la fonction
+	    }
+	  };
+	  
+	  f();// l'appel une première fois pour lancer la boucle
+	}
+
+// appel la fonction avec l'id à transmettre
+fondu("fondu");
+</script>
 </html>
