@@ -172,3 +172,9 @@ a:hover, a:active {
 	display: table;
 	clear: both;
 }
+
+.delete {
+	background:url(delete.gif) no-repeat 10px 8px;
+	text-indent:30px;
+	display:block;
+}

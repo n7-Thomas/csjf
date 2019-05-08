@@ -5,8 +5,9 @@
 <% Membre mb = ((Membre) session.getAttribute("user")); %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Modification du profil.</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Modification du profil.</title>
+	<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 </head>
 <body>
 

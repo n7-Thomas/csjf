@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Accueil</title>
-<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+	<meta charset="UTF-8">
+	<title>Accueil</title>
+	<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 </head>
 <body>
 	<div id="header">

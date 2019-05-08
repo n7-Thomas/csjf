@@ -328,6 +328,14 @@ public class ServeurGroupe extends HttpServlet {
 		actionAfficherAdmin(request, response, session);
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionAfficherHistogramme(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) throws ServletException, IOException {
 
@@ -359,11 +367,8 @@ public class ServeurGroupe extends HttpServlet {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Traiter une requête de demande à rejoindre le groupe.
-	 *
-=======
-	 * Editer un défi.
+
+	 * Traiter une requête pour éditer un défi.
 	 *
 	 * @param request
 	 * @param response
@@ -450,8 +455,6 @@ public class ServeurGroupe extends HttpServlet {
 
 	/**
 	 * Ajouter un défi à valider à la liste pour le faire valider par l'admin
-	 *
->>>>>>> 3e8999145d81f16868c8d2d12cbcfb959383b938
 	 * @param request
 	 * @param response
 	 * @param session

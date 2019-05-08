@@ -34,6 +34,18 @@ public class PrivateDate {
 		return date;
 	}
 
+	public String toGoodString() {
+		String date = "";
+		date += String.valueOf(jour);
+		date += "/";
+		date += String.valueOf(mois);
+		date += "/";
+		date += String.valueOf(annee);
+	
+		return date;
+	}
+	
+	
 	public static PrivateDate getNow() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
