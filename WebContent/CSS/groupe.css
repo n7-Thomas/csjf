@@ -9,10 +9,12 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
- 
+
+/*//////////// PLUS UTILISÉ /////////////////*/
+/*
 #conteneur-menu2 {
     width: 100%;
-    height: 30px;
+    height: 30%;
     background-color: black;
     border: 5px black double;
 }
@@ -20,18 +22,18 @@ body {
 #conteneur-menu2 ul {
     padding: 0;
     margin: 0;
-    /* background-color: yellow; */
+    background-color: yellow;
 }
  
 #conteneur-menu2 ul li {
     list-style: none;
-    /* background-color: red; */
+    background-color: red;
     padding: 0px;
 }
  
 #conteneur-menu2 ul li a {
     text-decoration: none;
-    background-color: green; */
+    background-color: green;
     font-size: 15px;
     padding: 8px;
     font-weight: bold;
@@ -72,11 +74,15 @@ body {
     align-items: center;
     margin-bottom: 2%;
 }
+*/
+/*//////////// FIN /////////////////*/
 
 #corps {
     display: flex;
     width: 100%;
     height: 90%;
+    position: relative;
+    z-index: 1;
 }
 
 #bloc_gauche {
@@ -84,13 +90,14 @@ body {
     width: 30%;
     height: 100%;
     flex-direction: column;
-    background-color: blue;
 }
 
 #bloc_milieu {
 	width: 40%;
 	height: 100%;
-	background-color: red;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 #bloc_droite {
@@ -98,7 +105,6 @@ body {
     width: 30%;
     height: 100%;
     flex-direction: column;
-    background-color: yellow;
 }
 
 #status {
@@ -122,21 +128,18 @@ body {
 #histogramme {
 	background-color: black;
 	opacity: 0.65;
-	width: 100%;
-	height: 65%;
+	width: 95%;
+	height: 400px;
 	overflow: auto;
+	margin: 0 0 0 0;
 }
 
 
 /*////////////// Afficher les membres du groupe ////////////////*/
 
 #afficherMembresGroupe {
-<<<<<<< HEAD
-    height: 60%;
-=======
-    height: 30%;
->>>>>>> 1afea1a4374b5014f6900c9c53f731d72d278880
-    width: 100%;
+    height: 200px;
+    width: 50%;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -144,6 +147,9 @@ body {
     background: black;
     border-radius: 5px;
     opacity: 0.65;
+    align-items: center;
+    color: white;
+    margin: 4% 0 10% 25%;
 }
 
 .membre_afficher {
@@ -162,8 +168,8 @@ body {
 /*////////////// Afficher les défis ////////////////*/
 
 #afficherDefisGroupe {
-    height: 35%;
-    width: 100%;
+    height: 200px;
+    width: 95%;
     display: flex;
     flex-direction: column;
     overflow: auto;
@@ -171,10 +177,14 @@ body {
     background-color: black;
     border-radius: 8px;
     opacity: 0.65;
+    margin: 3% 0 3% 0;
+    color: white;
 }
 
 .defi_afficher {
     display: flex;
+    height: 40px;
+    align-items: center;
 }
 
 #titre_defis .nom_aff {
@@ -182,7 +192,7 @@ body {
 }
 
 #titre_defis .desc_aff {
-    width: 40%;
+    width: 35%;
 }
 
 #titre_defis .points_aff {
@@ -194,7 +204,7 @@ body {
 }
 
 #titre_defis .envoyer_aff {
-	width: 20%;
+	width: 25%;
 }
 
 #titre_defis {
@@ -202,6 +212,7 @@ body {
     flex-direction: center;
     align-items: center;
     font-weight: bold;
+    height: 60px;
 }
 
 .nom_aff {
@@ -209,7 +220,7 @@ body {
 }
 
 .desc_aff {
-    width: 40%;
+    width: 35%;
 }
 
 .points_aff {
@@ -221,31 +232,35 @@ body {
 }
 
 .envoyer_aff {
-	width: 20%;
+	width: 25%;
 }
 
 /*////////////// Demande CSJF ////////////////*/
 
 #csjf_div {
 	height: 40%;
-    width: 100%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     overflow: auto;
     background-color: black;
     border-radius: 8px;
     opacity: 0.65;
+    color: white;
+    margin: 3% 10% 10% 10%;
 }
 
 #csjf_titre {
 	font-weight: bold;
 	padding-left: 20px;
     letter-spacing: .1rem;
+    text-align: center;
 }
 
 #csjf_soustitre {
 	letter-spacing: .1rem;
 	padding-left: 10px;
+	color: white;
 }
 
 #csjf_div p {
@@ -255,20 +270,23 @@ body {
 }
 
 #zone_texte {
-	margin-top: -30px;
+	margin-top: 20px;
 	display:flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 15px;
 }
 
 #csjf {
-	margin-top: 60px;
-	margin-left: 40px;
-	margin-bottom: 20px;
+	margin: auto;
+	color: black;
 }
 
-
+.bouton_envoyer {
+	margin-top: 4%;
+	color: black;
+}
 
 
 

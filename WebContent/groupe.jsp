@@ -3,44 +3,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Groupe</title>
-
+	<title>Groupe</title>
+	<link type="text/css" rel="stylesheet" href="CSS/groupe.css" />
+	<link type="text/css" rel="stylesheet" href="CSS/header.css" />
 </head>
 <body>
-	<div id="bandeau">
-		<h1 id="titre">Page du groupe</h1>
-	</div>
+	<%
+	if (session.getAttribute("user") == null) {
+	%>
+	<p>Vous n'êtes pas connectés.</p>
+	<%
+	} else {
+		Membre mb = (Membre) session.getAttribute("user");
+		if (request.getAttribute("groupe") == null) {
+	%>
+	<p>Pas de groupe sélectionné.</p>
+	<a href="index.html">Aller à l'index</a><br>
+	<%
+		} else {
+				Groupe groupe = (Groupe) request.getAttribute("groupe");
+				String id_grp = (String) request.getAttribute("id_grp");
+				String status = (String) request.getAttribute("status");
+				ArrayList<Object> defis = (ArrayList<Object>) request.getAttribute("defis");
+	%>
+	<header>
+    	<h1>Groupe <span style="color.blue"><%= groupe.getNom() %></span></h1>
+    	<%@ include file="navigationBar.jsp" %>
+    </header>
 	<div id="corps">
 		<div id="bloc_gauche">
-			<%
-			if (session.getAttribute("user") == null) {
-			%>
-			<p>Vous n'êtes pas connectés.</p>
-			<%
-			} else {
-				Membre mb = (Membre) session.getAttribute("user");
-				if (request.getAttribute("groupe") == null) {
-			%>
-			<p>Pas de groupe sélectionné.</p>
-			<a href="index.html">Aller à l'index</a><br>
-			<%
-				} else {
-						Groupe groupe = (Groupe) request.getAttribute("groupe");
-						String id_grp = (String) request.getAttribute("id_grp");
-						String status = (String) request.getAttribute("status");
-						ArrayList<Object> defis = (ArrayList<Object>) request.getAttribute("defis");
-			%>
-			<div id="conteneur-menu2">
+			<!-- <div id="conteneur-menu2">
 				<ul>
 					<li><a href="Serveur?action=afficher_pageAccueil">Accueil</a></li>
 					<li><a href="creer_groupe.jsp">Créer un groupe</a></li>
 					<li><a href="demande_a_rejoindre.jsp">Rejoindre un groupe</a></li>
-					<li><a href="ServeurPageGroupe?action=afficher_filActu&id_grp=<%=id_grp%>"> Afficher le fil d'Actualité</a></li> 
+					<li><a href="ServeurPageGroupe?action=afficher_filActu&id_grp="> Afficher le fil d'Actualité</a></li> 
 					<li class="top_puce"><a
 						href="ServeurConnexion?action=afficher_profil">Mon Profil</a></li>
 				</ul>
-			</div>
+			</div> -->
 			
 			<%
 				if (status != null) {
@@ -85,7 +86,7 @@
 				<form method="post" action="ServeurGroupe">
 				   	<label for="csjf" id="csjf_label"><p>Tu as fait quelque chose de bien cette semaine ?<br/>Dis-le nous !</p></label><br />
 				   	<div id="zone_texte">
-					   	<textarea name="csjf" id="csjf" rows="7" cols="50"></textarea>
+					   	<textarea name="csjf" id="csjf" rows="2" cols="30"></textarea>
 					   	<input type="submit" value="Envoyer!" class="bouton_envoyer" />
 				   	</div>
 					<input type="hidden" value="envoyerCSJF" name="action">
@@ -98,7 +99,7 @@
 		<div id="bloc_milieu">
 		
 			<div id="afficherDefisGroupe">
-				<form method="post" action="ServeurGroupe">
+				<form method="post" action="ServeurGroupe" id="form_aff_defis">
 					<div id="titre_defis">
 						<div class="nom_aff">Nom</div>
 						<div class="desc_aff">Description</div>
@@ -138,6 +139,9 @@
 						<div class="envoyer_aff">
 							<input type="submit" value="Valider" class="bouton_envoyer" />
 						</div>
+						<input type="hidden" value="ajouterDefiAValider" name="action">
+						<input type="hidden" value="<%=defi.getId()%>" name="id_defi">
+						<input type="hidden" value="<%=groupe.getId()%>" name="id_grp">
 					</div>
 					<%
 								} else if (o instanceof Defi_A_Valider) {
