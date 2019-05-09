@@ -172,3 +172,13 @@ a:hover, a:active {
 	display: table;
 	clear: both;
 }
+
+.delete:link {
+	background-color: white;
+	padding: 0;
+}
+
+.delete:hover {
+	text-decoration: none;
+	backgroud-color: blue;
+}

@@ -1,26 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="controleur.*, modele.*, java.util.*, javax.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <% Membre mb = ((Membre) session.getAttribute("user")); %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Profil de <%= mb.getPrenom() + " " + mb.getNom() %></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>Profil de <%= mb.getPrenom() + " " + mb.getNom() %></title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
-<div class=imageDeFond></div>
-<div class=contenu2 id="fondu">
-	<body>
-		<div id="header">
-    		<h1>Profil</h1>    
-    		<%@ include file="navigationBar.jsp" %>    
-		</div>
-		<div id="contenu">
+
+<body>
+	<div class=imageDeFond></div>
+	<div class=contenu2 id="fondu">
+	<div id="header">
+    	<h1>Profil</h1>    
+    	<%@ include file="navigationBar.jsp" %>    
+	</div>
+	<div id="contenu">
+
             	<div class="rightcolumn">
                 	<div class="card">
                 		<h2>Coordonnées.</h2>
@@ -65,9 +68,15 @@
 						%>
 					</div>
 				</div>
+<<<<<<< HEAD
 			</div>
 	</body>
 </div>
+=======
+		</div>
+	</div>
+</body>
+>>>>>>> 1afea1a4374b5014f6900c9c53f731d72d278880
 <script type="text/javascript">
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div

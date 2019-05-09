@@ -25,7 +25,7 @@ public class Membre {
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "membre_groupe")
-	private Collection<Groupe> groupes_appartenus = new ArrayList<Groupe>();
+	private Collection<Groupe> groupes_appartenus;
 
 	@OneToMany(mappedBy = "admin", fetch = FetchType.EAGER)
 	private Collection<Groupe> groupes_administres;
@@ -45,6 +45,7 @@ public class Membre {
 	private byte[] salt;
 
 	public Membre() {
+		this.groupes_appartenus = new ArrayList<Groupe>();
 	}
 
 	public String getMotdepasse() {

@@ -213,7 +213,15 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionSupprimerGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
@@ -231,6 +239,14 @@ public class ServeurGroupe extends HttpServlet {
 
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionEditerNomGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
@@ -255,8 +271,17 @@ public class ServeurGroupe extends HttpServlet {
 		actionAfficherAdmin(request, response, session);
 
 	}
-
-	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
 			throws ServletException, IOException {
 
 		String str_id_defi = request.getParameter("id_defi");
@@ -271,7 +296,15 @@ public class ServeurGroupe extends HttpServlet {
 
 		actionAfficherAdmin(request, response, session);
 	}
-
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionEnleverMembre(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
@@ -295,6 +328,14 @@ public class ServeurGroupe extends HttpServlet {
 		actionAfficherAdmin(request, response, session);
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void actionAfficherHistogramme(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) throws ServletException, IOException {
 
@@ -326,11 +367,8 @@ public class ServeurGroupe extends HttpServlet {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Traiter une requête de demande à rejoindre le groupe.
-	 *
-=======
-	 * Editer un défi.
+
+	 * Traiter une requête pour éditer un défi.
 	 *
 	 * @param request
 	 * @param response
@@ -417,8 +455,6 @@ public class ServeurGroupe extends HttpServlet {
 
 	/**
 	 * Ajouter un défi à valider à la liste pour le faire valider par l'admin
-	 *
->>>>>>> 3e8999145d81f16868c8d2d12cbcfb959383b938
 	 * @param request
 	 * @param response
 	 * @param session
@@ -538,7 +574,7 @@ public class ServeurGroupe extends HttpServlet {
 
 
 		boolean valider = true;
-		if (request.getAttribute("refuser")!= null)
+		if (request.getParameter("refuser") != null)
 			valider = false;
 
 
@@ -625,7 +661,6 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-
 		// Récupération du membre connecté pour la topbar
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
@@ -637,7 +672,6 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("demandes_a_rejoindre", facade.getDemandeARejoindre(grp));
 		request.setAttribute("defis_a_valider", facade.getDefisAValider(grp));
 		request.setAttribute("membres",  facade.getMembres(grp));
-
 
 		request.getRequestDispatcher("admin.jsp").forward(request, response);
 	}

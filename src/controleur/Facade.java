@@ -39,33 +39,23 @@ public class Facade {
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
 		byte[] salt = m.getSalt();
+
 		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-		boolean ok;
-		if (m.getMotdepasse().equals(motdepasseCryp)) {
-			ok = true;
-		} else {
-			ok = false;
-		}
-		return ok;
+
+		return m.getMotdepasse().equals(motdepasseCryp);
 	}
 
 	public Membre checkConnexion(String email, String motDePasse) {
 
-		System.out.println("select * from Membre WHERE email='" + email + "'");
-		Membre member;
+		Membre member = null;
 
-		try {
-			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
-					Membre.class);
-			Membre mb = req.getSingleResult();
-			if (mb != null) {
-				member = mb;
-			} else {
-				member = null;
-			}
-		} catch (Exception e) {
+		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
+
+		if (req == null || req.getResultList().size() != 1) {
 			System.out.println("Utilisateur n'existe pas");
 			member = null;
+		} else {
+			member = req.getSingleResult();
 		}
 		return member;
 	}
@@ -73,23 +63,19 @@ public class Facade {
 	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
 
 		Membre member = null;
-		try {
-			TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'",
-					Membre.class);
-			Membre mr = req.getSingleResult();
-			if (mr.equals(null))
-				member = null;
-		} catch (Exception e) {
-			System.out.println("Utilisateur n'existe pas");
-			Membre mb = new Membre();
-			mb.setCoeff_sportif(1);
-			mb.setEmail(email);
-			mb.setMotdepasse(motdepasse);
-			mb.setNom(nom);
-			mb.setPrenom(prenom);
-			mb.setSalt(salt);
-			em.persist(mb);
-			member = mb;
+		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
+		if (req == null || req.getResultList().size() > 0) {
+			member = null;
+		} else {
+			System.out.println("Nouvel utilisateur");
+			member = new Membre();
+			member.setCoeff_sportif(1);
+			member.setEmail(email);
+			member.setMotdepasse(motdepasse);
+			member.setNom(nom);
+			member.setPrenom(prenom);
+			member.setSalt(salt);
+			em.persist(member);
 		}
 		return member;
 	}
@@ -131,15 +117,15 @@ public class Facade {
 
 	public void validerDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
-
 		Defi_Valide dv = new Defi_Valide();
-		em.persist(dv);
 		dv.setDefi(dav.getDefi());
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
 		dv.setDateValidation(PrivateDate.getNow().toString());
+
 		Publication p = creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi " + dav.getDefi().getDescription());
 
+		em.persist(dv);
 		em.remove(dav);
 
 
@@ -214,8 +200,9 @@ public class Facade {
 			throw new Exception("Ce défi a déjà été envoyé pour être validé, vous ne pouvez pas le renvoyer !");
 		}
 
-		TypedQuery<Defi_Valide> req2 = em
-				.createQuery("select d from Defi_Valide d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(), Defi_Valide.class);
+		TypedQuery<Defi_Valide> req2 = em.createQuery(
+				"select d from Defi_Valide d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(),
+				Defi_Valide.class);
 
 		if (req2.getResultList().size() != 0) {
 			throw new Exception("Ce défi a déjà été validé !");
@@ -241,7 +228,8 @@ public class Facade {
 		TypedQuery<CSJF> req = em
 				.createQuery("select c from CSJF c WHERE MEMBRE_ID=" + membre.getId() + " and c.etat=2", CSJF.class);
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
-			throw new Exception("Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
+			throw new Exception(
+					"Vous avez déjà envoyé un CSJF, vous ne pouvez pas en renvoyer un autre pour l'instant");
 		}
 		if (m != null && groupe != null) {
 			CSJF csjf = new CSJF();
@@ -262,8 +250,20 @@ public class Facade {
 		return g.getDefis();
 	}
 
+	public Publication creerPublication(Membre mbr, String contenu) {
+		Publication publi = new Publication();
+		// publi.setGroupe(grp);
+		publi.setMembre(mbr);
+		publi.setContenu(contenu);
+
+		em.persist(publi);
+
+		return publi;
+	}
+
 	/**
-	 * FROM PAGE GROUPE, on demande les défis d'un membres, ie. tous les défis mais aussi les défis validés et à valider
+	 * FROM PAGE GROUPE, on demande les défis d'un membres, ie. tous les défis mais
+	 * aussi les défis validés et à valider
 	 */
 	public ArrayList<Object> getDefisMembre(Membre membre, Groupe grp) {
 		Groupe g = em.find(Groupe.class, grp.getId());
@@ -279,8 +279,8 @@ public class Facade {
 				l.add(d);
 			}
 		}
-		TypedQuery<Defi_A_Valider> req = em
-				.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(), Defi_A_Valider.class);
+		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(),
+				Defi_A_Valider.class);
 		for (Defi_A_Valider d : req.getResultList()) {
 			if (defis.contains(d.getDefi())) {
 				l.remove(d.getDefi());
@@ -292,9 +292,6 @@ public class Facade {
 		return l;
 	}
 
-	public void demandeValidationCSJF() {
-
-	}
 
 
 	/**
@@ -346,7 +343,6 @@ public class Facade {
 		return mb.getGroupesAdministres().contains(gp);
 	}
 
-
 	/**
 	 * Récupérer le groupe dans la base de données avec son nom.
 	 *
@@ -372,11 +368,10 @@ public class Facade {
 		return groupes;
 	}
 
-
 	/**
-	 *Récuperer la liste des publications d'un groupe
+	 * Récuperer la liste des publications d'un groupe
 	 */
-	public Collection<Publication> getPublications(int id_grp){
+	public Collection<Publication> getPublications(int id_grp) {
 		Groupe g = em.find(Groupe.class, id_grp);
 		return g.getPublications();
 
@@ -385,7 +380,7 @@ public class Facade {
 	/***
 	 * Creer une nouvelle publication
 	 */
-	public Publication creerPublication(int id_groupe, Membre membre, String contenu){
+	public Publication creerPublication(int id_groupe, Membre membre, String contenu) {
 		Publication publication = new Publication();
 		publication.setContenu(contenu);
 		publication.setMembre(membre);
@@ -427,7 +422,6 @@ public class Facade {
 		return mb.getGroupesAppartenus();
 	}
 
-
 	public Collection<Groupe> getGroupesAdministres(Membre m) {
 		Membre mb = em.find(Membre.class, m.getId());
 		return mb.getGroupesAdministres();
@@ -437,11 +431,11 @@ public class Facade {
 	 * FROM PROFIL
 	 */
 	public void modifierProfil(Membre mb, String nom, String prenom, String email, String motdepasse) {
-		mb.setNom(nom);
-		mb.setPrenom(prenom);
-		mb.setEmail(email);
-		mb.setMotdepasse(motdepasse);
-		em.merge(mb);
+		Membre mbr = em.find(Membre.class, mb.getId());
+		mbr.setNom(nom);
+		mbr.setPrenom(prenom);
+		mbr.setEmail(email);
+		mbr.setMotdepasse(motdepasse);
 	}
 
 	public Collection<Defi_A_Valider> getDefisAValider(Groupe grp) {
@@ -504,16 +498,16 @@ public class Facade {
 		System.out.println("\n\n MEMBRES " + membres + " \n\n");
 		if (membres != null) {
 			for (Membre mb : membres) {
-				int somme_defi_before = 0;
-				int somme_csjf_before = 0;
+				int somme_defi_total = 0;
+				int somme_csjf_total = 0;
 				int somme_defi_cette_semaine = 0;
 				int somme_csjf_cette_semaine = 0;
 				TypedQuery<Defi_Valide> req = em.createQuery(
 						"select dv from Defi_Valide dv where dv.membre=" + mb.getId() + " and dv.groupe=" + grp.getId(),
 						Defi_Valide.class);
-				TypedQuery<CSJF> req2 = em.createQuery(
-						"select c from CSJF c where c.membre=" + mb.getId() + " and c.groupe=" + grp.getId() + " and c.etat=0",
-						CSJF.class);
+				TypedQuery<CSJF> req2 = em.createQuery("select c from CSJF c where c.membre=" + mb.getId()
+						+ " and c.groupe=" + grp.getId() + " and c.etat=0", CSJF.class);
+
 
 				PrivateDate date_prec = PrivateDate.getNow();
 				date_prec.setJour(date_prec.getJour() - 7);
@@ -523,9 +517,8 @@ public class Facade {
 					Collection<Defi_Valide> dvs = req.getResultList();
 					for (Defi_Valide dv : dvs) {
 						PrivateDate date = new PrivateDate(dv.getDateValidation());
+						somme_defi_total += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 						if(date.isBefore(date_prec))
-							somme_defi_before += dv.getDefi().getPoints() * mb.getCoeff_sportif();
-						else
 							somme_defi_cette_semaine += dv.getDefi().getPoints() * mb.getCoeff_sportif();
 					}
 				}
@@ -533,14 +526,16 @@ public class Facade {
 					Collection<CSJF> csjfs = req2.getResultList();
 					for (CSJF csjf : csjfs) {
 						PrivateDate date = new PrivateDate(csjf.getDateValidation());
+						somme_csjf_total += csjf.getPoints();
+
 						if(date.isBefore(date_prec))
-							somme_csjf_before += csjf.getPoints();
-						else
-							somme_csjf_cette_semaine += csjf.getPoints();
+							somme_defi_cette_semaine += csjf.getPoints();
+
 					}
 				}
 
-				resultat.add(mb.getPrenom() + ":" + somme_defi_before + ":" + somme_defi_cette_semaine + ":" + somme_csjf_before + ":" + somme_csjf_cette_semaine);
+				resultat.add(mb.getPrenom() + ":" + somme_defi_total + ":" + somme_defi_cette_semaine + ":"
+						+ somme_csjf_total + ":" + somme_csjf_cette_semaine);
 			}
 		} else {
 			System.out.println("\n\n AUCUN MEMBRE \n\n");
@@ -553,7 +548,6 @@ public class Facade {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		Membre mb = em.find(Membre.class, id_mbr);
 		mb.getGroupesAppartenus().remove(gp);
-		em.merge(mb);
 	}
 
 	public void enleverDefi(int id_defi) {
@@ -620,6 +614,15 @@ public class Facade {
 
 		this.validerDefi(defi_a_valider.getId());*/
 
+		/*
+		 * Defi_A_Valider defi_a_valider = new Defi_A_Valider();
+		 * defi_a_valider.setDefi(defi); defi_a_valider.setGroupe(gp);
+		 * defi_a_valider.setMembre(thomas); em.persist(defi_a_valider);
+		 *
+		 * this.validerDefi(defi_a_valider.getId());
+		 */
+
+
 		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
 		defi_a_valider2.setDefi(defi);
 		defi_a_valider2.setGroupe(gp);
@@ -645,7 +648,6 @@ public class Facade {
 		return thomas;
 	}
 
-
 	public Collection<Defi_Valide> getDefisValides(Groupe grp) {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		return gp.getDefis_valides();
@@ -662,7 +664,6 @@ public class Facade {
 			return null;
 		}
 	}
-
 
 	public void validerCSJF(int id_csjf, int valeur) {
 		CSJF csjf = em.find(CSJF.class, id_csjf);
@@ -684,12 +685,11 @@ public class Facade {
 		String rq = "select c from CSJF c where c.groupe=" + gp.getId() + " and c.etat=2"; // 2 pour EnCoursDeValidation
 		TypedQuery<CSJF> req = em.createQuery(rq, CSJF.class);
 
+
 		if(req != null && req.getResultList().size() != 0)
 			csjf_a_valider = req.getResultList();
 
-
 		return csjf_a_valider;
 	}
-
 
 }
