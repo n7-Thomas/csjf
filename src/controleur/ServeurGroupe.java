@@ -198,7 +198,7 @@ public class ServeurGroupe extends HttpServlet {
 			request.setAttribute("erreur", e.getStackTrace());
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 		}
-		
+
 		actionAfficherGroupe(request, response, session);
 	}
 
@@ -742,6 +742,9 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("defis", facade.getDefisMembre(usr, grp));
 		request.setAttribute("membres", facade.getMembres(grp));
 		request.setAttribute("listePublications", facade.getPublications(grp.getId()));
+		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
+		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
+
 		request.getRequestDispatcher("groupe.jsp").forward(request, response);
 	}
 

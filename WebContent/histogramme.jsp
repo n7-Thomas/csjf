@@ -18,8 +18,10 @@
 			csjfs_cs_ToGene.add(Integer.parseInt(tokens[4]));
 		}
 		%>
-		<button id="semaine">Cette semaine</button>
-		<button id="total">Au total</button>
+		<div id="boutons_hist">
+			<button id="semaine">Cette semaine</button>
+			<button id="total">Au total</button>
+		</div>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 		<canvas id="chart"></canvas>
 		<script>	

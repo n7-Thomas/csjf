@@ -58,26 +58,28 @@
 				<div id="titre_membres">
 					Membres
 				</div>
-				<%
-					Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
-							if (membres != null) {
-								for (Membre m : membres) {
-									if (m == null) {
-				%>
-				<div class="membre_afficher">
-					Aucun membre
-				</div>
-				<%
-					} else {
-				%>
-				<div class="membre_afficher">
-						<%=m.getPrenom() + " " + m.getNom().charAt(0) + "."%>
-				</div>
-				<%
+				<div id="membres">
+					<%
+						Collection<Membre> membres = (Collection<Membre>) request.getAttribute("membres");
+								if (membres != null) {
+									for (Membre m : membres) {
+										if (m == null) {
+					%>
+					<div class="membre_afficher">
+						Aucun membre
+					</div>
+					<%
+						} else {
+					%>
+					<div class="membre_afficher">
+							<%=m.getPrenom() + " " + m.getNom().charAt(0) + "."%>
+					</div>
+					<%
+						}
 					}
 				}
-			}
-				%>
+					%>
+				</div>
 			</div>
 			
 			<div id="csjf_div">
@@ -107,91 +109,93 @@
 						<div class="type_aff">Catégorie</div>
 						<div class="envoyer_aff">Validation</div>
 					</div>
-					<%
-						if (defis != null) {
-							for (Object o : defis) {
-								if (o == null) {
-					%>
-					<div class="defi_afficher">
-						<div class="nom_aff">Aucun défi</div>
-						<div class="desc_aff">Rien</div>
-						<div class="points_aff">Rien</div>
-						<div class="type_aff">Rien</div>
-						<div class="envoyer_aff">Rien</div>
-					</div>
-					<%
-								} else if (o instanceof Defi) {
-									Defi defi = (Defi) o;
-					%>
-					<div class="defi_afficher">
-						<div class="nom_aff">
-							<%=defi.getNom()%>
+					<div id="defi_form">
+						<%
+							if (defis != null) {
+								for (Object o : defis) {
+									if (o == null) {
+						%>
+						<div class="defi_afficher">
+							<div class="nom_aff">Aucun défi</div>
+							<div class="desc_aff">Rien</div>
+							<div class="points_aff">Rien</div>
+							<div class="type_aff">Rien</div>
+							<div class="envoyer_aff">Rien</div>
 						</div>
-						<div class="desc_aff">
-							<%=defi.getDescription()%>
+						<%
+									} else if (o instanceof Defi) {
+										Defi defi = (Defi) o;
+						%>
+						<div class="defi_afficher">
+							<div class="nom_aff">
+								<%=defi.getNom()%>
+							</div>
+							<div class="desc_aff">
+								<%=defi.getDescription()%>
+							</div>
+							<div class="points_aff">
+								<%=defi.getPoints()%>
+							</div>
+							<div class="type_aff">
+								<%=defi.getType()%>
+							</div>
+							<div class="envoyer_aff">
+								<input type="submit" value="Valider" class="bouton_envoyer" />
+							</div>
+							<input type="hidden" value="ajouterDefiAValider" name="action">
+							<input type="hidden" value="<%=defi.getId()%>" name="id_defi">
+							<input type="hidden" value="<%=groupe.getId()%>" name="id_grp">
 						</div>
-						<div class="points_aff">
-							<%=defi.getPoints()%>
+						<%
+									} else if (o instanceof Defi_A_Valider) {
+										Defi_A_Valider defi_a_valider = (Defi_A_Valider) o;
+										Defi defi = defi_a_valider.getDefi();
+						%>
+						<div class="defi_afficher">
+							<div class="nom_aff">
+								<%=defi.getNom()%>
+							</div>
+							<div class="desc_aff">
+								<%=defi.getDescription()%>
+							</div>
+							<div class="points_aff">
+								<%=defi.getPoints()%>
+							</div>
+							<div class="type_aff">
+								<%=defi.getType()%>
+							</div>
+							<div class="envoyer_aff">
+								En cours de validation
+							</div>
 						</div>
-						<div class="type_aff">
-							<%=defi.getType()%>
+						<%
+									} else {
+										Defi_Valide defi_valide = (Defi_Valide) o;
+										Defi defi = defi_valide.getDefi();
+						%>
+						<div class="defi_afficher">
+							<div class="nom_aff">
+								<%=defi.getNom()%>
+							</div>
+							<div class="desc_aff">
+								<%=defi.getDescription()%>
+							</div>
+							<div class="points_aff">
+								<%=defi.getPoints()%>
+							</div>
+							<div class="type_aff">
+								<%=defi.getType()%>
+							</div>
+							<div class="envoyer_aff">
+								Validé
+							</div>
 						</div>
-						<div class="envoyer_aff">
-							<input type="submit" value="Valider" class="bouton_envoyer" />
-						</div>
-						<input type="hidden" value="ajouterDefiAValider" name="action">
-						<input type="hidden" value="<%=defi.getId()%>" name="id_defi">
-						<input type="hidden" value="<%=groupe.getId()%>" name="id_grp">
-					</div>
-					<%
-								} else if (o instanceof Defi_A_Valider) {
-									Defi_A_Valider defi_a_valider = (Defi_A_Valider) o;
-									Defi defi = defi_a_valider.getDefi();
-					%>
-					<div class="defi_afficher">
-						<div class="nom_aff">
-							<%=defi.getNom()%>
-						</div>
-						<div class="desc_aff">
-							<%=defi.getDescription()%>
-						</div>
-						<div class="points_aff">
-							<%=defi.getPoints()%>
-						</div>
-						<div class="type_aff">
-							<%=defi.getType()%>
-						</div>
-						<div class="envoyer_aff">
-							En cours de validation
-						</div>
-					</div>
-					<%
-								} else {
-									Defi_Valide defi_valide = (Defi_Valide) o;
-									Defi defi = defi_valide.getDefi();
-					%>
-					<div class="defi_afficher">
-						<div class="nom_aff">
-							<%=defi.getNom()%>
-						</div>
-						<div class="desc_aff">
-							<%=defi.getDescription()%>
-						</div>
-						<div class="points_aff">
-							<%=defi.getPoints()%>
-						</div>
-						<div class="type_aff">
-							<%=defi.getType()%>
-						</div>
-						<div class="envoyer_aff">
-							Validé
-						</div>
-					</div>
-					<%
+						<%
+									}
 								}
 							}
-						}
-					%>
+						%>
+					</div>
 				</form>
 			</div>
 			
