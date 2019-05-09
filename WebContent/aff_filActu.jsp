@@ -6,22 +6,42 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>aff_filActu</title>
-<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+<link type="text/css" rel="stylesheet" href="CSS/fil_actu.css" />
 </head>
 <body>
+
+
+
 
 <h3>Fil d'Actualité </h3>
 
 	
-<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
+<%  Membre user = (Membre) request.getAttribute("user");
+	Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
 	if(listePubli != null) {
 	
 		for (Publication p: listePubli){
+			String publi;
 			
-			String publi = p.getMembre().getPrenom() + ": " + p.getContenu();			
+			//Publications			
+			if(p.getMembre() != null) {
+				
+				//Publications du user du user
+				if(p.getMembre().getId() == user.getId()) {
+					publi = p.getMembre().getPrenom() + ": " + p.getContenu();	
+				
+				//Publications des autres membres
+				} else {
+					publi = p.getMembre().getPrenom() + ": " + p.getContenu();
+				}
+				
 			
+			//Notifications
+			}else {publi = p.getContenu();}
 			%>
+			<div id="publications">
 			<%=publi %> <br>
+			</div>
 			
 			<%}		
 
@@ -31,8 +51,7 @@
 <form action= "ServeurPageGroupe" method="post">
 
 	Publier: <input type= "text" name= "contenu">
-	
-	<input type= "submit"  value= "OK">
+		
 	<input type= "hidden" name= "action" value= "publier">	
 	<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
 	
