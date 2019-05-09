@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>Connexion</title>
@@ -22,10 +22,10 @@
 			connecte = ((Boolean) request.getAttribute("connecte"));
 			if(connecte == false){	
 		%> <% String message = (String) request.getAttribute("message");
-			if(message != "") { %> <h3><p><%=message%> </p></h3> 
+			if(message != "") { %> <h3><%=message%></h3> 
 			<% } else {
 				String erreur = (String) request.getAttribute("erreur"); %>
-				<h3><p><%= erreur %></p></h3> <%
+				<h3><%= erreur %></h3> <%
 				} %>
 		<% }
 			} catch(Exception e) {
@@ -35,7 +35,7 @@
 		
         <form method="post" action="ServeurConnexion">
 
-                <h2><p>connecte-toi</p></h2><br /><br />
+                <h2>connecte-toi</h2><br /><br />
 				
 				<% if (connecte == false) { %>
 					<div id="field">
@@ -51,7 +51,7 @@
 	           
 	           		<div id="field">
 	                <label for="nom"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis">     </span></label>
-	                <input type="email" id="email" placeHolder="adresse email" name="email" value="" size="20" maxlength="60" />
+	                <input type="email" id="email" placeholder="adresse email" name="email" value="" size="20" maxlength="60" />
 	                <span class="erreur">${form.erreurs['email']}</span>
 	                <div style="width:80%;margin-left: auto;
 	  					margin-right: auto;">
@@ -62,7 +62,7 @@
 
 				<div id="field">
                 <label for="motdepasse"><i class="glyphicon glyphicon-lock" style="font-size:25px;"></i><span class="requis">    </span></label>
-                <input type="password" id="motdepasse" placeHolder="mot de passe" name="motdepasse" value="" size="20" maxlength="20" />
+                <input type="password" id="motdepasse" placeholder="mot de passe" name="motdepasse" value="" size="20" maxlength="20" />
                 <span class="erreur">${form.erreurs['motdepasse']}</span>
                 <div style="width:80%;margin-left: auto;
   						margin-right: auto;">
@@ -72,7 +72,7 @@
 
                 <input type="submit" value="Connexion"  class="button"/>
                 <br />
-                <h4><p>Pas encore de compte?</p> <a href="inscription.jsp">Inscris-toi.</h4>
+                <h4>Pas encore de compte? <a href="inscription.jsp">Inscris-toi.</a></h4>
                 
                 <input type="hidden" name= "action" value="testconnexion">
                 

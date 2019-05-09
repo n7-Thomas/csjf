@@ -5,7 +5,8 @@
 <head>
 		<meta charset="UTF-8">
 		<title>Administration du groupe</title>
-        <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/header.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/admin.css" />
         <link type="text/css" rel="stylesheet" href="CSS/form.css" />
         <script type="text/javascript" src="JS/defiEdit.js"></script>
 </head>
@@ -50,7 +51,7 @@
     			} else { %>
     			<div> <%
 					for (Membre membre : membres) { %>
-	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %> <a href="ServeurGroupe?action=del_membre&id_grp=<%=groupe.getId() %>&id_mbr=<%=membre.getId() %>" style="all: none;"><span class="delete"></span></a></p>
+	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %> <a href="ServeurGroupe?action=del_membre&id_grp=<%=groupe.getId() %>&id_mbr=<%=membre.getId() %>" class="delete"><img src="CSS/delete.png" height="15"></a></p>
 					<% } %>
 				</div> <%
 				}%>
@@ -211,7 +212,7 @@
 						    %>
 								<p> Défi <%= defi.getId() %> : "<%= defi.getNom() %>" (<%= defi.getDescription() %>) pour <%= defi.getPoints() %> points. 
 								Depuis <%= (new PrivateDate(defi.getDate())).toGoodString() %> jusqu'au <%=(new PrivateDate(defi.getEndDate())).toGoodString() %> 
-								<a href="ServeurGroupe?action=del_defi&id_grp=<%=groupe.getId() %>&id_defi=<%=defi.getId() %>" style="color:red; background:none; size:5px;font-family: Verdana, Times, serif;">x</a>
+								<a href="ServeurGroupe?action=del_defi&id_grp=<%=groupe.getId() %>&id_defi=<%=defi.getId() %>" class="delete"><img src="CSS/delete.png" height="15"></a>
 								</p>	
 							<% } %>
 						</div>
