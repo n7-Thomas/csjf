@@ -1,28 +1,22 @@
-body {
-	margin-top: -20px;
-}
-
-#header {
+header {
 	text-align: center;
 	vertical-align: text-top;
 	background:#313131;
-	top: 0;
-	left: 0;
-	right: 0;
+	margin: -20px 0 0 0;
+	padding-top: 20px;
+	position: relative;
+	z-index: 2;
 }
 
-#header h1{
-	margin-top : 0px;
-	padding : 10px 10px;
-	margin-bottom : 30px;
+header h1 {
+	padding-top: 20px 0 20px 0;
 	font-family:'Abel', arial, serif;
-	letter-spacing: .8rem;
-    font-size: 5em;
-    font-weight: bold;
+	letter-spacing: .5rem;
+    font-size: 3em;
 	text-align: center;
 	vertical-align: middle;
 	color: white;
-	
+	margin-bottom: 25px;
 }
 
 .box {
@@ -48,11 +42,20 @@ a:hover, a:active {
  
 }
 
+#main_nav {
+	height: 100%;
+	background-color: rgb(45,67,108);
+	display: flex;
+	align-items: center;
+}
+
 #main_nav ul {
 	background-color: rgb(45,67,108);
 	float: left;
 	list-style-type: none;
 	width: 100%;
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .top_puce {

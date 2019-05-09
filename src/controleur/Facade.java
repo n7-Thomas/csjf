@@ -194,7 +194,7 @@ public class Facade {
 		Defi defi1 = em.find(Defi.class, idDefiAValider);
 		Membre m = em.find(Membre.class, membre.getId());
 		TypedQuery<Defi_A_Valider> req = em
-				.createQuery("select d from Defi_A_Valider d WHERE DEFI_ID=" + idDefiAValider, Defi_A_Valider.class);
+				.createQuery("select d from Defi_A_Valider d WHERE d.defi=" + idDefiAValider + " and d.membre=" + membre.getId(), Defi_A_Valider.class);
 
 		if (req.getResultList().size() != 0) { // Alors le défi a déjà été demandé à être validé
 			throw new Exception("Ce défi a déjà été envoyé pour être validé, vous ne pouvez pas le renvoyer !");
