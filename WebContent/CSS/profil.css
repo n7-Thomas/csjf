@@ -1,6 +1,6 @@
 body {
+	
 	margin-top: -20px;
-	overflow : auto;
 }
 
 h4 {
@@ -90,7 +90,6 @@ h4 {
 
 .card {
 	overflow-x:auto;
-	overflow-color : dark;
 	white-space:nowrap;
 	color: white;
 	padding: 5px 15px;
