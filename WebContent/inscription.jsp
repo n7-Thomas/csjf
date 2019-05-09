@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>Inscription sur CSJF</title>
@@ -8,28 +8,28 @@
 	<link type="text/css" rel="stylesheet" href="CSS/inscription.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<div class=imageDeFond></div>
-<div class=contenu id="fondu">
-    <body>
+<body>
+	<div class=imageDeFond></div>
+	<div class=contenu id="fondu">
     	<% Boolean existe = false; %>
     	<%@ include file="statusBar.jsp" %>
 		
 		<% try {
-			existe = ((Boolean) request.getAttribute("existe"));
-			if(existe == true){	
-		%> <h3><p> <%= request.getAttribute("warning") %> </p></h3>
-		<% } 
-			} catch(Exception e) {
-				existe = false;
-			}
+		   		existe = ((Boolean) request.getAttribute("existe"));
+			    if(existe){	
+			%> 		<h3><%= request.getAttribute("warning") %></h3>
+			<% } 
+		} catch(Exception e) {
+			existe = false;
+		}
 		%>
     
         <form method="post" action="ServeurConnexion">
             <fieldset>
                 <legend>Inscription</legend>
-                <h2><p>Rejoins-nous</p></h2></br>
-				
-				<% if (existe == true) { %>
+                <h2>Rejoins-nous</h2>
+                				
+				<% if (existe) { %>
 				
 					<div id="field">
 	                <label for="nom"><i class="glyphicon glyphicon-user" style="font-size:25px;"></i><span class="requis"></span></label>
@@ -95,7 +95,7 @@
 
                 <input type="submit" value="Inscription" class="button" />
                 <br />
-                <h4><p>Déjà inscrit?</p> <a href="connexion.jsp">Connecte-toi.</h4>
+                <h4>Déjà inscrit? <a href="connexion.jsp">Connecte-toi.</a></h4>
                 
                 <input type="hidden" name= "action" value="inscription"/>
                 

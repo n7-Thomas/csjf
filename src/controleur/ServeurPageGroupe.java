@@ -77,6 +77,7 @@ public class ServeurPageGroupe extends HttpServlet {
 			int id_grp = Integer.parseInt(str_id_grp);
 
 			try {
+				request.setAttribute("user", session.getAttribute("user"));
 				request.setAttribute("id_grp", id_grp);
 			    request.setAttribute("listePublications", facade.getPublications(id_grp));
 				request.getRequestDispatcher("aff_filActu.jsp").forward(request, response);
