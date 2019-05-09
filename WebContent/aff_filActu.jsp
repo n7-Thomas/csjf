@@ -1,24 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import = "java.util.*, controleur.*,modele.*" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>aff_filActu</title>
 <link type="text/css" rel="stylesheet" href="CSS/fil_actu.css" />
-</head>
-<body>
-
-
-
-<h3>Fil d'Actualité </h3>
 
 <div id="fil_actu">
 
-	<div id="conversation">
-	
-	<% Membre user = (Membre) request.getAttribute("user");
+	<div id="conversation"> 
+	<h3 style="border: 2px solid with";> Fil d'actualité </h3>
+	<% Membre user_actuel = (Membre) session.getAttribute("user");
 		Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
 		if(listePubli != null) {
 		
@@ -31,10 +20,10 @@
 					
 					<%  
 					//Publications du user 		
-					if(p.getMembre().getId() == user.getId()) { %>
+					if(p.getMembre().getId() == user_actuel.getId()) { %>
 					<div class=publications_user>
 						<div class="membre_user">
-							<%=(p.getMembre().getPrenom())%>
+							<%= p.getMembre().getPrenom() %>
 						</div>
 									
 						<div class="texte_user">
@@ -69,20 +58,14 @@
 	</div>
 
 
-<form action= "ServeurPageGroupe" method="post">
-
+<form action= "ServeurGroupe" method="post">
+	</b>
 	<div id="publier">
-	Publier: <input type= "text" name= "contenu">		
+	<input type= "text" name= "contenu" placeHolder="Publier.." style="width:100%">		
 	</div>
 		
 	<input type= "hidden" name= "action" value= "publier">	
 	<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
 	
-	
-	
 </form>
-
 </div>
-
-</body>
-</html>

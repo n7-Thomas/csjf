@@ -202,7 +202,7 @@
 		
 		
 		<div id="bloc_droite">
-		
+			<%@ include file="aff_filActu.jsp" %>
 		</div>
 		<%
 			}
