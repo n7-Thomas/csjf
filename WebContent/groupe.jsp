@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>Groupe</title>
-<link type="text/css" rel="stylesheet" href="CSS/groupe.css" />
+
 </head>
 <body>
 	<div id="bandeau">

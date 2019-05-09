@@ -6,27 +6,42 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>aff_filActu</title>
-<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+<link type="text/css" rel="stylesheet" href="CSS/fil_actu.css" />
 </head>
 <body>
 
-<div class=imageDeFond></div>
-<div class=contenu id="fondu">
+
+
 
 <h3>Fil d'Actualité </h3>
 
 	
-<% Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
+<%  Membre user = (Membre) request.getAttribute("user");
+	Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
 	if(listePubli != null) {
 	
 		for (Publication p: listePubli){
 			String publi;
+			
+			//Publications			
 			if(p.getMembre() != null) {
-				 publi = p.getMembre().getPrenom() + ": " + p.getContenu();			
 				
+				//Publications du user du user
+				if(p.getMembre().getId() == user.getId()) {
+					publi = p.getMembre().getPrenom() + ": " + p.getContenu();	
+				
+				//Publications des autres membres
+				} else {
+					publi = p.getMembre().getPrenom() + ": " + p.getContenu();
+				}
+				
+			
+			//Notifications
 			}else {publi = p.getContenu();}
 			%>
+			<div id="publications">
 			<%=publi %> <br>
+			</div>
 			
 			<%}		
 
