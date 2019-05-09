@@ -68,15 +68,11 @@
 						%>
 					</div>
 				</div>
-<<<<<<< HEAD
-			</div>
-	</body>
-</div>
-=======
+
 		</div>
 	</div>
 </body>
->>>>>>> 1afea1a4374b5014f6900c9c53f731d72d278880
+
 <script type="text/javascript">
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div
