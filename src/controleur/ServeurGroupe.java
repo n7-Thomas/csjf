@@ -708,6 +708,8 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("id_grp", id_grp);
 		request.setAttribute("defis", facade.getDefisMembre(usr, grp));
 		request.setAttribute("membres", facade.getMembres(grp));
+		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
+		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
 
 		request.getRequestDispatcher("groupe.jsp").forward(request, response);
 	}
