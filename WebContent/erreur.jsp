@@ -7,14 +7,15 @@
         <meta charset="ISO-8859-1" />
         <title>Erreur</title>
         <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/header.css" />
     </head>
     <body>
 
-		<div id="header">
+		<header>
         	<h1>Erreur</h1>
         	<%@ include file="navigationBar.jsp" %> 
         	<%@ include file="statusBar.jsp" %> 
-		</div>
+		</header>
 
   		<div id="contenu">
         	<p> Nous sommes désolés, il y a un problème : <%=request.getAttribute("erreur")%></p>

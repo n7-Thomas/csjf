@@ -11,6 +11,7 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
+	<link type="text/css" rel="stylesheet" href="CSS/header.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
@@ -18,65 +19,68 @@
 <body>
 	<div class=imageDeFond></div>
 	<div class=contenu2 id="fondu">
-	<div id="header">
-    	<h1>Profil</h1>    
-    	<%@ include file="navigationBar.jsp" %>    
-	</div>
-	<div id="contenu">
-
-            	<div class="rightcolumn">
-                	<div class="card">
-                		<h2>Coordonnées.</h2>
-		                <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
-		                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
-                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
-                	</div>
-                </div>
-                
-                <div class="leftcolumn">
-	                <div class="card">
-		                <h2> Groupes auxquels <%= mb.getPrenom() + " " + mb.getNom() %> appartient</h2>
-		                
-		                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
-		                <%
-		                Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
-						if (groupes != null){
-		       				for (Groupe g : groupes) {
-		                		String groupe_nom = g.getNom(); 
-		               			%>
-		               			<p> <%= groupe_nom %> </p>
-		                	<%} 
-		       			} else { 
-		       			%>
-		                <p> Vous n'êtes dans aucun groupe actuellement</p>
-		                
-		                <%} %>              
-		                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
-		                <% 
-		                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
-		                if (groupes_admin != null){
-		           			for (Groupe g : groupes_admin) {
-		                    	String groupe_nom = g.getNom(); 
-		                %>		<p><%= groupe_nom %></p>
-		                	<%}  
-		                } else {
-		                 %>
-		                <p> Vous n'administrez aucun groupe actuellement. 
-		                <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
-						<%
-		                }
-						%>
-					</div>
-				</div>
-<<<<<<< HEAD
+		<header>
+	    	<h1>Profil</h1>    
+	    	<%@ include file="navigationBar.jsp" %>    
+		</header>
+		<div id="contenu">
+	            	<div class="rightcolumn">
+	            		<div class="card-coord">
+	                	<!-- <aside class="grande-sidebar">
+	                		<section class="sidebar" style="height: auto;">  -->
+	                		
+		                		<h2>Coordonnées.</h2>
+				                <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
+				                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
+		                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
+	                		<!--  </section>
+	                	</aside>-->
+	                	</div>
+	                </div>
+	                
+	                <div class="leftcolumn">
+	                	<div class="card-stat">
+	                	</div>
+			                <div class="sous-leftcolumn">
+			                <div class="card">
+				                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
+				                <% Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
+								if (groupes != null){
+				       				for (Groupe g : groupes) {
+				                		String groupe_nom = g.getNom(); 
+				               			int id_gs = g.getId();
+			               		%>
+             						<li class="lil_puce"><a href="ServeurGroupe?action=admin&id_grp=<%=id_gs%>"><%=groupe_nom%></a></li>
+               					<%} 
+				       			} else { 
+				       			%>
+				                <p> Vous n'êtes dans aucun groupe actuellement</p>
+				                
+				                <%} %> 
+				           </div> </div>
+				           <div class="sous-rightcolumn">
+				           <div class="card">    
+				                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
+				                <% 
+				                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
+				                if (groupes_admin != null){
+				           			for (Groupe g : groupes_admin) {
+				                    	String groupe_nom = g.getNom(); 
+				                %>		<p><%= groupe_nom %></p>
+				                	<%}  
+				                } else {
+				                 %>
+				                <p> Vous n'administrez aucun groupe actuellement. 
+			                <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
+							<%
+			                }
+							%>
+						</div>
+						</div>
 			</div>
-	</body>
-</div>
-=======
 		</div>
 	</div>
 </body>
->>>>>>> 1afea1a4374b5014f6900c9c53f731d72d278880
 <script type="text/javascript">
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div

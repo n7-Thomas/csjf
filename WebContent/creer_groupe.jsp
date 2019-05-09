@@ -8,15 +8,16 @@
         <title>Création d'un groupe</title>
         <link type="text/css" rel="stylesheet" href="CSS/profil.css" />
         <link type="text/css" rel="stylesheet" href="CSS/form.css" />
+        <link type="text/css" rel="stylesheet" href="CSS/header.css" />
     </head>
     
     <body>
     	
-		<div id="header">
+		<header>
         	<h1>Creer un groupe</h1>
         	<%@ include file="navigationBar.jsp" %> 
         	<%@ include file="statusBar.jsp" %>
-		</div>
+		</header>
 		
 		<div id="contenu">
 			<fieldset>

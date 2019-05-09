@@ -5,14 +5,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Accueil</title>
+	<link type="text/css" rel="stylesheet" href="CSS/header.css" />
 	<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 </head>
 <body>
-	<div id="header">
+	<header>
 		<h1>Accueil</h1>
 		<%@ include file="navigationBar.jsp"%>
 		<%@ include file="statusBar.jsp"%>
-	</div>
+	</header>
 
 	<div id="contenu" style="border: 2px solid black;">
 		<%
