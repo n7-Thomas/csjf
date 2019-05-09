@@ -112,10 +112,12 @@ body {
 	color: rgb(205, 55, 67);
 	letter-spacing: .1rem;
 	position: absolute;
-	padding: 8px;
-	left: 34px;
-	top: 274px;
+	padding: 8px 8px 9px 8px;
+	left: 8%;
+	top: 37.5%;
 	z-index: 2;
+	opacity: 0.85;
+	border-radius: 8px;
 }
 
 
@@ -132,6 +134,24 @@ body {
 	height: 400px;
 	overflow: auto;
 	margin: 0 0 0 0;
+	border-radius: 8px;
+}
+
+#boutons_hist {
+	margin: 2% 0 0 0;
+	color: black;
+}
+
+#semaine {
+	margin: 0 0 0 30%;
+}
+
+#total {
+	margin: 0 0 0 8%;
+}
+
+#chart {
+	color: white;
 }
 
 
@@ -142,8 +162,6 @@ body {
     width: 50%;
     display: flex;
     flex-direction: column;
-    overflow: auto;
-    text-align: center;
     background: black;
     border-radius: 5px;
     opacity: 0.65;
@@ -163,6 +181,14 @@ body {
     font-weight: bold;
     padding: 8px;
     margin-top: 3px;
+    margin-right: 5%;
+}
+#membres {
+	overflow: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 /*////////////// Afficher les défis ////////////////*/
@@ -172,13 +198,18 @@ body {
     width: 95%;
     display: flex;
     flex-direction: column;
-    overflow: auto;
     text-align: center;
     background-color: black;
     border-radius: 8px;
     opacity: 0.65;
     margin: 3% 0 3% 0;
     color: white;
+}
+
+#defi_form {
+	overflow: auto;
+	height: 135px;
+	margin-bottom: 5px;
 }
 
 .defi_afficher {
@@ -213,6 +244,7 @@ body {
     align-items: center;
     font-weight: bold;
     height: 60px;
+    margin-right: 1.5%;
 }
 
 .nom_aff {

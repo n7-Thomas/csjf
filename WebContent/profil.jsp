@@ -81,6 +81,7 @@
 		</div>
 	</div>
 </body>
+
 <script type="text/javascript">
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div
