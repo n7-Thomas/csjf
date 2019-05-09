@@ -1,5 +1,10 @@
 body {
 	margin-top: -20px;
+	overflow : auto;
+}
+
+h4 {
+	padding : 15px 0px;
 }
 
 .imageDeFond {
@@ -58,23 +63,25 @@ body {
 
 .sous-leftcolumn {
     float: left;
-    width: 43%;
+    width: 48%;
 }
 
 .sous-rightcolumn {
 	float: right;
-	width: 43%;
+	width: 48%;
 }
 
 .rightcolumn>.card {
-	width : 100%;
+	width : 300%;
 	background : #555753;
 	border-radius : 0px;
 }
 
 .card-stat {
+	margin-bottom : 35px;
 	color: white;
-	padding: 100px 20px;
+	height : 500px;
+	padding: 20px;
 	border-radius : 5px;
 	background : #555753;
 	width : 100%;
@@ -82,12 +89,28 @@ body {
 }
 
 .card {
+	overflow-x:auto;
+	overflow-color : dark;
+	white-space:nowrap;
 	color: white;
-	padding: 20px;
+	padding: 5px 15px;
 	border-radius : 5px;
-	background : #555753;
-	background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(255, 255, 255, 0.2);
+	list-style: none;
+	display : block;
+	height : 150px;
+}
+
+.diff {
+	list-style-type: none;
+	width: 100%;
+	margin-left : -40px;
+	margin-top: 0;
+	margin-bottom: 0;
+ }
+ 
+.groupe {
+	display: inline;
 }
 
 .card-coord {

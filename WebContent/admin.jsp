@@ -32,11 +32,11 @@
 	
 	%>
 	
-	<div id="header">
+	<header>
     	<h1>Administration de <span style="color.blue"><%=groupe.getNom()%></span></h1>      
     	<%@ include file="navigationBar.jsp" %> 
     	<%@ include file="statusBar.jsp" %>  
-    </div>
+    </header>
 	 
 	<div id="contenu">
 	<% if(isConnected && hasGroupe) { %>
