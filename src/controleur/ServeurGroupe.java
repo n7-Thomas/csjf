@@ -167,6 +167,39 @@ public class ServeurGroupe extends HttpServlet {
 			actionValiderCSJF(request, response, session);
 		}
 
+
+		// Publier une Publication
+		if (action.equals("publier")){
+			actionPublier(request, response, session);
+		}
+
+
+	}
+
+	private void actionPublier(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		String str_id_grp = request.getParameter("id_grp");
+
+		if(str_id_grp == null){
+			request.setAttribute("erreur", "pas de groupe");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+		}
+		int id_grp = Integer.parseInt(str_id_grp);
+
+		Membre mbr = (Membre) session.getAttribute("user");
+		String contenu = request.getParameter("contenu");
+
+		if(contenu == null){
+			contenu = " ";
+		}
+
+		try {
+			facade.creerPublication(id_grp, mbr, contenu);
+		}catch (Exception e) {
+			request.setAttribute("erreur", e.getStackTrace());
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+		}
+
+		actionAfficherGroupe(request, response, session);
 	}
 
 	/**
@@ -213,9 +246,9 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
@@ -240,7 +273,7 @@ public class ServeurGroupe extends HttpServlet {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
@@ -271,17 +304,17 @@ public class ServeurGroupe extends HttpServlet {
 		actionAfficherAdmin(request, response, session);
 
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session) 
+	private void actionSupprimerDefi(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
 		String str_id_defi = request.getParameter("id_defi");
@@ -296,9 +329,9 @@ public class ServeurGroupe extends HttpServlet {
 
 		actionAfficherAdmin(request, response, session);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
@@ -329,7 +362,7 @@ public class ServeurGroupe extends HttpServlet {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @param session
@@ -708,6 +741,7 @@ public class ServeurGroupe extends HttpServlet {
 		request.setAttribute("id_grp", id_grp);
 		request.setAttribute("defis", facade.getDefisMembre(usr, grp));
 		request.setAttribute("membres", facade.getMembres(grp));
+		request.setAttribute("listePublications", facade.getPublications(grp.getId()));
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
 

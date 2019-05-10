@@ -1,10 +1,14 @@
 package modele;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -19,8 +23,11 @@ public class Publication {
 
 	@ManyToOne
 	private Groupe groupe;
-	
+
 	private String contenu;
+
+	@OneToMany(mappedBy="publication", fetch=FetchType.EAGER)
+	private Collection<Reaction> reactions;
 
 	public Publication(){}
 
@@ -37,6 +44,14 @@ public class Publication {
 	 */
 	public String getContenu() {
 		return contenu;
+	}
+
+	public Collection<Reaction> getReactions() {
+		return reactions;
+	}
+
+	public void setReactions(Collection<Reaction> reactions) {
+		this.reactions = reactions;
 	}
 
 	/**
