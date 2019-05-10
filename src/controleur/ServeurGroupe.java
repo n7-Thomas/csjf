@@ -173,7 +173,43 @@ public class ServeurGroupe extends HttpServlet {
 			actionPublier(request, response, session);
 		}
 
+		// Réagir à une Publication
+		if (action.equals("reagir")){
+			actionReagir(request, response, session);
+		}
 
+
+	}
+
+	private void actionReagir(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		String str_id_grp = request.getParameter("id_grp");
+
+		if(str_id_grp == null){
+			request.setAttribute("erreur", "pas de groupe");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+		}
+		int id_grp = Integer.parseInt(str_id_grp);
+
+		Membre mbr = (Membre) session.getAttribute("user");
+		String str_id_publication = request.getParameter("id_publication");
+
+		if(str_id_publication == null){
+			request.setAttribute("erreur", "pas de publication");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+		}
+
+		int id_publication = Integer.parseInt(str_id_publication);
+		String type = request.getParameter("type");
+
+
+		try {
+			facade.creerReaction(mbr, id_publication, type);
+		}catch (Exception e) {
+			request.setAttribute("erreur", e.getStackTrace());
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+		}
+
+		actionAfficherGroupe(request, response, session);
 	}
 
 	private void actionPublier(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {

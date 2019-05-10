@@ -8,59 +8,66 @@
 
 	<div id="conversation"> 
 	<h3 style="border: 2px solid with"> Fil d'actualité </h3>
-	<% Membre user_actuel = (Membre) session.getAttribute("user");
+	
+		
+	<%
+	    Membre user_actuel = (Membre) session.getAttribute("user");
 		Collection<Publication> listePubli= (Collection<Publication>) request.getAttribute("listePublications");
+		 
 		if(listePubli != null) {
 		
 			for (Publication p: listePubli){
 				String publi;
+				int id = p.getId();
 				
 				//Publications			
-				if(p.getMembre() != null) { %>
+				if(p.getMembre() != null) { 
 									
-					<%  
+					  
 					//Publications du user 		
 					if(p.getMembre().getId() == user_actuel.getId()) { %>
 					<div class=publications_user>
 						<div class="membre_user">
-							<%= p.getMembre().getPrenom() %>
+							<%= p.getMembre().getPrenom()%>
 						</div>
 							
 						<div class="texte_user">
-						 <%=p.getContenu()  %>
+						 <%=p.getContenu() %>
 						</div>
 						
-						<div class="reactions">
 						<% 
-						//Les Réactions
-						if(p.getReactions() != null) {
-							for(Reaction r: p.getReactions()) { 
+						//Reaction
+						if(p.getReactions()!= null){
+							%>
+							<div class="aff_reactions">
+							<% for(Reaction r: p.getReactions()) { 
 								//Les Cool %>																				
 								<% if(r.isCool() ){ %>
-								<div class="cool">
-								<%=r.getMembre().getPrenom()%><br>
-								</div>
+									<div class="cool">
+									<%=r.getMembre().getPrenom()%><br>
+									</div>
 								<%}
-								
+			
 								//Les Pas Cool
 								if(r.isPasCool()){ %>
 								<div class="pasCool">
-								<%=r.getMembre().getPrenom()%><br>
+									<%=r.getMembre().getPrenom()%><br>
 								</div>
 								<%}
-								
+			
 								//Les Surprit
 								if(r.isSurpris()){ %>
 								<div class="surpris">
-								<%=r.getMembre().getPrenom()%><br>
+									<%=r.getMembre().getPrenom()%><br>
 								</div>
 								<%}													
-							 }
-							
-						}%>
-						</div>
-					</div>
-					 <% 
+		 					}%>
+							</div>
+						<% }
+						
+						
+					
+					 
 					 //Publications des autres membres
 					 } else { %>			 
 					 <div class=publications_autres>
@@ -77,22 +84,64 @@
 				//Notifications
 				} else { %>
 					<div class="notifications">
-					 <%= p.getContenu() %>
-					 	<div class="bar_reactions">
-					 	<ul>
-					 	<li>Réagir</li>
-					 		<ul>
-					 		<li>Cool</li>
-					 		<li>PasCool</li>
-					 		</ul>
-					 	</ul>
-					 	
-					 	</div>				 	
-				    </div>
+					
+					<%= p.getContenu() %>
+					
+					 
+					 <div class="bar_reactions">					 	
+						 Réagir
+				 			<div class="emoji">		
+				 			
+				 				<form action="ServeurGroupe" methode="post">
+				 					<input type= "submit" name="type" value="cool">
+				 					<input type="hidden" name="action" value="reagir">
+					 				<input type="hidden" name="id_publication" value="<%=id%>">
+					 				<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
+					 			</form>	
+					 					
+					 		</div> 	
+					 		
+					 		
+					 			
+				 			
+				 						
+					 
+					 		
+					 </div>	
+							
+					<div class="reactions">
+						<% 
+						
+						//Les Réactions
+						if(p.getReactions() != null) {
+							for(Reaction r: p.getReactions()) { 
+								//Les Cool %>																				
+								<% if(r.isCool() ){ %>
+									<div class="cool">
+									<%=r.getMembre().getPrenom()%><br>
+									</div>
+								<%}
+			
+								//Les Pas Cool
+								if(r.isPasCool()){ %>
+								<div class="pasCool">
+									<%=r.getMembre().getPrenom()%><br>
+								</div>
+								<%}
+			
+								//Les Surprit
+								if(r.isSurpris()){ %>
+								<div class="surpris">
+									<%=r.getMembre().getPrenom()%><br>
+								</div>
+								<%}													
+		 					}
+						}	%> </div> <% 			 				 	
 				    
 				    							
-				<%}
-				}			
+	    		}	
+			}
+		
 		} else { System.out.println("pas de publi");} %>
 	
 	</div>

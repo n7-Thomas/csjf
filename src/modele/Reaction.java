@@ -63,4 +63,8 @@ public class Reaction {
 		return type == Type.Surpris;
 	}
 
+	public void setType(Type type) {
+		this.type = type;
+	}
+
 }

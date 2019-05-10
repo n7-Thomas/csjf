@@ -121,3 +121,13 @@ h3{
 	content:"\01F44E";
 }
 
+.bar_reactions {
+	float: right;
+
+}
+
+
+.bar_reactions:hover emoji {
+	display: block;
+}
+

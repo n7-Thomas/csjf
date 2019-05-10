@@ -20,6 +20,8 @@ import modele.Membre;
 import modele.Message;
 import modele.PrivateDate;
 import modele.Publication;
+import modele.Reaction;
+import modele.Reaction.Type;
 import modele.TypeDefi;
 import tests.Tests_Defis;
 import tests.Tests_Groupes;
@@ -408,7 +410,30 @@ public class Facade {
 		return notification;
 	}
 
+	/**
+	 * Creation d'une réaction
+	 */
+	public Reaction creerReaction(Membre membre, int id_publication, String type){
+		Reaction r = new Reaction();
 
+		Publication publication = em.find(Publication.class, id_publication);
+		r.setPublication(publication);
+
+		r.setMembre(membre);
+
+		if(type.equals("cool")){
+			r.setType(Type.Cool);
+		}
+		else if(type.equals("pasCool")){
+			r.setType(Type.PasCool);
+		}
+		else if(type.equals("surpris")){
+			r.setType(Type.Surpris);
+		}
+		em.persist(r);
+
+		return r;
+	}
 
 	/**
 	 * FROM INSCRIPTION
@@ -645,7 +670,7 @@ public class Facade {
 		csjf_deja_valide.setDateValidation("19970723");
 		csjf_deja_valide.setPoints(100);
 		em.persist(csjf_deja_valide);
-		
+
 		CSJF csjf_deja_valide2 = new CSJF();
 		csjf_deja_valide2.setEtat(Etats.Valide);
 		csjf_deja_valide2.setGroupe(gp);
@@ -654,8 +679,8 @@ public class Facade {
 		csjf_deja_valide2.setDateValidation("20190404");
 		csjf_deja_valide2.setPoints(200);
 		em.persist(csjf_deja_valide2);
-		
-		
+
+
 		CSJF csjf_deja_valide3 = new CSJF();
 		csjf_deja_valide3.setEtat(Etats.Valide);
 		csjf_deja_valide3.setGroupe(gp);
@@ -724,26 +749,26 @@ public class Facade {
 			int somme_defis_mois_3 = 0;
 			int somme_csjfs_mois_4 = 0;
 			int somme_defis_mois_4 = 0;
-			
+
 			TypedQuery<Defi_Valide> req = em.createQuery(
 						"select dv from Defi_Valide dv where dv.membre=" + usr.getId(),
 						Defi_Valide.class);
 			TypedQuery<CSJF> req2 = em.createQuery("select c from CSJF c where c.membre=" + usr.getId() + " and c.etat=0", CSJF.class);
 
 			PrivateDate date_0 = PrivateDate.getNow();
-			
+
 			PrivateDate date_mois_1 = PrivateDate.getNow();
 			date_mois_1.setMois(date_mois_1.getMois() - 1);
-			
+
 			PrivateDate date_mois_2 = PrivateDate.getNow();
 			date_mois_2.setMois(date_mois_2.getMois() - 2);
-			
+
 			PrivateDate date_mois_3 = PrivateDate.getNow();
 			date_mois_3.setMois(date_mois_3.getMois() - 3);
-			
+
 			PrivateDate date_mois_4 = PrivateDate.getNow();
 			date_mois_4.setMois(date_mois_4.getMois() - 4);
-			
+
 			PrivateDate date_mois_5 = PrivateDate.getNow();
 			date_mois_5.setMois(date_mois_3.getMois() - 5);
 
@@ -754,45 +779,45 @@ public class Facade {
 
 					if(date.isBefore(date_0) && date.isAfter(date_mois_1))
 						somme_defis_mois_1 += dv.getDefi().getPoints();
-					
+
 					if(date.isBefore(date_mois_1) && date.isAfter(date_mois_2))
 						somme_defis_mois_2 += dv.getDefi().getPoints();
-					
+
 					if(date.isBefore(date_mois_2) && date.isAfter(date_mois_3))
 						somme_defis_mois_3 += dv.getDefi().getPoints();
-					
+
 					if(date.isBefore(date_mois_3) && date.isAfter(date_mois_4))
 						somme_defis_mois_4 += dv.getDefi().getPoints();
-										
+
 				}
 			}
 			if (req2 != null && req2.getResultList().size() != 0) {
 				Collection<CSJF> csjfs = req2.getResultList();
 				for (CSJF csjf : csjfs) {
 					PrivateDate date = new PrivateDate(csjf.getDateValidation());
-					
+
 					if(date.isBefore(date_0) && date.isAfter(date_mois_1))
 						somme_csjfs_mois_1 += csjf.getPoints();
-					
+
 					if(date.isBefore(date_mois_1) && date.isAfter(date_mois_2))
 						somme_csjfs_mois_2 += csjf.getPoints();
-					
+
 					if(date.isBefore(date_mois_2) && date.isAfter(date_mois_3))
 						somme_csjfs_mois_3 += csjf.getPoints();
-					
+
 					if(date.isBefore(date_mois_3) && date.isAfter(date_mois_4))
 						somme_csjfs_mois_4 += csjf.getPoints();
-					
+
 				}
 			}
-			
+
 			resultat.add(date_mois_4.thisMoisString() + ":" + somme_defis_mois_4 + ":" + somme_csjfs_mois_4);
-			resultat.add(date_mois_3.thisMoisString() + ":" + somme_defis_mois_3 + ":" + somme_csjfs_mois_3);	
+			resultat.add(date_mois_3.thisMoisString() + ":" + somme_defis_mois_3 + ":" + somme_csjfs_mois_3);
 			resultat.add(date_mois_2.thisMoisString() + ":" + somme_defis_mois_2 + ":" + somme_csjfs_mois_2);
 			resultat.add(date_mois_1.thisMoisString() + ":" + somme_defis_mois_1 + ":" + somme_csjfs_mois_1);
-			
+
 		}
-		
+
 		System.out.println(resultat);
 		return resultat;
 	}
