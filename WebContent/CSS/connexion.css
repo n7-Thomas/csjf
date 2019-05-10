@@ -1,5 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:300);
+
 h2 {
-	font-family: Expletus Sans, Arial, regular;
+	font-family: "Nunito", sans-serif;
 	font-size: 35px;
 	color : #c2eafc;
 	text-transform: uppercase;
@@ -11,7 +13,7 @@ h4{
 	color : white;
 }
 
-#insc {
+h3 {
 	text-align : center;
 	background-color : #ff8888;
 	padding : 5px;
@@ -108,7 +110,7 @@ form .text-field {                                                              
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 32px;
-  font-family: Expletus Sans, Arial;
+  font-family: "Nunito", sans-serif;
   font-size: 20px;
   font-style:bold;
   color : white;
