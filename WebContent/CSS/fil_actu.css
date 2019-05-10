@@ -74,10 +74,7 @@
 
 }
 
-.Cool {
-	color: red;
-	overflow: auto;
-}
+
 
 #publier {
 	
@@ -112,11 +109,15 @@ h3{
 	div-align: right;
 }
 
-.Cool::before {	
+.cool::before {	
 	content: "\01F44D";;
 }
 
-.PasCool::before {
-	content:"/01F44E";
+.pasCool::before {
+	content:"\01F44E";
+}
+
+.surpris::before {
+	content:"\01F44E";
 }
 

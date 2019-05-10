@@ -35,24 +35,23 @@
 						//Les Réactions
 						if(p.getReactions() != null) {
 							for(Reaction r: p.getReactions()) { 
-								//Les Cool %>
-																					
+								//Les Cool %>																				
 								<% if(r.isCool() ){ %>
-								<div class="personnes_reactions">
+								<div class="cool">
 								<%=r.getMembre().getPrenom()%><br>
 								</div>
 								<%}
 								
 								//Les Pas Cool
 								if(r.isPasCool()){ %>
-								<div class="personnes_reactions">
+								<div class="pasCool">
 								<%=r.getMembre().getPrenom()%><br>
 								</div>
 								<%}
 								
 								//Les Surprit
 								if(r.isSurpris()){ %>
-								<div class="personnes_reactions">
+								<div class="surpris">
 								<%=r.getMembre().getPrenom()%><br>
 								</div>
 								<%}													
@@ -79,9 +78,10 @@
 				} else { %>
 					<div class="notifications">
 					 <% publi = p.getContenu(); %>
-					 <%=publi %>
+					 <%=publi %>					 	
 				    </div>
-								
+				    
+				    							
 				<%}
 				}			
 		} else { System.out.println("pas de publi");} %>
