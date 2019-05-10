@@ -90,7 +90,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.setAttribute("message","");
 				if (facade.checkPassword(motdepasse,m) == true) {
 					session.setAttribute("user", m);
-					actionAfficherGroupe(request,response,session);
+					actionAfficherProfil(request,response,session);
 				} else {
 					boolean connecte = false;
 					request.setAttribute("erreur", "Mot de passe incorrect");
@@ -136,12 +136,12 @@ public class ServeurConnexion extends HttpServlet {
 		}
 
 		if(action.equals("afficher_profil")){
-			actionAfficherGroupe(request,response,session);
+			actionAfficherProfil(request,response,session);
 		}
 
 	}
 
-	private void actionAfficherGroupe(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	private void actionAfficherProfil(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
 		// Récupération du membre connecté
@@ -151,9 +151,9 @@ public class ServeurConnexion extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
+		request.setAttribute("statistiques", facade.getStatistiques(usr));
 		request.getRequestDispatcher("profil.jsp").forward(request, response);
 	}
 

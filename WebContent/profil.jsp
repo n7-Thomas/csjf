@@ -40,6 +40,7 @@
 	                
 	                <div class="leftcolumn">
 	                	<div class="card-stat">
+	                		<%@ include file="statistiques.jsp" %>   
 	                	</div>
 			             <div class="sous-leftcolumn">
 			             <div class="card">
