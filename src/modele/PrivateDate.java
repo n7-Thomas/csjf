@@ -6,8 +6,10 @@ import java.util.Date;
 
 public class PrivateDate {
 
-	private static int[] nb_jours = { 31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30 };
+	public static int[] nb_jours = { 31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30 };
 
+	public static String[] les_mois = {"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"};
+	
 	private int jour;
 
 	private int mois;
@@ -37,9 +39,9 @@ public class PrivateDate {
 	public String toGoodString() {
 		String date = "";
 		date += String.valueOf(jour);
-		date += "/";
-		date += String.valueOf(mois);
-		date += "/";
+		date += " ";
+		date += thisMoisString();
+		date += " ";
 		date += String.valueOf(annee);
 	
 		return date;
@@ -94,24 +96,35 @@ public class PrivateDate {
 	}
 
 	public boolean isBefore(PrivateDate date_prec) {
-		System.out.println("\n\n" + date_prec.toString() + " comparé à " + this.toString());
 		
+		boolean res = true;
 		if (this.annee > date_prec.getAnnee())
-			return false;
+			res = false;
 		else if (this.annee < date_prec.getAnnee())
-			return true;
+			res = true;
 		else {
 			if (this.mois > date_prec.getMois())
-				return false;
+				res = false;
 			else if (this.mois < date_prec.getMois())
-				return true;
+				res = true;
 			else {
 				if (this.jour > date_prec.getJour())
-					return false;
+					res = false;
 				else if (this.jour < date_prec.getJour())
-					return true;
+					res = true;
 			}
 		}
-		return true;
+		
+		System.out.println("\n\n" + this.toString() + " is before ? " + date_prec.toString() + " = " + res);
+		return res;
 	}
+
+	public boolean isAfter(PrivateDate date_mois_1) {
+		return(date_mois_1.isBefore(this));
+	}
+	
+	public String thisMoisString() {
+		return PrivateDate.les_mois[(this.getMois() - 1) % 12];
+	}
+	
 }

@@ -77,8 +77,17 @@
 				//Notifications
 				} else { %>
 					<div class="notifications">
-					 <% publi = p.getContenu(); %>
-					 <%=publi %>					 	
+					 <%= p.getContenu() %>
+					 	<div class="bar_reactions">
+					 	<ul>
+					 	<li>Réagir</li>
+					 		<ul>
+					 		<li>Cool</li>
+					 		<li>PasCool</li>
+					 		</ul>
+					 	</ul>
+					 	
+					 	</div>				 	
 				    </div>
 				    
 				    							

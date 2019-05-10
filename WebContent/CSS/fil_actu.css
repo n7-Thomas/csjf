@@ -109,15 +109,15 @@ h3{
 	div-align: right;
 }
 
-.cool::before {	
+.cool:before {	
 	content: "\01F44D";;
 }
 
-.pasCool::before {
+.pasCool:before {
 	content:"\01F44E";
 }
 
-.surpris::before {
+.surpris:before {
 	content:"\01F44E";
 }
 
