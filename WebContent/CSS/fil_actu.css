@@ -17,7 +17,6 @@
 }
 
 
-
 .texte_user {
 		
 	margin-top:3px;
@@ -75,6 +74,11 @@
 
 }
 
+.Cool {
+	color: red;
+	overflow: auto;
+}
+
 #publier {
 	
 	background-color: #DCDCDC;
@@ -94,6 +98,7 @@
 	background : rgb(255,255,255,0.5);
 	overflow : auto;
 	
+	
 }
 
 h3{
@@ -104,5 +109,12 @@ h3{
 	text-align:center;
 	color:wiht;
 	text-shadow: 1px 1px 0px #eeeeec;
+	div-align: right;
+}
+
+.personnes_reactions::before {
+	
+	content: "\01F44D";;
+	color: red;
 }
 

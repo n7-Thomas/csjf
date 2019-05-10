@@ -5,7 +5,7 @@
 <% Membre mb = ((Membre) session.getAttribute("user")); %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset=UTF-8">
 	
 	<title>Profil de <%= mb.getPrenom() + " " + mb.getNom() %></title>
 
@@ -41,40 +41,46 @@
 	                <div class="leftcolumn">
 	                	<div class="card-stat">
 	                	</div>
-			                <div class="sous-leftcolumn">
-			                <div class="card">
-				                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
-				                <% Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
-								if (groupes != null){
-				       				for (Groupe g : groupes) {
-				                		String groupe_nom = g.getNom(); 
-				               			int id_gs = g.getId();
-			               		%>
-             						<li class="lil_puce"><a href="ServeurGroupe?action=admin&id_grp=<%=id_gs%>"><%=groupe_nom%></a></li>
-               					<%} 
-				       			} else { 
-				       			%>
-				                <p> Vous n'êtes dans aucun groupe actuellement</p>
-				                
-				                <%} %> 
-				           </div> </div>
-				           <div class="sous-rightcolumn">
-				           <div class="card">    
-				                <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
-				                <% 
-				                Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
-				                if (groupes_admin != null){
-				           			for (Groupe g : groupes_admin) {
-				                    	String groupe_nom = g.getNom(); 
-				                %>		<p><%= groupe_nom %></p>
-				                	<%}  
-				                } else {
-				                 %>
-				                <p> Vous n'administrez aucun groupe actuellement. 
-			                <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
-							<%
-			                }
-							%>
+			             <div class="sous-leftcolumn">
+			             <div class="card">
+			             	<h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
+				            <ul class="diff">
+				             <% Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
+							if (groupes != null){
+				       			for (Groupe g : groupes) {
+				               		String groupe_nom = g.getNom(); 
+				               		int id_g = g.getId();
+					            		%>
+			             			<li class="groupe"><a href="ServeurGroupe?action=pageGroupe&id_grp=<%=id_g%>"><%=groupe_nom%></a></li>
+			               			<% }
+				       		} else { 
+				       		%>
+				            <p> Vous n'êtes dans aucun groupe actuellement</p>
+				               
+				            <%} %> 
+				            </ul>
+				        </div> </div>
+				        <div class="sous-rightcolumn">
+				        <div class="card">    
+				             <h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est admin :</h4>
+				             <ul class="diff">
+				             <% 
+				             Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
+				             if (groupes_admin != null){
+				        		for (Groupe g : groupes_admin) {
+				                   	String groupe_nom = g.getNom(); 
+				          			int id_gs = g.getId(); %>
+		             				<li class="groupe"><a href="ServeurGroupe?action=admin&id_grp=<%=id_gs%>"><%=groupe_nom%></a></li>
+		               				
+				               	<%}  
+				             } else {
+				             %>
+				            <p> Vous n'administrez aucun groupe actuellement. 
+			            <a href="creer_groupe.jsp">Créer un groupe</a> <br> </p>
+						<%
+			            }
+						%>
+						</ul>
 						</div>
 						</div>
 			</div>
