@@ -2,6 +2,7 @@
 
 body {
 	margin-top: -20px;
+	overflow: auto;
 }
 
 h4 {
