@@ -714,7 +714,7 @@ public class Facade {
 	public Collection<String> getStatistiques(Membre usr) {
 		Collection<String> resultat = new ArrayList<String>();
 
-		int nb_mois = 8;
+		int nb_mois = 4;
 		
 		if (usr != null) {
 			int[] somme_csjfs_mois = new int[nb_mois];
