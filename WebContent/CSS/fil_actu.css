@@ -112,9 +112,11 @@ h3{
 	div-align: right;
 }
 
-.personnes_reactions::before {
-	
+.Cool::before {	
 	content: "\01F44D";;
-	color: red;
+}
+
+.PasCool::before {
+	content:"/01F44E";
 }
 
