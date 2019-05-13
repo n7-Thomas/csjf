@@ -6,8 +6,9 @@
 
 <div id="fil_actu">
 
-	<div id="conversation"> 
 	<h3 style="border: 2px solid with"> Fil d'actualité </h3>
+	<div id="conversation"> 
+	
 	
 		
 	<%
@@ -72,7 +73,7 @@
 					 } else { %>			 
 					 <div class=publications_autres>
 					 	<div class=membre_autre>
-					 	<%=(p.getMembre().getNom()) %>
+					 	<%=(p.getMembre().getPrenom() ) %>
 					 	</div>
 					 
 						<div class="texte_autres">
@@ -89,19 +90,24 @@
 					
 					 
 					<div class="bar_reactions">					 	
-						 <p> Réagir </p>	
+						    <p>😐</p>	
 				 			<div class="emoji" >		
 				 			
-				 				<form action="ServeurGroupe" methode="post">
-				 					<input type= "submit" name="type" value="cool">
-				 					<input type= "submit" name="type" value="pasCool">
-				 					<input type= "submit" name="type" value="surpris">
 				 					
-				 					<input type="hidden" name="action" value="reagir">
-					 				<input type="hidden" name="id_publication" value="<%=id%>">
-					 				<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
-					 			</form>	
-					 					
+				 			<a href="ServeurGroupe?action=reagir&type=cool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			👍
+				 			</a>
+				 			
+				 			<a href="ServeurGroupe?action=reagir&type=pasCool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			👎
+				 			</a>
+				 			
+				 			<a href="ServeurGroupe?action=reagir&type=surpris&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			😲
+				 			</a>
+				 			
+				 				
+
 					 		</div> 	
 					 	
 												 		
