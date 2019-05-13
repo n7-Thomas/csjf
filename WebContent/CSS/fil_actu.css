@@ -12,7 +12,7 @@
   color: black;
   background-color: none;
   text-align: center;
-  
+  div
   
 }
 
@@ -84,6 +84,9 @@
 	background : rgb(255,255,255,0.1);
 	text-align:left;
 	border-radius: 5px;
+	position: absolute;
+	bottom: 0
+	
 }
 
 #conversation {
@@ -100,7 +103,6 @@
 
 h3{
 	
-
     font-weight: bold;  
     margin-top: 3px;
 	text-align:center;
@@ -121,18 +123,8 @@ h3{
 	content:"\01F62F";
 }
 
-.bar_reactions {
-	float: right;
 
-}
 
-.bar_reactions a .emoji{
-	display:none;
-}
-
-.bar_reactions a:hover .emoji{
-	display: block;
-}
 
 
 

@@ -89,7 +89,7 @@
 					
 					 
 					<div class="bar_reactions">					 	
-						 <a  href:"#" >Réagir </a>	
+						 <p> Réagir </p>	
 				 			<div class="emoji" >		
 				 			
 				 				<form action="ServeurGroupe" methode="post">
@@ -105,7 +105,7 @@
 					 		</div> 	
 					 	
 												 		
-					 
+					 </div>
 							
 					<div class="reactions">
 						<% 

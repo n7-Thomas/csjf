@@ -26,21 +26,25 @@
 		<div id="contenu">
 	            	<div class="rightcolumn">
 	            		<div class="card-coord">
-	                	<!-- <aside class="grande-sidebar">
-	                		<section class="sidebar" style="height: auto;">  -->
-	                		
-		                		<h2>Coordonnées.</h2>
-				                <p><i class="glyphicon glyphicon-user"></i> : <%= mb.getPrenom() + " " + mb.getNom() %></p>
-				                <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
+	            			</br>
+	            			</br>
+	            			<div class="image">
+	            				<img class="img-circle" src="CSS/photo-profil.jpg" alt="User Image">
+	            			</div>
+	            			</br>
+				            <div class="name">
+				            	<p><%= mb.getPrenom() + " " + mb.getNom() %></p>
+				            </div>
+				            <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
 		                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
-	                		<!--  </section>
-	                	</aside>-->
 	                	</div>
 	                </div>
-	                
+	           
 	                <div class="leftcolumn">
 	                	<div class="card-stat">
-	                		<%@ include file="statistiques.jsp" %>   
+	                		<div id="histo">
+	                		<%@ include file="statistiques.jsp" %>
+	                		</div>
 	                	</div>
 			             <div class="sous-leftcolumn">
 			             <div class="card">
