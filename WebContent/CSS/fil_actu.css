@@ -118,7 +118,7 @@ h3{
 }
 
 .surpris:before {
-	content:"\01F44E";
+	content:"\01F62F";
 }
 
 .bar_reactions {
@@ -126,8 +126,13 @@ h3{
 
 }
 
+.bar_reactions a .emoji{
+	display:none;
+}
 
-.bar_reactions:hover emoji {
+.bar_reactions a:hover .emoji{
 	display: block;
 }
+
+
 

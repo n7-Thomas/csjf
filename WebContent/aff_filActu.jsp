@@ -63,11 +63,11 @@
 								<%}													
 		 					}%>
 							</div>
-						<% }
+						<% }%>
 						
-						
+					</div>
 					
-					 
+					 <%
 					 //Publications des autres membres
 					 } else { %>			 
 					 <div class=publications_autres>
@@ -88,26 +88,24 @@
 					<%= p.getContenu() %>
 					
 					 
-					 <div class="bar_reactions">					 	
-						 Réagir
-				 			<div class="emoji">		
+					<div class="bar_reactions">					 	
+						 <a  href:"#" >Réagir </a>	
+				 			<div class="emoji" >		
 				 			
 				 				<form action="ServeurGroupe" methode="post">
 				 					<input type= "submit" name="type" value="cool">
+				 					<input type= "submit" name="type" value="pasCool">
+				 					<input type= "submit" name="type" value="surpris">
+				 					
 				 					<input type="hidden" name="action" value="reagir">
 					 				<input type="hidden" name="id_publication" value="<%=id%>">
 					 				<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
 					 			</form>	
 					 					
 					 		</div> 	
-					 		
-					 		
-					 			
-				 			
-				 						
+					 	
+												 		
 					 
-					 		
-					 </div>	
 							
 					<div class="reactions">
 						<% 
@@ -136,25 +134,30 @@
 								</div>
 								<%}													
 		 					}
-						}	%> </div> <% 			 				 	
+						}
+					%> </div> <% 			 				 	
 				    
 				    							
 	    		}	
 			}
+			%></div><% 
 		
 		} else { System.out.println("pas de publi");} %>
 	
 	</div>
 
 
-<form action= "ServeurGroupe" method="post">
-	</b>
+	
+	<form action= "ServeurGroupe" method="post">
+	
 	<div id="publier">
 	<input type= "text" name= "contenu" placeHolder="Publier.." style="width:100%">		
 	</div>
-		
 	<input type= "hidden" name= "action" value= "publier">	
 	<input type="hidden" name="id_grp" value="<%=request.getAttribute("id_grp") %>">
+		
+		
+	</form>
 	
-</form>
+	
 </div>
