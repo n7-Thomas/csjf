@@ -414,25 +414,50 @@ public class Facade {
 	 * Creation d'une réaction
 	 */
 	public Reaction creerReaction(Membre membre, int id_publication, String type){
-		Reaction r = new Reaction();
 
 		Publication publication = em.find(Publication.class, id_publication);
-		r.setPublication(publication);
 
-		r.setMembre(membre);
+		Reaction reaction = publication.getReaction(membre);
 
-		if(type.equals("cool")){
-			r.setType(Type.Cool);
-		}
-		else if(type.equals("pasCool")){
-			r.setType(Type.PasCool);
-		}
-		else if(type.equals("surpris")){
-			r.setType(Type.Surpris);
-		}
-		em.persist(r);
+		//Si la réaction n'a pas de membre: C'est une première réaction
+		if (reaction.getMembre()==null){
 
-		return r;
+			reaction.setPublication(publication);
+			reaction.setMembre(membre);
+
+			if(type.equals("cool")){
+				reaction.setType(Type.cool);
+			}
+			else if(type.equals("pasCool")){
+				reaction.setType(Type.pasCool);
+			}
+			else if(type.equals("surpris")){
+				reaction.setType(Type.surpris);
+			}
+			em.persist(reaction);
+
+		// Si la Réaction à déjà à un membre: c'est un changement d'avis
+		}else {
+			//Si le type est le même que l'ancien: onle supprime
+			if(reaction.getType().toString().equals(type)){
+				publication.getReactions().remove(reaction);
+				em.remove(reaction);
+			}
+			//Sinon on le change
+			else {
+				if(type.equals("cool")){
+					reaction.setType(Type.cool);
+				}
+				else if(type.equals("pasCool")){
+					reaction.setType(Type.pasCool);
+				}
+				else if(type.equals("surpris")){
+					reaction.setType(Type.surpris);
+				}
+			}
+		}
+
+		return reaction;
 	}
 
 	/**
@@ -756,7 +781,7 @@ public class Facade {
 						Defi_Valide.class);
 			TypedQuery<CSJF> req2 = em.createQuery("select c from CSJF c where c.membre=" + usr.getId() + " and c.etat=0", CSJF.class);
 
-			
+
 			PrivateDate[] date_mois = new PrivateDate[nb_mois];
 			for(int i=0; i < nb_mois; i++) {
 				date_mois[i] = PrivateDate.getNow();
@@ -771,7 +796,7 @@ public class Facade {
 
 				}
 			}
-			
+
 			if (req2 != null && req2.getResultList().size() != 0) {
 				Collection<CSJF> csjfs = req2.getResultList();
 				for (CSJF csjf : csjfs) {
@@ -785,7 +810,7 @@ public class Facade {
 
 				}
 
-		
+
 			}
 
 			for(int i=nb_mois - 1; i >= 0; i--) {

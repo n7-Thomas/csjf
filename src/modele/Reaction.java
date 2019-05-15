@@ -19,7 +19,7 @@ public class Reaction {
 	@ManyToOne
 	private Publication publication;
 
-	public enum Type{Cool, PasCool, Surpris};
+	public enum Type{cool, pasCool, surpris};
 
 	private Type type;
 
@@ -52,15 +52,15 @@ public class Reaction {
 	}
 
 	public boolean isCool(){
-		return type == Type.Cool;
+		return type == Type.cool;
 	}
 
 	public boolean isPasCool(){
-		return type == Type.PasCool;
+		return type == Type.pasCool;
 	}
 
 	public boolean isSurpris(){
-		return type == Type.Surpris;
+		return type == Type.surpris;
 	}
 
 	public void setType(Type type) {

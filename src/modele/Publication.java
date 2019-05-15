@@ -54,6 +54,17 @@ public class Publication {
 		this.reactions = reactions;
 	}
 
+	public Reaction getReaction(Membre membre){
+
+		for(Reaction r: this.reactions) {
+			if(r.getMembre().getId()== membre.getId()) {
+				return r;
+			}
+		}
+		return new Reaction();
+
+	}
+
 	/**
 	 * @param publi the publi to set
 	 */

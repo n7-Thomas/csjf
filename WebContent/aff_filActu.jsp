@@ -5,8 +5,8 @@
 <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
 
 <div id="fil_actu">
-
-	<h3 style="border: 2px solid with"> Fil d'actualité </h3>
+	
+<h3 style="border: 2px solid with"> Fil d'actualité </h3>
 	<div id="conversation"> 
 	
 	
@@ -80,15 +80,16 @@
 							<%=p.getContenu()  %>
 						</div>
 					</div>
-					<% }
+					<% } %>
 
-				//Notifications
+				<div class="notifications">
+				<% //Notifications
 				} else { %>
-					<div class="notifications">
+				<div class="notification>">
 					
+					<div class="texte_notification">
 					<%= p.getContenu() %>
-					
-					 
+										 
 					<div class="bar_reactions">					 	
 						    <p>😐</p>	
 				 			<div class="emoji" >		
@@ -106,12 +107,10 @@
 				 			😲
 				 			</a>
 				 			
-				 				
-
 					 		</div> 	
 					 	
-												 		
-					 </div>
+						</div>					 		
+					 
 							
 					<div class="reactions">
 						<% 
@@ -141,7 +140,10 @@
 								<%}													
 		 					}
 						}
-					%> </div> <% 			 				 	
+					%> </div> 
+					</div>
+					
+					</div> <% 			 				 	
 				    
 				    							
 	    		}	
@@ -164,6 +166,5 @@
 		
 		
 	</form>
-	
-	
+		
 </div>

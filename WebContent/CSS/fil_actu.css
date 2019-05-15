@@ -1,12 +1,9 @@
 
 #fil_actu{
-
     font-family:'Abel', arial, serif;
-  
-
 }
 
-.notifications {	
+.texte_notification {	
 
   padding: 18px;
   color: black;
@@ -84,9 +81,7 @@
 	background : rgb(255,255,255,0.1);
 	text-align:left;
 	border-radius: 5px;
-	width:50%;
-	position: absolute;
-	bottom: 0
+	
 	
 }
 
@@ -103,13 +98,14 @@
 }
 
 h3{
-	
+	background : rgb(255,255,255,0.5);
     font-weight: bold;  
     margin-top: 3px;
 	text-align:center;
 	color:wiht;
 	text-shadow: 1px 1px 0px #eeeeec;
 	div-align: right;
+	border-radius: 5px;
 
 }
 
@@ -129,8 +125,9 @@ h3{
 .emoji {
 	display: none;
 	background-color: white;
-	padding: 5px 5px 5px 5px;
+	padding: 2px 2px 2px 2px;
 	border-radius: 10px;
+	
 	
 }
 
@@ -140,17 +137,19 @@ h3{
 
 .bar_reactions:hover .emoji {
 	display:block;;
-	position:absolute;
+	position: absolute;
 	
 	
 }
 
 .bar_reactions {
-	
-	float:right;
-	
+	float: right;
+		
 }
 
+.emoji a {
+float:left;	
+}
 
 
 
