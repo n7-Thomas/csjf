@@ -49,6 +49,7 @@ public class Publication {
 	public Collection<Reaction> getReactions() {
 		return reactions;
 	}
+	
 
 	public void setReactions(Collection<Reaction> reactions) {
 		this.reactions = reactions;

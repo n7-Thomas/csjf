@@ -34,41 +34,91 @@
 							
 						<div class="texte_user">
 						 <%=p.getContenu() %>
-						</div>
 						
-						<% 
-						//Reaction
-						if(p.getReactions()!= null){
-							%>
-							<div class="aff_reactions">
-							<% for(Reaction r: p.getReactions()) { 
-								//Les Cool %>																				
-								<% if(r.isCool() ){ %>
-									<div class="cool">
-									<%=r.getMembre().getPrenom()%><br>
-									</div>
-								<%}
-			
-								//Les Pas Cool
-								if(r.isPasCool()){ %>
-								<div class="pasCool">
-									<%=r.getMembre().getPrenom()%><br>
-								</div>
-								<%}
-			
+						
+		
+						<div class="bar_reactions">					 	
+						    <p>😐</p>	
+				 			<div class="emoji" >					 					
+				 			<h3><a href="ServeurGroupe?action=reagir&type=cool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			👍 </a></h3>
+				 			<h3><a href="ServeurGroupe?action=reagir&type=pasCool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			👎 </a></h3>
+				 			<h3><a href="ServeurGroupe?action=reagir&type=surpris&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			😲 </a></h3>			 			
+					 		</div> 	
+					 	
+						</div>					 		
+					 
+							
+					<div class="reactions">
+						<% 						
+						//Les Réactions
+						if(p.getReactions() != null) {
+							
+							Collection<Membre> membresCool = new ArrayList<Membre>();
+							Collection<Membre> membresPasCool = new ArrayList<Membre>();
+							Collection<Membre> membresSurpris = new ArrayList<Membre>();
+							
+							for(Reaction r: p.getReactions()) { 																						
+								//Les Cool 																				
+								if(r.isCool() ){ 
+									membresCool.add(r.getMembre());								
+								} 							
+								//Les Pas Cool							
+								if(r.isPasCool()){
+									membresPasCool.add(r.getMembre());
+								}
 								//Les Surprit
-								if(r.isSurpris()){ %>
-								<div class="surpris">
-									<%=r.getMembre().getPrenom()%><br>
-								</div>
-								<%}													
-		 					}%>
-							</div>
-						<% }%>
-						
+								if(r.isSurpris()){ 
+									membresSurpris.add(r.getMembre());
+								}													
+		 					} 
+		 					
+		 					 if(!membresCool.isEmpty()){ %>
+		 					<div class="NBreactions">
+		 						  👍 
+		 						<div class="listeMembres">
+		 							<h5> J'aime</h5> <br>
+		 							<%for(Membre m : membresCool){ %>
+		 								<%=m.getPrenom() %>	 <br>						
+		 							<%} %>
+		 						</div>
+		 					</div>
+		 					<% } 
+		 					
+		 					if(!membresPasCool.isEmpty()){ %>
+		 					<div class="NBreactions">
+		 						  👎
+		 						<div class="listeMembres">
+		 							<h5> J'aime pas </h5> <br>
+		 							<%for(Membre m : membresPasCool){ %>
+		 								<%=m.getPrenom() %>	 <br>						
+		 							<%} %>
+		 						</div>
+		 					</div>
+		 					<%} 
+		 					
+		 					if(!membresSurpris.isEmpty()){ %>
+		 					<div class="NBreactions">
+		 						  😲
+		 						<div class="listeMembres">
+		 							<h5> Oh! </h5> <br>
+		 							<%for(Membre m : membresSurpris){ %>
+		 								<%=m.getPrenom() %>	 <br>						
+		 							<%} %>
+		 						</div>
+		 					</div>
+		 					<%} 
+		 					//int nbR = membresCool.size() + membresPasCool.size() + membresSurpris.size(); 
+		 					//if(nbR>0){ %
+					%>		
 					</div>
-					
-					 <%
+					</div>
+					</div>	
+					<% } 
+														
+					 
 					 //Publications des autres membres
 					 } else { %>			 
 					 <div class=publications_autres>
@@ -82,30 +132,30 @@
 					</div>
 					<% } %>
 
-				<div class="notifications">
+				
 				<% //Notifications
-				} else { %>
-				<div class="notification>">
+				} else { %>			
+				<div class="notifications>">
 					
 					<div class="texte_notification">
 					<%= p.getContenu() %>
-										 
+				
 					<div class="bar_reactions">					 	
 						    <p>😐</p>	
 				 			<div class="emoji" >		
 				 			
 				 					
-				 			<a href="ServeurGroupe?action=reagir&type=cool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			<h3><a href="ServeurGroupe?action=reagir&type=cool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
 				 			👍
-				 			</a>
+				 			</a></h3>
 				 			
-				 			<a href="ServeurGroupe?action=reagir&type=pasCool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			<h3><a href="ServeurGroupe?action=reagir&type=pasCool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
 				 			👎
-				 			</a>
+				 			</a></h3>
 				 			
-				 			<a href="ServeurGroupe?action=reagir&type=surpris&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+				 			<h3><a href="ServeurGroupe?action=reagir&type=surpris&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
 				 			😲
-				 			</a>
+				 			</a></h3>
 				 			
 					 		</div> 	
 					 	
@@ -113,46 +163,83 @@
 					 
 							
 					<div class="reactions">
-						<% 
-						
+						<% 						
 						//Les Réactions
 						if(p.getReactions() != null) {
+							
+							Collection<Membre> membresCool = new ArrayList<Membre>();
+							Collection<Membre> membresPasCool = new ArrayList<Membre>();
+							Collection<Membre> membresSurpris = new ArrayList<Membre>();
+							
 							for(Reaction r: p.getReactions()) { 
-								//Les Cool %>																				
-								<% if(r.isCool() ){ %>
-									<div class="cool">
-									<%=r.getMembre().getPrenom()%><br>
-									</div>
-								<%}
-			
-								//Les Pas Cool
-								if(r.isPasCool()){ %>
-								<div class="pasCool">
-									<%=r.getMembre().getPrenom()%><br>
-								</div>
-								<%}
+																							
+								//Les Cool 																				
+								if(r.isCool() ){ 
+									membresCool.add(r.getMembre());								
+								} 
+								
+								//Les Pas Cool							
+								if(r.isPasCool()){
+									membresPasCool.add(r.getMembre());
+								}
 			
 								//Les Surprit
-								if(r.isSurpris()){ %>
-								<div class="surpris">
-									<%=r.getMembre().getPrenom()%><br>
-								</div>
-								<%}													
-		 					}
-						}
-					%> </div> 
+								if(r.isSurpris()){ 
+									membresSurpris.add(r.getMembre());
+								}													
+		 					} 
+		 					
+		 					 if(!membresCool.isEmpty()){ %>
+		 					<div class="NBreactions">
+		 						  👍 
+		 						<div class="listeMembres">
+		 							<h5> J'aime</h5> <br>
+		 							<%for(Membre m : membresCool){ %>
+		 								<%=m.getPrenom() %>	 <br>						
+		 							<%} %>
+		 						</div>
+		 					</div>
+		 					<% } 
+		 					
+		 					if(!membresPasCool.isEmpty()){ %>
+		 					<div class="NBreactions">
+		 						  👎
+		 						<div class="listeMembres">
+		 							<h5> J'aime pas </h5> <br>
+		 							<%for(Membre m : membresPasCool){ %>
+		 								<%=m.getPrenom() %>	 <br>						
+		 							<%} %>
+		 						</div>
+		 					</div>
+		 					<%} 
+		 					
+		 					if(!membresSurpris.isEmpty()){ %>
+		 					<div class="NBreactions">
+		 						  😲
+		 						<div class="listeMembres">
+		 							<h5> Oh! </h5> <br>
+		 							<%for(Membre m : membresSurpris){ %>
+		 								<%=m.getPrenom() %>	 <br>						
+		 							<%} %>
+		 						</div>
+		 					</div>
+		 					<%} 
+		 					//int nbR = membresCool.size() + membresPasCool.size() + membresSurpris.size(); 
+		 					//if(nbR>0){ %
+								
+		 																
+						 } %>
+					 </div> 
 					</div>
-					
-					</div> <% 			 				 	
-				    
-				    							
+				</div>
+					 <% 			 				 					    							
 	    		}	
 			}
 			%></div><% 
 		
 		} else { System.out.println("pas de publi");} %>
 	
-	</div>
+	
 
 
 	
@@ -166,5 +253,5 @@
 		
 		
 	</form>
-		
+</div>	
 </div>
