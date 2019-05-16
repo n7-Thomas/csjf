@@ -13,6 +13,7 @@
 	<link type="text/css" rel="stylesheet" href="CSS/profil.css" />
 	<link type="text/css" rel="stylesheet" href="CSS/header.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
 
 </head>
 
@@ -34,9 +35,11 @@
 	            			</br>
 				            <div class="name">
 				            	<p><%= mb.getPrenom() + " " + mb.getNom() %></p>
-				            </div>
+				            </div></br>
+				            <div class="infos">
 				            <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
 		                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
+		                	</div>
 	                	</div>
 	                </div>
 	           
@@ -46,23 +49,28 @@
 	                		<%@ include file="statistiques.jsp" %>
 	                		</div>
 	                	</div>
+
 			             <div class="sous-leftcolumn">
 			             <div class="card">
 			             	<h4> Groupes dont <%= mb.getPrenom() + " " + mb.getNom() %> est membre :</h4>
 				            <ul class="diff">
 				             <% Collection<Groupe> groupes = (Collection<Groupe>) request.getAttribute("groupes_appartenus");
-							if (groupes != null){
+							if (groupes != null){ %>
+								<div class="afficher_groupes">
+								<%
 				       			for (Groupe g : groupes) {
 				               		String groupe_nom = g.getNom(); 
 				               		int id_g = g.getId();
 					            		%>
-			             			<li class="groupe"><a href="ServeurGroupe?action=pageGroupe&id_grp=<%=id_g%>"><%=groupe_nom%></a></li>
-			               			<% }
-				       		} else { 
+					            	<li ><div class="button"><a href="ServeurGroupe?action=pageGroupe&id_grp=<%=id_g%>"><%=groupe_nom%>&nbsp;<span class="shift">›</span></a><div class="mask"></div></div></li>
+			               			<% } %>
+				       			</div>
+				       		<%} else { 
 				       		%>
 				            <p> Vous n'êtes dans aucun groupe actuellement</p>
 				               
 				            <%} %> 
+				            
 				            </ul>
 				        </div> </div>
 				        <div class="sous-rightcolumn">
@@ -72,12 +80,17 @@
 				             <% 
 				             Collection<Groupe> groupes_admin = (Collection<Groupe>) request.getAttribute("groupes_admins");
 				             if (groupes_admin != null){
+				            	 %>
+								<div class="afficher_groupes">
+								<%
 				        		for (Groupe g : groupes_admin) {
 				                   	String groupe_nom = g.getNom(); 
 				          			int id_gs = g.getId(); %>
-		             				<li class="groupe"><a href="ServeurGroupe?action=admin&id_grp=<%=id_gs%>"><%=groupe_nom%></a></li>
+		             				<li ><div class="button"><a href="ServeurGroupe?action=admin&id_grp=<%=id_gs%>"><%=groupe_nom%>&nbsp;<span class="shift">›</span></a><div class="mask"></div></div></li>
 		               				
-				               	<%}  
+				               	<%} %>
+				       			</div>
+				       		<% 
 				             } else {
 				             %>
 				            <p> Vous n'administrez aucun groupe actuellement. 
@@ -113,5 +126,14 @@ function fondu(nomDiv){
 
 // appel la fonction avec l'id à transmettre
 fondu("fondu");
+
+const body = document.body;
+const btn = document.querySelectorAll('.button')[0];
+
+btn.addEventListener('mouseenter', () => {body.classList.add('show');});
+
+btn.addEventListener('mouseleave', () => {
+	body.classList.remove('show');
+});
 </script>
 </html>
