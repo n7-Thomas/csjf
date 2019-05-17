@@ -695,9 +695,11 @@ public class ServeurGroupe extends HttpServlet {
 			if (key.contains("csjf_")) {
 				String value[] = next.getValue();
 				if(value != null && value.length == 1) {
-					int valeur = Integer.parseInt(value[0]);
-					int id_csjf = Integer.parseInt(key.substring(5));
-					facade.validerCSJF(id_csjf, valeur);
+					if(!value[0].equals("")) {
+						int valeur = Integer.parseInt(value[0]);
+						int id_csjf = Integer.parseInt(key.substring(5));
+						facade.validerCSJF(id_csjf, valeur);
+					}
 				}
 			}
 		}
