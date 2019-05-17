@@ -4,7 +4,6 @@ body {
  }
 form {
  padding:10px;
- width:280px;
  }
 fieldset {
  padding:0 20px 20px 20px;
@@ -35,6 +34,7 @@ input, textarea, select {
 select {
  margin-top:5px;
  }
+
 input[type=checkbox] {
  background-color:transparent;
  border:none;

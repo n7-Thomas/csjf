@@ -102,14 +102,31 @@
 					}
 				});
 			};
-		
+			
+			
+			function changeButton(i) {
+				if(i == 0) {
+					document.getElementById('semaine').hidden = true;
+					document.getElementById('total').hidden = false;
+				} else {
+					document.getElementById('total').hidden = true;
+					document.getElementById('semaine').hidden = false;
+				}
+				
+			}
+			
+			changeButton(0);
+			
+			
 			document.getElementById('semaine').addEventListener('click', function() {
-					barChartData.datasets = datasetSemaine;
-					window.myBar.options.title = {display: true,text: 'Classement sur la semaine'};
-					window.myBar.update();
-				});
+				barChartData.datasets = datasetSemaine;
+				changeButton(0);
+				window.myBar.options.title = {display: true,text: 'Classement sur la semaine'};
+				window.myBar.update();
+			});
 			document.getElementById('total').addEventListener('click', function() {
 				barChartData.datasets = datasetTotal;
+				changeButton(1);
 				window.myBar.options.title = {display: true,text: 'Classement général'};
 				window.myBar.update();
 			});

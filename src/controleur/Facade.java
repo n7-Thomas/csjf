@@ -568,7 +568,7 @@ public class Facade {
 					for (Defi_Valide dv : dvs) {
 						PrivateDate date = new PrivateDate(dv.getDateValidation());
 						somme_defi_total += dv.getDefi().getPoints();
-						if(date.isBefore(date_prec))
+						if(!date.isBefore(date_prec))
 							somme_defi_cette_semaine += dv.getDefi().getPoints();
 					}
 				}
@@ -578,8 +578,8 @@ public class Facade {
 						PrivateDate date = new PrivateDate(csjf.getDateValidation());
 						somme_csjf_total += csjf.getPoints();
 
-						if(date.isBefore(date_prec))
-							somme_defi_cette_semaine += csjf.getPoints();
+						if(!date.isBefore(date_prec))
+							somme_csjf_cette_semaine += csjf.getPoints();
 
 					}
 				}
