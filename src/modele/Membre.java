@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -34,6 +35,9 @@ public class Membre {
 
 	@OneToMany(mappedBy = "membre", fetch = FetchType.EAGER)
 	private Collection<Defi_Valide> defis_valides;
+	
+	@ManyToMany(mappedBy="membres", fetch=FetchType.EAGER)
+	private Collection<Badge> badges;
 
 	//@OneToOne(mappedBy = "membre", fetch = FetchType.EAGER)
 	//private Collection<Publication> publications ;
@@ -46,6 +50,22 @@ public class Membre {
 
 	public Membre() {
 		this.groupes_appartenus = new ArrayList<Groupe>();
+	}
+	
+	/*
+	 * Obtenir les badges d'un groupe
+	 * @return la collection des badges
+	 */
+	public Collection<Badge> getBadges() {
+		return this.badges;
+	}
+	
+	/*
+	 * Définir la collection des badges
+	 * @param badges, la colleciton de badge
+	 */
+	public void setBadges(Collection<Badge> badges) {
+		this.badges = badges;
 	}
 
 	public String getMotdepasse() {
