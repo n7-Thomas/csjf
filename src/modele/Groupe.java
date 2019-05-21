@@ -37,27 +37,8 @@ public class Groupe {
 
 	@OneToMany(mappedBy="groupe", fetch=FetchType.EAGER)
 	private Collection<Publication> publications;
-	
-	@ManyToMany(mappedBy="groupes", fetch=FetchType.EAGER)
-	private Collection<Badge> badges;
 
 	public Groupe() {}
-	
-	/*
-	 * Obtenir les badges d'un groupe
-	 * @return la collection des badges
-	 */
-	public Collection<Badge> getBadges() {
-		return this.badges;
-	}
-	
-	/*
-	 * Définir la collection des badges
-	 * @param badges, la colleciton de badge
-	 */
-	public void setBadges(Collection<Badge> badges) {
-		this.badges = badges;
-	}
 
 	public Collection<Defi_A_Valider> getDefis_a_valider() {
 		return defis_a_valider;

@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import exceptions.ExceptionUserNonDefini;
+import modele.Badge;
 import modele.CSJF;
 import modele.Defi;
 import modele.Defi_A_Valider;
@@ -826,6 +827,12 @@ public class Facade {
 
 		System.out.println(resultat);
 		return resultat;
+	}
+
+	public void init() {
+		Badge badge1 = new Badge();
+		badge1.setDescription("Vous avez validé votre premier défi !");
+		badge1.setNiveau(1);
 	}
 
 }

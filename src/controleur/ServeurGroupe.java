@@ -34,6 +34,7 @@ public class ServeurGroupe extends HttpServlet {
 	 */
 	public ServeurGroupe() {
 		super();
+		facade.init();
 	}
 
 	/**
