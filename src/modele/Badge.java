@@ -1,14 +1,11 @@
 package modele;
 
 import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Badge {
@@ -21,6 +18,8 @@ public class Badge {
 	private Collection<Membre> membres;
 	
 	private String description;
+	
+	private String nom;
 	
 	private int niveau;
 	
@@ -38,6 +37,20 @@ public class Badge {
 	 */
 	public void setDescription(String new_description) {
 		this.description = new_description;
+	}
+	
+	/**
+	 * @return the nom
+	 */
+	public String getNom() {
+		return this.nom;
+	}
+	
+	/**
+	 * @param new_nom the new nom
+	 */
+	public void setNom(String new_nom) {
+		this.nom = new_nom;
 	}
 
 	/**

@@ -34,7 +34,6 @@ public class ServeurGroupe extends HttpServlet {
 	 */
 	public ServeurGroupe() {
 		super();
-		//facade.init();
 	}
 
 	/**
@@ -67,7 +66,7 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
+		
 		// Récupération de l'action
 		String action = request.getParameter("action");
 
