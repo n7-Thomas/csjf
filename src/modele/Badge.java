@@ -18,9 +18,6 @@ public class Badge {
 	@ManyToMany
 	private Collection<Membre> membres;
 
-	@ManyToMany
-	private Collection<Groupe> groupes;
-
 	private String description;
 
 	private int niveau;
@@ -41,19 +38,7 @@ public class Badge {
 		this.description = new_description;
 	}
 
-	/**
-	 * @return the groupe
-	 */
-	public Collection<Groupe> getGroupe() {
-		return this.groupes;
-	}
 
-	/**
-	 * @param groupe the groupe to set
-	 */
-	public void setGroupe(Collection<Groupe> groupe) {
-		this.groupes = groupe;
-	}
 
 	/**
 	 * @return the membre
@@ -67,13 +52,6 @@ public class Badge {
 		this.membres = membres;
 	}
 
-	public Collection<Groupe> getGroupes() {
-		return groupes;
-	}
-
-	public void setGroupes(Collection<Groupe> groupes) {
-		this.groupes = groupes;
-	}
 
 	public int getId() {
 		return this.id;

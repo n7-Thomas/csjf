@@ -12,6 +12,7 @@ h4 {
 .infos {
 	margin-left : 20px;
 }
+
 /* TEST BOUTON BEAU */
 
 .button {
@@ -69,6 +70,7 @@ h4 {
 
 .button:hover a {
 	color: #fff;
+	text-decoration : none;
 }
 
 .button:hover .mask {
@@ -105,8 +107,8 @@ body.show {
 	/* On indique l'image de fond et les dimensions qu'elle occupe */
 	display: block;
 	background-image: url(arriere-plan-profil.jpg);
-	background-size : 1800px 1200px;
-	width: 1800px;
+	background-size : 2000px 1200px;
+	width: 2000px;
 	height: 1200px;
 	-webkit-filter: blur(5px);
 	-moz-filter: blur(5px);
