@@ -177,8 +177,16 @@ public class Facade {
 		if (mb == null)
 			return false;
 
-		if (mb.getGroupesAppartenus() != null && !mb.getGroupesAppartenus().contains(grp))
+		Collection<Groupe> groupes_app = mb.getGroupesAppartenus();
+
+		if (mb.getGroupesAppartenus() != null) {
+			for (Groupe g : groupes_app) {
+				if (g.getId() == grp.getId()) {
+					return false;
+				}
+			}
 			mb.getGroupesAppartenus().add(grp);
+		}
 
 		TypedQuery<Demande_A_Rejoindre> req2 = em.createQuery(
 				"select d from Demande_A_Rejoindre d WHERE GROUPE_ID=" + grp.getId() + " AND MEMBRE_ID=" + mb.getId(),
@@ -541,11 +549,15 @@ public class Facade {
 		if (!(points == -1))
 			defi.setPoints(points);
 
-		if (!(dateDebut.equals("")))
-			defi.setDate(dateDebut);
+		if (!(dateDebut.equals(""))) {
+			String date_debut = formatDate(dateDebut);
+			defi.setDate(date_debut);
+		}
 
-		if (!(dateFin.equals("")))
-			defi.setEndDate(dateFin);
+		if (!(dateFin.equals(""))) {
+			String date_fin = formatDate(dateFin);
+			defi.setEndDate(date_fin);
+		}
 
 		System.out.print(
 				"\n\n\nmodif defi: nom = " + nom + " description = " + description + " points = " + points + "\n\n\n");
@@ -608,6 +620,27 @@ public class Facade {
 	public void enleverMembre(Groupe grp, int id_mbr) {
 		Groupe gp = em.find(Groupe.class, grp.getId());
 		Membre mb = em.find(Membre.class, id_mbr);
+
+		TypedQuery<Defi_Valide> req = em.createQuery("select dv from Defi_Valide dv where groupe_id=" + grp.getId() + "and membre_id=" + id_mbr, Defi_Valide.class);
+		Collection<Defi_Valide> dvs = req.getResultList();
+
+		for (Defi_Valide defi_v : dvs) {
+
+			Defi_Valide defi_valide = em.find(Defi_Valide.class, defi_v.getId());
+
+			em.remove(defi_valide);
+		}
+
+		TypedQuery<Defi_A_Valider> req2 = em.createQuery("select dav from Defi_A_Valider dav where groupe_id=" + grp.getId() + "and membre_id=" + id_mbr, Defi_A_Valider.class);
+		Collection<Defi_A_Valider> davs = req2.getResultList();
+
+		for (Defi_A_Valider defi_av : davs) {
+
+			Defi_A_Valider defi_aval = em.find(Defi_A_Valider.class, defi_av.getId());
+
+			em.remove(defi_aval);
+		}
+
 		mb.getGroupesAppartenus().remove(gp);
 	}
 

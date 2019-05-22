@@ -861,7 +861,7 @@ public class ServeurGroupe extends HttpServlet {
 		// Ajout du membre
 		if (!facade.ajouterMembre(email, grp)) {
 			request.setAttribute("erreur", "Nous n'avons pas trouvé cette personne");
-			request.getRequestDispatcher("ajouter_membre.jsp").forward(request, response);
+			request.getRequestDispatcher("ServeurGroupe?action=admin&id_grp=" + grp.getId()).forward(request, response);
 			return;
 		}
 
