@@ -1,14 +1,11 @@
 package modele;
 
 import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Badge {
@@ -19,14 +16,13 @@ public class Badge {
 
 	@ManyToMany
 	private Collection<Membre> membres;
-
-	@ManyToMany
-	private Collection<Groupe> groupes;
 	
 	private String description;
 	
+	private String nom;
+	
 	private int niveau;
-
+	
 	public Badge() {}
 	
 	/**
@@ -44,17 +40,17 @@ public class Badge {
 	}
 	
 	/**
-	 * @return the groupe
+	 * @return the nom
 	 */
-	public Collection<Groupe> getGroupe() {
-		return this.groupes;
+	public String getNom() {
+		return this.nom;
 	}
-
+	
 	/**
-	 * @param groupe the groupe to set
+	 * @param new_nom the new nom
 	 */
-	public void setGroupe(Collection<Groupe> groupe) {
-		this.groupes = groupe;
+	public void setNom(String new_nom) {
+		this.nom = new_nom;
 	}
 
 	/**

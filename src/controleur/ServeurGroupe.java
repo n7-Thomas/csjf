@@ -18,6 +18,7 @@ import exceptions.ExceptionUserNonDefini;
 import modele.Defi;
 import modele.Groupe;
 import modele.Membre;
+import modele.PrivateDate;
 
 /**
  * Servlet implementation class ServeurGroupe
@@ -66,7 +67,7 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
+		
 		// Récupération de l'action
 		String action = request.getParameter("action");
 
@@ -651,7 +652,7 @@ public class ServeurGroupe extends HttpServlet {
 		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
 		while (iter.hasNext()) {
 			String key = iter.next().getKey();
-			
+
 
 			if (key.contains("defi_")) {
 
@@ -773,7 +774,11 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
+		
+		PrivateDate dateNow1 = PrivateDate.getNow();
+		String dateNow = facade.formatDate(dateNow1.toString());
+		
+		request.setAttribute("dateNow", dateNow);
 		request.setAttribute("classement", facade.getClassement(grp));
 		request.setAttribute("groupe", grp);
 		request.setAttribute("id_grp", id_grp);
@@ -860,7 +865,7 @@ public class ServeurGroupe extends HttpServlet {
 		// Ajout du membre
 		if (!facade.ajouterMembre(email, grp)) {
 			request.setAttribute("erreur", "Nous n'avons pas trouvé cette personne");
-			request.getRequestDispatcher("ajouter_membre.jsp").forward(request, response);
+			request.getRequestDispatcher("ServeurGroupe?action=admin&id_grp=" + grp.getId()).forward(request, response);
 			return;
 		}
 
