@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -25,7 +26,9 @@ public class Badge {
 
 	private int niveau;
 
-	public Badge() {}
+	public Badge() {
+		this.membres = new ArrayList<Membre>();
+	}
 
 	/**
 	 * @return the description

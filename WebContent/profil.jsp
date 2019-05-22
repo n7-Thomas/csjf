@@ -45,7 +45,7 @@
 									System.out.println("badges:" + badges);
 									if(badges!= null) { 
 										
-										for (Badge badge: badges) { System.out.println("HAAAAAAAA");%>
+										for (Badge badge: badges) { %>
 										
 										<%= badge.getDescription()%> <br>
 												                	

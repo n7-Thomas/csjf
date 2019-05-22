@@ -127,6 +127,9 @@ public class Facade {
 		return date_bien;
 	}
 
+	/**
+	 * @param id_dav
+	 */
 	public void validerDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 		Defi_Valide dv = new Defi_Valide();
@@ -137,10 +140,8 @@ public class Facade {
 
 		creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi: " + dav.getDefi().getDescription());
 
-
-
 		//Obtention du Badge Premier défi si c'est le premier défi du membre
-		TypedQuery<Badge> req = em.createQuery("select m from Badge m WHERE ID=1", Badge.class);
+		/**TypedQuery<Badge> req = em.createQuery("select m from Badge m WHERE ID=1", Badge.class);
 		if(req.getResultList() == null || req.getResultList().size() != 1) {
 			System.out.println("Aucun résultat pour cette requête.");
 		} else {
@@ -149,14 +150,15 @@ public class Facade {
 				badge1.getMembre().add(dav.getMembre());
 			}
 
+		}*/
+
+		Badge b1 = em.find(Badge.class, 1);
+		Membre m = dav.getMembre();
+		if(!(m.getBadges().contains(b1)) ) {
+
+			b1.addMembre(m);
+			dav.getMembre().getBadges().add(b1);
 		}
-
-		//Badge b1 = em.find(Badge.class, 1);
-		//if(!(dav.getMembre().getBadges().contains(b1)) ) {
-
-			//b1.addMembre(dav.getMembre());
-			//dav.getMembre().getBadges().add(b1);
-		//}
 
 		em.persist(dv);
 		em.remove(dav);
