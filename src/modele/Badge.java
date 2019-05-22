@@ -1,6 +1,5 @@
 package modele;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -26,9 +25,9 @@ public class Badge {
 
 	private int niveau;
 	private String nom;
+	private String codepoint;
 
 	public Badge() {
-		this.membres = new ArrayList<Membre>();
 	}
 
 	/**
@@ -83,4 +82,13 @@ public class Badge {
 	public int getNiveau() {
 		return this.niveau;
 	}
+
+	public String getCodepoint() {
+		return codepoint;
+	}
+
+	public void setCodepoint(String codepoint) {
+		this.codepoint = codepoint;
+	}
+
 }
