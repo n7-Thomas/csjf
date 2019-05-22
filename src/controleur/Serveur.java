@@ -28,6 +28,7 @@ public class Serveur extends HttpServlet {
 	 */
 	public Serveur() {
 		super();
+		facade.init();
 	}
 
 	/**

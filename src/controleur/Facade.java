@@ -828,6 +828,10 @@ public class Facade {
 		return resultat;
 	}
 
+	public void init() {
+				
+	}
+
 }
 
 
