@@ -3,12 +3,10 @@ package modele;
 import java.util.Collection;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Badge {
@@ -22,27 +20,27 @@ public class Badge {
 
 	@ManyToMany
 	private Collection<Groupe> groupes;
-	
+
 	private String description;
-	
+
 	private int niveau;
 
 	public Badge() {}
-	
+
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return this.description;
 	}
-	
+
 	/**
 	 * @param new_texte the new texte
 	 */
 	public void setDescription(String new_description) {
 		this.description = new_description;
 	}
-	
+
 	/**
 	 * @return the groupe
 	 */
@@ -64,13 +62,19 @@ public class Badge {
 		return this.membres;
 	}
 
-	/**
-	 * @param membre the membre to set
-	 */
-	public void setMembre(Collection<Membre> membre) {
-		this.membres = membre;
+
+	public void setMembres(Collection<Membre> membres) {
+		this.membres = membres;
 	}
-	
+
+	public Collection<Groupe> getGroupes() {
+		return groupes;
+	}
+
+	public void setGroupes(Collection<Groupe> groupes) {
+		this.groupes = groupes;
+	}
+
 	public int getId() {
 		return this.id;
 	}
@@ -78,7 +82,7 @@ public class Badge {
 	public void setNiveau(int valeur) {
 		this.niveau = valeur;
 	}
-	
+
 	public int getNiveau() {
 		return this.niveau;
 	}

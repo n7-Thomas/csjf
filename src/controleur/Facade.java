@@ -127,6 +127,8 @@ public class Facade {
 
 		Publication p = creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi " + dav.getDefi().getDescription());
 
+
+
 		em.persist(dv);
 		em.remove(dav);
 
@@ -793,7 +795,7 @@ public class Facade {
 				Collection<Defi_Valide> dvs = req.getResultList();
 				for (Defi_Valide dv : dvs) {
 					PrivateDate date = new PrivateDate(dv.getDateValidation());
-					
+
 					for(int i=0; i < nb_mois - 1; i++) {
 						if(date.isBefore(date_mois[i]) && date.isAfter(date_mois[i+1]))
 							somme_csjfs_mois[i] += dv.getDefi().getPoints();
