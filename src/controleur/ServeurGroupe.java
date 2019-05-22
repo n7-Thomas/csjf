@@ -651,7 +651,7 @@ public class ServeurGroupe extends HttpServlet {
 		Iterator<Entry<String, String[]>> iter = hm.entrySet().iterator();
 		while (iter.hasNext()) {
 			String key = iter.next().getKey();
-			
+
 
 			if (key.contains("defi_")) {
 

@@ -111,11 +111,21 @@ public class Facade {
 			end1week.setJour(end1week.getJour() + 7);
 			dateFin = end1week.toString();
 		}
-		defi.setDate(dateDebut);
-		defi.setEndDate(dateFin);
+
+		String date_debut = formatDate(dateDebut);
+		String date_fin = formatDate(dateFin);
+
+		defi.setDate(date_debut);
+		defi.setEndDate(date_fin);
 		em.persist(defi);
 
 		return defi;
+	}
+
+	public String formatDate(String date) {
+		String date_bien = date.replaceAll("\\W", "");
+		System.out.println(date);
+		return date_bien;
 	}
 
 	public void validerDefi(int id_dav) {
@@ -602,8 +612,42 @@ public class Facade {
 	}
 
 	public void enleverDefi(int id_defi) {
+
+		// SUPPRIMER LE DEFI DANS BDD DEFI
 		Defi defi = em.find(Defi.class, id_defi);
 		em.remove(defi);
+
+
+
+		// SUPPRIMER LE DEFI DANS BDD DEFI_VALIDE
+		TypedQuery<Defi_Valide> req = em.createQuery(
+				"select dv from Defi_Valide dv where defi_id=" + id_defi,
+				Defi_Valide.class);
+		Collection<Defi_Valide> defi_a_supp = req.getResultList();
+
+		for (Defi_Valide defi_v : defi_a_supp) {
+
+			Defi_Valide defi_valide = em.find(Defi_Valide.class, defi_v.getId());
+
+			em.remove(defi_valide);
+		}
+
+
+
+
+		// SUPPRIMER LE DEFI DANS BDD DEFI_A_VALIDER
+		TypedQuery<Defi_A_Valider> req2= em.createQuery(
+				"select dav from Defi_A_Valider dav where defi_id=" + id_defi,
+				Defi_A_Valider.class);
+		Collection<Defi_A_Valider> defi_a_supp2 = req2.getResultList();
+
+		for (Defi_A_Valider defi_av : defi_a_supp2) {
+
+			Defi_A_Valider defi_a_valider = em.find(Defi_A_Valider.class, defi_av.getId());
+
+			em.remove(defi_a_valider);
+		}
+
 	}
 
 	public void refuserDefi(int id_dav) {
@@ -812,7 +856,7 @@ public class Facade {
 				Collection<Defi_Valide> dvs = req.getResultList();
 				for (Defi_Valide dv : dvs) {
 					PrivateDate date = new PrivateDate(dv.getDateValidation());
-					
+
 					for(int i=0; i < nb_mois - 1; i++) {
 						if(date.isBefore(date_mois[i]) && date.isAfter(date_mois[i+1]))
 							somme_csjfs_mois[i] += dv.getDefi().getPoints();
