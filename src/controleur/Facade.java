@@ -25,7 +25,6 @@ import modele.Reaction;
 import modele.Reaction.Type;
 import modele.TypeDefi;
 import tests.Tests_Defis;
-import tests.Tests_Groupes;
 import tests.Tests_Membres;
 
 @Singleton
@@ -136,15 +135,34 @@ public class Facade {
 		dv.setMembre(dav.getMembre());
 		dv.setDateValidation(PrivateDate.getNow().toString());
 
-		Publication p = creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi " + dav.getDefi().getDescription());
+		creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi: " + dav.getDefi().getDescription());
 
 
+
+		//Obtention du Badge Premier défi si c'est le premier défi du membre
+		TypedQuery<Badge> req = em.createQuery("select m from Badge m WHERE ID=1", Badge.class);
+		if(req.getResultList() == null || req.getResultList().size() != 1) {
+			System.out.println("Aucun résultat pour cette requête.");
+		} else {
+			Badge badge1 = req.getSingleResult();
+			if(!badge1.getMembre().contains(dav.getMembre())) {
+				badge1.getMembre().add(dav.getMembre());
+			}
+
+		}
+
+		//Badge b1 = em.find(Badge.class, 1);
+		//if(!(dav.getMembre().getBadges().contains(b1)) ) {
+
+			//b1.addMembre(dav.getMembre());
+			//dav.getMembre().getBadges().add(b1);
+		//}
 
 		em.persist(dv);
 		em.remove(dav);
 
-
 	}
+
 
 	public void validerDemande(int id_dar) {
 		Demande_A_Rejoindre dar = em.find(Demande_A_Rejoindre.class, id_dar);
@@ -153,7 +171,7 @@ public class Facade {
 		mb.getGroupesAppartenus().add(gp);
 		em.remove(dar);
 
-		Publication p = creerNotification(id_dar, mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe !");
+		creerNotification(id_dar, mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
 
 	}
 
@@ -164,7 +182,7 @@ public class Facade {
 	public Groupe changerNomGroupe(Groupe gp, String nom) {
 		Groupe groupe = em.find(Groupe.class, gp.getId());
 		groupe.setNom(nom);
-		Publication p = creerNotification(gp.getId(), gp.getAdmin().getPrenom() + " à remplacé le nom du groupe par " + nom);
+		creerNotification(gp.getId(), gp.getAdmin().getPrenom() + " à remplacé le nom du groupe par " + nom);
 		return groupe;
 
 	}
@@ -190,7 +208,7 @@ public class Facade {
 			em.remove(em.find(Demande_A_Rejoindre.class, dar.getId()));
 		}
 
-		Publication p = creerNotification(grp.getId(), mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
+		creerNotification(grp.getId(), mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
 		return true;
 	}
 
@@ -336,6 +354,7 @@ public class Facade {
 		g.setNom(nom);
 		g.setAdmin(usr);
 		em.persist(g);
+		init();
 
 		return g;
 	}
@@ -411,7 +430,7 @@ public class Facade {
 	/***
 	 * Creer une nouvelle notification
 	 */
-	public Publication creerNotification(int id_groupe, String contenu){
+	public void creerNotification(int id_groupe, String contenu){
 		Publication notification = new Publication();
 		notification.setContenu(contenu);
 
@@ -419,8 +438,6 @@ public class Facade {
 		notification.setGroupe(gp);
 
 		em.persist(notification);
-
-		return notification;
 	}
 
 	/**
@@ -687,7 +704,7 @@ public class Facade {
 		Membre celia = Tests_Membres.celia();
 		em.persist(celia);
 
-		Groupe gp = Tests_Groupes.groupe1(thomas);
+		Groupe gp = creerGroupe("Objectif Summer Body", thomas);
 		em.persist(gp);
 
 		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
@@ -875,10 +892,23 @@ public class Facade {
 		return resultat;
 	}
 
+
+	public Collection<Badge> getBadges(Membre m){
+		Membre membre = em.find(Membre.class, m.getId());
+		return membre.getBadges();
+	}
+
 	public void init() {
 		Badge badge1 = new Badge();
-		badge1.setDescription("Vous avez validé votre premier défi !");
+		badge1.setDescription("Vous avez validé votre premier défi!");
 		badge1.setNiveau(1);
+
+		Badge badge2= new Badge();
+		badge2.setDescription("Vous avez obtenu plus de 100 pts! ");
+
+		em.persist(badge2);
+		em.persist(badge1);
+
 	}
 
 }

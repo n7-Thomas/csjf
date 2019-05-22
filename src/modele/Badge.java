@@ -3,9 +3,11 @@ package modele;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -15,7 +17,8 @@ public class Badge {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(name = "badge_membre")
 	private Collection<Membre> membres;
 
 	private String description;
@@ -38,8 +41,6 @@ public class Badge {
 		this.description = new_description;
 	}
 
-
-
 	/**
 	 * @return the membre
 	 */
@@ -48,8 +49,8 @@ public class Badge {
 	}
 
 
-	public void setMembres(Collection<Membre> membres) {
-		this.membres = membres;
+	public void addMembre(Membre membre) {
+		membres.add(membre);
 	}
 
 

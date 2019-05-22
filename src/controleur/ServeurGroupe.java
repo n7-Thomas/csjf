@@ -180,6 +180,7 @@ public class ServeurGroupe extends HttpServlet {
 		}
 
 
+
 	}
 
 	private void actionReagir(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {

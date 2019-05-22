@@ -40,6 +40,19 @@
 				            <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
 		                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
 		                	</div>
+		                	<div class="palmares">
+									<% Collection<Badge> badges =(Collection<Badge>) request.getAttribute("liste_badges");
+									System.out.println("badges:" + badges);
+									if(badges!= null) { 
+										
+										for (Badge badge: badges) { System.out.println("HAAAAAAAA");%>
+										
+										<%= badge.getDescription()%> <br>
+												                	
+										<%}
+									}%>
+		                	</div>
+		                	
 	                	</div>
 	                </div>
 	           
