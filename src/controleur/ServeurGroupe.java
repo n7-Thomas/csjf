@@ -67,7 +67,7 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
 		// Récupération de l'action
 		String action = request.getParameter("action");
 
@@ -268,21 +268,21 @@ public class ServeurGroupe extends HttpServlet {
 			return;
 		}
 
-		if (texte == null) {
+		if (texte.equals("")) {
 			request.setAttribute("status", "Vous n'avez pas saisi de csjf !");
 			actionAfficherGroupe(request, response, session);
+		} else {
+
+			try {
+				facade.envoyerCSJF(texte, groupe, usr);
+				request.setAttribute("status", "Votre CSJF a été envoyé !");
+				actionAfficherGroupe(request, response, session);
+
+			} catch (Exception e) {
+				request.setAttribute("status", e.getMessage());
+				actionAfficherGroupe(request, response, session);
+			}
 		}
-
-		try {
-			facade.envoyerCSJF(texte, groupe, usr);
-			request.setAttribute("status", "Votre CSJF a été envoyé !");
-			actionAfficherGroupe(request, response, session);
-
-		} catch (Exception e) {
-			request.setAttribute("status", e.getMessage());
-			actionAfficherGroupe(request, response, session);
-		}
-
 	}
 
 	/**
@@ -356,14 +356,16 @@ public class ServeurGroupe extends HttpServlet {
 			throws ServletException, IOException {
 
 		String str_id_defi = request.getParameter("id_defi");
+		String str_id_grp = request.getParameter("id_grp");
 		if(str_id_defi == null){
 			request.setAttribute("erreur", "Pas de défi sélectionné");
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
 		int id_defi = Integer.parseInt(str_id_defi);
+		int id_grp = Integer.parseInt(str_id_grp);
 
-		facade.enleverDefi(id_defi);
+		facade.enleverDefi(id_grp,id_defi);
 
 		actionAfficherAdmin(request, response, session);
 	}
@@ -775,10 +777,16 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		
+
+		if (!facade.appartientGroupe(usr.getId(), grp.getId())) {
+			request.setAttribute("erreur", "Vous n'êtes pas membre de ce groupe");
+			request.getRequestDispatcher("erreur.jsp").forward(request, response);
+			return;
+		}
+
 		PrivateDate dateNow1 = PrivateDate.getNow();
 		String dateNow = facade.formatDate(dateNow1.toString());
-		
+
 		request.setAttribute("dateNow", dateNow);
 		request.setAttribute("classement", facade.getClassement(grp));
 		request.setAttribute("groupe", grp);

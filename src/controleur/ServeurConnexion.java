@@ -1,7 +1,6 @@
 package controleur;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -88,7 +87,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.getRequestDispatcher("connexion.jsp").forward(request, response);
 			} else {
 				request.setAttribute("message","");
-				if (facade.checkPassword(motdepasse,m) == true) {
+				if (facade.checkPassword(motdepasse,m)) {
 					session.setAttribute("user", m);
 					actionAfficherProfil(request,response,session);
 				} else {
@@ -108,16 +107,7 @@ public class ServeurConnexion extends HttpServlet {
 			String email = request.getParameter("email");
 			String motdepasse = request.getParameter("motdepasse");
 
-			String motdepasseCrypte;
-			byte[] salt;
-			try {
-				salt = SHACrypt.getSalt();
-			} catch (NoSuchAlgorithmException e1) {
-				e1.printStackTrace();
-				salt = null;
-			}
-			motdepasseCrypte = SHACrypt.get_SHA_256_SecurePassword(motdepasse, salt);
-			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasseCrypte,salt);
+			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
 			System.out.println("MEMBRE TROUVE : " + m);
 			if (m != null) {
 				session.setAttribute("user", m);

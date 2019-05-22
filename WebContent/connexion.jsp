@@ -83,6 +83,13 @@
 
 </div>
 <script type="text/javascript">
+
+function crypterMotdepasse() {
+	var s = document.getElementById('motdepasse').value;
+	hash = hex_sha256(s);
+	document.getElementById('motdepasse').value = hash;
+}
+
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div
 	  var i = 0;// initialise i

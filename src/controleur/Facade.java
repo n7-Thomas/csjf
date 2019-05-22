@@ -40,11 +40,8 @@ public class Facade {
 	 * FROM PAGE CONNEXION
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
-		byte[] salt = m.getSalt();
 
-		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-
-		return m.getMotdepasse().equals(motdepasseCryp);
+		return m.getMotdepasse().equals(motDePasse);
 	}
 
 	public Membre checkConnexion(String email, String motDePasse) {
@@ -62,7 +59,7 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
 
 		Membre member = null;
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
@@ -76,7 +73,6 @@ public class Facade {
 			member.setMotdepasse(motdepasse);
 			member.setNom(nom);
 			member.setPrenom(prenom);
-			member.setSalt(salt);
 			em.persist(member);
 		}
 		return member;
@@ -663,15 +659,18 @@ public class Facade {
 		}
 
 		mb.getGroupesAppartenus().remove(gp);
+
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient d'enlever " + mb.getPrenom() + " " + mb.getNom() + " du groupe!");
 	}
 
-	public void enleverDefi(int id_defi) {
+	public void enleverDefi(int id_groupe,int id_defi) {
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI
 		Defi defi = em.find(Defi.class, id_defi);
 		em.remove(defi);
 
-
+		Groupe grp = em.find(Groupe.class, id_groupe);
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient de supprimer le défi " + defi.getNom());
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI_VALIDE
 		TypedQuery<Defi_Valide> req = em.createQuery(
@@ -716,7 +715,6 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
-		mb.setSalt(null);
 
 		em.persist(mb);
 		return mb;
