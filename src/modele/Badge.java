@@ -25,6 +25,7 @@ public class Badge {
 	private String description;
 
 	private int niveau;
+	private String nom;
 
 	public Badge() {
 		this.membres = new ArrayList<Membre>();
@@ -42,6 +43,20 @@ public class Badge {
 	 */
 	public void setDescription(String new_description) {
 		this.description = new_description;
+	}
+
+	/**
+	 * @return the nom
+	 */
+	public String getNom() {
+		return this.nom;
+	}
+
+	/**
+	 * @param new_nom the new nom
+	 */
+	public void setNom(String new_nom) {
+		this.nom = new_nom;
 	}
 
 	/**
