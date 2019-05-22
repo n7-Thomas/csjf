@@ -101,7 +101,6 @@
 		<div id="bloc_milieu">
 		
 			<div id="afficherDefisGroupe">
-				<form method="post" action="ServeurGroupe" id="form_aff_defis">
 					<div id="titre_defis">
 						<div class="nom_aff">Nom</div>
 						<div class="desc_aff">Description</div>
@@ -113,6 +112,9 @@
 						<%
 							if (defis != null) {
 								for (Object o : defis) {
+						%>
+						<form method="post" action="ServeurGroupe" id="form_aff_defis">
+						<%
 									if (o == null) {
 						%>
 						<div class="defi_afficher">
@@ -192,11 +194,13 @@
 						</div>
 						<%
 									}
+						%>
+						</form>
+						<%
 								}
 							}
 						%>
 					</div>
-				</form>
 			</div>
 			
 			<div id="histogramme">

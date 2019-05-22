@@ -715,6 +715,24 @@ public class Facade {
 		csjf_deja_valide3.setDateValidation("20190508");
 		csjf_deja_valide3.setPoints(300);
 		em.persist(csjf_deja_valide3);
+		
+		Badge badge = new Badge();
+		badge.setNom("Il faut un début à tout !");
+		badge.setDescription("Vous avez validé votre premier défi !");
+		badge.setNiveau(1);
+		em.persist(badge);
+		
+		Badge badge1 = new Badge();
+		badge.setNom("La chasse au points commence !");
+		badge.setDescription("Vous avez validé plus de 500 points !");
+		badge.setNiveau(1);
+		em.persist(badge1);
+		
+		Badge badge2 = new Badge();
+		badge.setNom("Beau parleur");
+		badge.setDescription("Vous avez publiez plus de 10 fois !");
+		badge.setNiveau(1);
+		em.persist(badge2);
 
 		return thomas;
 	}
@@ -827,12 +845,6 @@ public class Facade {
 
 		System.out.println(resultat);
 		return resultat;
-	}
-
-	public void init() {
-		Badge badge1 = new Badge();
-		badge1.setDescription("Vous avez validé votre premier défi !");
-		badge1.setNiveau(1);
 	}
 
 }
