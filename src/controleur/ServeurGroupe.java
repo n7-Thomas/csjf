@@ -18,6 +18,7 @@ import exceptions.ExceptionUserNonDefini;
 import modele.Defi;
 import modele.Groupe;
 import modele.Membre;
+import modele.PrivateDate;
 
 /**
  * Servlet implementation class ServeurGroupe
@@ -773,7 +774,11 @@ public class ServeurGroupe extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-
+		
+		PrivateDate dateNow1 = PrivateDate.getNow();
+		String dateNow = facade.formatDate(dateNow1.toString());
+		
+		request.setAttribute("dateNow", dateNow);
 		request.setAttribute("classement", facade.getClassement(grp));
 		request.setAttribute("groupe", grp);
 		request.setAttribute("id_grp", id_grp);
