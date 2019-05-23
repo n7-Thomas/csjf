@@ -754,6 +754,18 @@ public class Facade {
 
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
+		
+		Defi defiCardio = Tests_Defis.defiCardio(gp);
+		em.persist(defiCardio);
+		
+		Defi defiSouplesse = Tests_Defis.defiSouplesse(gp);
+		em.persist(defiSouplesse);
+		
+		Defi defiMuscu = Tests_Defis.defiMuscu(gp);
+		em.persist(defiMuscu);
+		
+		Defi defiBouffe = Tests_Defis.defiBouffe(gp);
+		em.persist(defiBouffe);
 
 
 		/*Defi_A_Valider defi_a_valider = new Defi_A_Valider();

@@ -215,8 +215,9 @@ body {
 
 .defi_afficher {
     display: flex;
-    height: 40px;
+    height: auto;
     align-items: center;
+    border-top: 1px solid white;
 }
 
 #titre_defis .nom_aff {

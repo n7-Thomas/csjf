@@ -151,7 +151,7 @@ public class ServeurConnexion extends HttpServlet {
 			request.getRequestDispatcher("erreur.jsp").forward(request, response);
 			return;
 		}
-		request.setAttribute("liste-badges", facade.getBadges(usr));
+		request.setAttribute("liste_badges", facade.getBadges(usr));
 		request.setAttribute("groupes_appartenus", facade.getGroupesAppartenus(usr));
 		request.setAttribute("groupes_admins", facade.getGroupesAdministres(usr));
 		request.setAttribute("statistiques", facade.getStatistiques(usr));

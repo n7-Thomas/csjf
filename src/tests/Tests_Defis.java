@@ -29,5 +29,25 @@ public class Tests_Defis {
 		return createDefi("Défi 2", "Ceci est un autre défi test", 10, "",
 				"", groupe);
 	}
+	
+	public static Defi defiCardio(Groupe groupe) {
+		return createDefi("Défi cardio", "Courir 5 fois dans la semaine ou une fois pendant 1h30", 150, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiMuscu(Groupe groupe) {
+		return createDefi("Défi muscu", "Faire 5 séries de 20 abdos, 10 pompes, 20 burpees et 30 secondes de gainage", 200, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiBouffe(Groupe groupe) {
+		return createDefi("Défi bouffe", "Manger sans matière grasse pendant une semaine entière", 250, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiSouplesse(Groupe groupe) {
+		return createDefi("Défi souplesse", "S'étirer pendant 20 minutes après chaque exercice pendant 2 semaines", 100, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
 
 }
