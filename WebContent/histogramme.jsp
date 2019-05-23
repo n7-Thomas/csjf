@@ -77,6 +77,10 @@
 				datasets: datasetSemaine
 		   	};
 		   window.onload = function() {
+	   		
+			var div = document.getElementById("conversation");
+	   		div.scrollTop = div.scrollHeight;
+	    	
 				var ctx = document.getElementById('chart').getContext('2d');
 				window.myBar = new Chart(ctx, {
 					type: 'bar',

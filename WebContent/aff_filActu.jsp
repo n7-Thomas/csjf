@@ -8,8 +8,6 @@
 	
 <h3 style="border: 2px solid with"> Fil d'actualité </h3>
 	<div id="conversation"> 
-	
-	
 		
 	<%
 	    Membre user_actuel = (Membre) session.getAttribute("user");
