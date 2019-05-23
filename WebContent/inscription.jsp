@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link type="text/css" rel="stylesheet" href="CSS/inscription.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<script type="text/javascript" src="JS/sha256.js"></script>
+	<script type="text/javascript" src="JS/md5.js"></script>
 	
 </head>
 <body>
@@ -94,9 +94,7 @@
                 <hr>
                 </div>
                 </div><br />
-				<form>
                 <input type="submit" onClick="crypterMotdepasse()" value="Inscription" class="button"/>
-                </form>
                 <br />
                 <h4>Déjà inscrit? <a href="connexion.jsp">Connecte-toi.</a></h4>
                 
@@ -111,7 +109,7 @@
 
 function crypterMotdepasse() {
 	var s = document.getElementById('motdepasse').value;
-	hash = hex_sha256(s);
+	hash = hex_md5(s);
 	document.getElementById('motdepasse').value = hash;
 }
 
