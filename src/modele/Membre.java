@@ -45,7 +45,6 @@ public class Membre {
 
 	private String motdepasse;
 
-	private byte[] salt;
 
 	public Membre() {
 		this.groupes_appartenus = new ArrayList<Groupe>();
@@ -137,13 +136,5 @@ public class Membre {
 	 */
 	public int getId() {
 		return this.id;
-	}
-
-	public byte[] getSalt() {
-		return salt;
-	}
-
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
 	}
 }

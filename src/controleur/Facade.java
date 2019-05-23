@@ -40,11 +40,8 @@ public class Facade {
 	 * FROM PAGE CONNEXION
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
-		byte[] salt = m.getSalt();
 
-		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-
-		return m.getMotdepasse().equals(motdepasseCryp);
+		return m.getMotdepasse().equals(motDePasse);
 	}
 
 	public Membre checkConnexion(String email, String motDePasse) {
@@ -62,7 +59,7 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
 
 		Membre member = null;
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
@@ -76,7 +73,6 @@ public class Facade {
 			member.setMotdepasse(motdepasse);
 			member.setNom(nom);
 			member.setPrenom(prenom);
-			member.setSalt(salt);
 			em.persist(member);
 		}
 		return member;
@@ -136,29 +132,20 @@ public class Facade {
 		dv.setDefi(dav.getDefi());
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
+
 		dv.setDateValidation(PrivateDate.getNow().toString());
 
 		creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi: " + dav.getDefi().getDescription());
 
-		//Obtention du Badge Premier défi si c'est le premier défi du membre
-		/**TypedQuery<Badge> req = em.createQuery("select m from Badge m WHERE ID=1", Badge.class);
-		if(req.getResultList() == null || req.getResultList().size() != 1) {
-			System.out.println("Aucun résultat pour cette requête.");
-		} else {
-			Badge badge1 = req.getSingleResult();
-			if(!badge1.getMembre().contains(dav.getMembre())) {
-				badge1.getMembre().add(dav.getMembre());
-			}
 
-		}*/
 
-		Badge b1 = em.find(Badge.class, 1);
+		/*Badge b1 = em.find(Badge.class, 1);
 		Membre m = dav.getMembre();
 		if(!(m.getBadges().contains(b1)) ) {
 
 			b1.addMembre(m);
 			dav.getMembre().getBadges().add(b1);
-		}
+		}*/
 
 		em.persist(dv);
 		em.remove(dav);
@@ -663,15 +650,18 @@ public class Facade {
 		}
 
 		mb.getGroupesAppartenus().remove(gp);
+
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient d'enlever " + mb.getPrenom() + " " + mb.getNom() + " du groupe!");
 	}
 
-	public void enleverDefi(int id_defi) {
+	public void enleverDefi(int id_groupe,int id_defi) {
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI
 		Defi defi = em.find(Defi.class, id_defi);
 		em.remove(defi);
 
-
+		Groupe grp = em.find(Groupe.class, id_groupe);
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient de supprimer le défi " + defi.getNom());
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI_VALIDE
 		TypedQuery<Defi_Valide> req = em.createQuery(
@@ -716,7 +706,6 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
-		mb.setSalt(null);
 
 		em.persist(mb);
 		return mb;
@@ -960,22 +949,36 @@ public class Facade {
 	}
 
 
-
 	public Collection<Badge> getBadges(Membre m){
 		Membre membre = em.find(Membre.class, m.getId());
+
+		// Mise à jour du badge défi
+		int nbDefis = membre.getDefis_valides().size();
+
+		// Si le membre à effectué un défis et qu'il n'avait pas le badge avant: Obtention badge premier défi!
+		Badge b1 = em.find(Badge.class,1);
+		if(nbDefis>0 && !membre.getBadges().contains(b1)) {
+			b1.addMembre(membre);
+			membre.getBadges().add(b1);
+		}
+
+
 		return membre.getBadges();
 	}
 
 	public void init() {
 		Badge badge1 = new Badge();
 		badge1.setDescription("Vous avez validé votre premier défi!");
+		badge1.setNom("défis");
 		badge1.setNiveau(1);
+
+
 
 		Badge badge2= new Badge();
 		badge2.setDescription("Vous avez obtenu plus de 100 pts! ");
 
-		em.persist(badge2);
 		em.persist(badge1);
+		em.persist(badge2);
 
 	}
 

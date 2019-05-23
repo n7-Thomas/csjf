@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link type="text/css" rel="stylesheet" href="CSS/inscription.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script type="text/javascript" src="JS/md5.js"></script>
+	
 </head>
 <body>
 	<div class=imageDeFond></div>
@@ -92,8 +94,7 @@
                 <hr>
                 </div>
                 </div><br />
-
-                <input type="submit" value="Inscription" class="button" />
+                <input type="submit" onClick="crypterMotdepasse()" value="Inscription" class="button"/>
                 <br />
                 <h4>Déjà inscrit? <a href="connexion.jsp">Connecte-toi.</a></h4>
                 
@@ -105,6 +106,13 @@
 	</div>
 </body>
 <script type="text/javascript">
+
+function crypterMotdepasse() {
+	var s = document.getElementById('motdepasse').value;
+	hash = hex_md5(s);
+	document.getElementById('motdepasse').value = hash;
+}
+
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div
 	  var i = 0;// initialise i
