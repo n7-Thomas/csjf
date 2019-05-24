@@ -951,6 +951,18 @@ public class Facade {
 			b1.addMembre(membre);
 			membre.getBadges().add(b1);
 		}
+		Badge b2 = em.find(Badge.class,2);
+		if(nbDefis>30 && !membre.getBadges().contains(b2)) {
+			b2.addMembre(membre);
+			membre.getBadges().add(b2);
+		}
+
+		Badge b3 = em.find(Badge.class,3);
+		if(nbDefis>30 && !membre.getBadges().contains(b3)) {
+			b3.addMembre(membre);
+			membre.getBadges().add(b3);
+		}
+
 
 
 		return membre.getBadges();
@@ -963,12 +975,20 @@ public class Facade {
 		badge1.setNiveau(1);
 
 
+		Badge badge2 = new Badge();
+		badge2.setDescription("Vous avez validé 10 défis!");
+		badge2.setNom("défis");
+		badge2.setNiveau(2);
 
-		Badge badge2= new Badge();
-		badge2.setDescription("Vous avez obtenu plus de 100 pts! ");
+		Badge badge3 = new Badge();
+		badge3.setDescription("Vous avez validé 100 défis!");
+		badge3.setNom("défis");
+		badge3.setNiveau(3);
+
 
 		em.persist(badge1);
 		em.persist(badge2);
+		em.persist(badge3);
 
 	}
 

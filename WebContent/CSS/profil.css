@@ -259,9 +259,7 @@ img {
 	text-align : center;
 }
 
-.h4 {
-	margin-right: 18px;
-}
+
 
 .palmares {
 	Background-color: with;
@@ -276,8 +274,9 @@ img {
 
 .badge_description {
 	display: none;
-	background-color: wihte;
+	background-color: white;
 	margin: 1% 1% 1% 1%;
+	width:300px;
 }
 
 .badge:hover .badge_description {
