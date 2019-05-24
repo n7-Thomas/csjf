@@ -8,6 +8,7 @@
 	<link type="text/css" rel="stylesheet" href="CSS/connexion.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link href='http://fonts.googleapis.com/css?family=ExpletusSans' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="JS/md5.js"></script>
 </head>
 <body>
 <div class=imageDeFond></div>
@@ -69,8 +70,7 @@
                 <hr>
                 </div>
                 </div><br />
-
-                <input type="submit" value="Connexion"  class="button"/>
+                <input type="submit" onClick="crypterMotdepasse()" value="Connexion"  class="button"/>
                 <br />
                 <h4>Pas encore de compte? <a href="inscription.jsp">Inscris-toi.</a></h4>
                 
@@ -83,6 +83,13 @@
 
 </div>
 <script type="text/javascript">
+
+function crypterMotdepasse() {
+	var s = document.getElementById('motdepasse').value;
+	hash = hex_md5(s);
+	document.getElementById('motdepasse').value = hash;
+}
+
 function fondu(nomDiv){
 	  var div = document.getElementById(nomDiv).style;// récupère div
 	  var i = 0;// initialise i

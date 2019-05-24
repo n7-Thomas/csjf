@@ -8,8 +8,6 @@
 	
 <h3 style="border: 2px solid with"> Fil d'actualité </h3>
 	<div id="conversation"> 
-	
-	
 		
 	<%
 	    Membre user_actuel = (Membre) session.getAttribute("user");
@@ -34,8 +32,8 @@
 							<span class="texte_user" > <%=p.getContenu() %> </span>								
 							<span  class="bar_reactions">	😐	
 					 			<span class="emoji" >					 					
-						 			<a href="ServeurGroupe?action=reagir&type=cool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
-						 			👍 </a>
+						 			<h3><a href="ServeurGroupe?action=reagir&type=cool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
+						 			👍 </a></h3>
 						 			<h3><a href="ServeurGroupe?action=reagir&type=pasCool&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">
 						 			👎 </a></h3>
 						 			<h3><a href="ServeurGroupe?action=reagir&type=surpris&id_publication=<%=id%>&id_grp=<%=request.getAttribute("id_grp") %>">

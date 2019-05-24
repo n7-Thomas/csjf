@@ -40,11 +40,8 @@ public class Facade {
 	 * FROM PAGE CONNEXION
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
-		byte[] salt = m.getSalt();
 
-		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-
-		return m.getMotdepasse().equals(motdepasseCryp);
+		return m.getMotdepasse().equals(motDePasse);
 	}
 
 	public Membre checkConnexion(String email, String motDePasse) {
@@ -62,7 +59,7 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
 
 		Membre member = null;
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
@@ -76,7 +73,6 @@ public class Facade {
 			member.setMotdepasse(motdepasse);
 			member.setNom(nom);
 			member.setPrenom(prenom);
-			member.setSalt(salt);
 			em.persist(member);
 		}
 		return member;
@@ -139,7 +135,7 @@ public class Facade {
 
 		dv.setDateValidation(PrivateDate.getNow().toString());
 
-		creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi: " + dav.getDefi().getDescription());
+		creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi: " + dav.getDefi().getNom());
 
 
 
@@ -313,7 +309,7 @@ public class Facade {
 				l.add(d);
 			}
 		}
-		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(),
+		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId() + "and GROUPE_ID=" + g.getId(),
 				Defi_A_Valider.class);
 		for (Defi_A_Valider d : req.getResultList()) {
 			if (defis.contains(d.getDefi())) {
@@ -654,15 +650,18 @@ public class Facade {
 		}
 
 		mb.getGroupesAppartenus().remove(gp);
+
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient d'enlever " + mb.getPrenom() + " " + mb.getNom() + " du groupe!");
 	}
 
-	public void enleverDefi(int id_defi) {
+	public void enleverDefi(int id_groupe,int id_defi) {
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI
 		Defi defi = em.find(Defi.class, id_defi);
 		em.remove(defi);
 
-
+		Groupe grp = em.find(Groupe.class, id_groupe);
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient de supprimer le défi " + defi.getNom());
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI_VALIDE
 		TypedQuery<Defi_Valide> req = em.createQuery(
@@ -707,7 +706,6 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
-		mb.setSalt(null);
 
 		em.persist(mb);
 		return mb;
@@ -718,14 +716,14 @@ public class Facade {
 		Membre thomas = Tests_Membres.thomas();
 		em.persist(thomas);
 
+		Membre gregoire = Tests_Membres.gregoire();
+		em.persist(gregoire);
+		
 		Membre manu = Tests_Membres.manu();
 		em.persist(manu);
 
 		Membre charlotte = Tests_Membres.cha();
 		em.persist(charlotte);
-
-		Membre gregoire = Tests_Membres.gregoire();
-		em.persist(gregoire);
 
 		Membre celia = Tests_Membres.celia();
 		em.persist(celia);
@@ -733,18 +731,26 @@ public class Facade {
 		Groupe gp = creerGroupe("Objectif Summer Body", thomas);
 		em.persist(gp);
 
-		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		//this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		this.ajouterMembre("greg@wanadoo.fr", gp);
 		this.ajouterMembre("manugoncalves@gmail.com", gp);
 		this.ajouterMembre("celia@gmail.com", gp);
 		this.ajouterMembre("cha@sfr.fr", gp);
 
-		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
-		dar.setGroupe(gp);
-		dar.setMembre(gregoire);
-		em.persist(dar);
-
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
+		
+		Defi defiCardio = Tests_Defis.defiCardio(gp);
+		em.persist(defiCardio);
+		
+		Defi defiSouplesse = Tests_Defis.defiSouplesse(gp);
+		em.persist(defiSouplesse);
+		
+		Defi defiMuscu = Tests_Defis.defiMuscu(gp);
+		em.persist(defiMuscu);
+		
+		Defi defiBouffe = Tests_Defis.defiBouffe(gp);
+		em.persist(defiBouffe);
 
 
 		/*Defi_A_Valider defi_a_valider = new Defi_A_Valider();
@@ -769,41 +775,56 @@ public class Facade {
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
 		em.persist(defi_a_valider2);
+		
+		/*Defi_Valide dv = new Defi_Valide();
+		dv.setDefi(defiMuscu);
+		dv.setGroupe(gp);
+		dv.setMembre(manu);
+		em.persist(dv);*/
 
 		CSJF csjf = new CSJF();
 		csjf.setEtat(Etats.EnCoursDeValidation);
 		csjf.setGroupe(gp);
 		csjf.setMembre(celia);
-		csjf.setTexte("J'ai fait des pâtes");
+		csjf.setTexte("J'ai mangé que des légumes de saisons pendant une semaine");
 		em.persist(csjf);
 
 		CSJF csjf_deja_valide = new CSJF();
 		csjf_deja_valide.setEtat(Etats.Valide);
 		csjf_deja_valide.setGroupe(gp);
-		csjf_deja_valide.setMembre(thomas);
-		csjf_deja_valide.setTexte("Je suis né");
-		csjf_deja_valide.setDateValidation("19970723");
+		csjf_deja_valide.setMembre(manu);
+		csjf_deja_valide.setTexte("J'ai couru un sprint de 200m pour avoir mon bus");
+		csjf_deja_valide.setDateValidation("20190123");
 		csjf_deja_valide.setPoints(100);
 		em.persist(csjf_deja_valide);
 
 		CSJF csjf_deja_valide2 = new CSJF();
 		csjf_deja_valide2.setEtat(Etats.Valide);
 		csjf_deja_valide2.setGroupe(gp);
-		csjf_deja_valide2.setMembre(thomas);
-		csjf_deja_valide2.setTexte("Je suis");
+		csjf_deja_valide2.setMembre(charlotte);
+		csjf_deja_valide2.setTexte("J'ai pas mangé de viande du mois");
 		csjf_deja_valide2.setDateValidation("20190404");
-		csjf_deja_valide2.setPoints(200);
+		csjf_deja_valide2.setPoints(800);
 		em.persist(csjf_deja_valide2);
 
 
 		CSJF csjf_deja_valide3 = new CSJF();
 		csjf_deja_valide3.setEtat(Etats.Valide);
 		csjf_deja_valide3.setGroupe(gp);
-		csjf_deja_valide3.setMembre(thomas);
-		csjf_deja_valide3.setTexte("Yo");
-		csjf_deja_valide3.setDateValidation("20190508");
-		csjf_deja_valide3.setPoints(300);
+		csjf_deja_valide3.setMembre(gregoire);
+		csjf_deja_valide3.setTexte("J'ai couru un semi-marathon");
+		csjf_deja_valide3.setDateValidation("20190208");
+		csjf_deja_valide3.setPoints(1000);
 		em.persist(csjf_deja_valide3);
+		
+		CSJF csjf_deja_valide4 = new CSJF();
+		csjf_deja_valide4.setEtat(Etats.Valide);
+		csjf_deja_valide4.setGroupe(gp);
+		csjf_deja_valide4.setMembre(gregoire);
+		csjf_deja_valide4.setTexte("Je suis devenu végétarien");
+		csjf_deja_valide4.setDateValidation("20190401");
+		csjf_deja_valide4.setPoints(2000);
+		em.persist(csjf_deja_valide4);
 
 		/*
 		Badge badge = new Badge();
@@ -846,12 +867,14 @@ public class Facade {
 	}
 
 	public void validerCSJF(int id_csjf, int valeur) {
-		CSJF csjf = em.find(CSJF.class, id_csjf);
-		csjf.setEtat(Etats.Valide);
-		csjf.setPoints(valeur);
-		csjf.setDateValidation(PrivateDate.getNow().toString());
-
-		creerNotification(csjf.getGroupe().getId(), csjf.getMembre().getPrenom() + " vient de " + csjf.getTexte() + " pour " + valeur + " points.");
+		if(valeur > 0) {
+			CSJF csjf = em.find(CSJF.class, id_csjf);
+			csjf.setEtat(Etats.Valide);
+			csjf.setPoints(valeur);
+			csjf.setDateValidation(PrivateDate.getNow().toString());
+			
+			creerNotification(csjf.getGroupe().getId(), csjf.getMembre().getPrenom() + " vient de " + csjf.getTexte() + " pour " + valeur + " points.");
+		}
 	}
 
 	public void refuserCSJF(int id_csjf) {

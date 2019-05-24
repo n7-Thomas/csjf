@@ -62,6 +62,7 @@ public class Badge {
 	 * @return the membre
 	 */
 	public Collection<Membre> getMembre() {
+		System.out.println("THIS MEMBRE " + this.membres);
 		return this.membres;
 	}
 
@@ -69,7 +70,7 @@ public class Badge {
 	public void addMembre(Membre membre) {
 		membres.add(membre);
 	}
-
+	
 
 	public int getId() {
 		return this.id;
