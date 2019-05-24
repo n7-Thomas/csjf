@@ -1,8 +1,4 @@
 
-#fil_actu{
-    
-}
-
 #conversation {
 	background-color: #F5F5F5;
 	height : 530px;
@@ -94,8 +90,6 @@
 }
 
 
-
-
 h5 {
 	font-weight : bold;
 	color:white;
@@ -158,8 +152,14 @@ h3{
 .emoji a {
 	background-color: white;
 	font-family:'Abel', arial, serif;
+<<<<<<< HEAD
 	text-decoration:none;
+=======
+	text-decoration: none;
+	
+>>>>>>> 79deda2e6c7d328714d19ea44d359289c8944919
 }
+
 
 .reactions {
 	display:flex;
@@ -170,6 +170,8 @@ h3{
 	font-family:'Abel', arial, serif;
 			
 }
+
+
 
 .listeMembres {
 	display: none;

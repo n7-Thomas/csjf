@@ -40,6 +40,34 @@
 				            <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
 		                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
 		                	</div>
+		                	<h4> Mon Palmarès: </h4>
+		                	<div class="palmares">		                			
+									<% Collection<Badge> badges =(Collection<Badge>) request.getAttribute("liste_badges");
+									System.out.println("badges:" + badges);
+									if(badges!= null) { 
+										
+										for (Badge badge: badges) { %>
+										
+										<div class="badge">
+											
+											<%if(badge.getNiveau()==3){%>
+												🥉
+											<% } if (badge.getNiveau()==2) { %>
+												🥉
+											<% } else { %>
+												🥉
+											<% } %>
+											<span class="badge_description">
+											<%= badge.getNom() %> <br>
+											<%= badge.getDescription()%> 
+											</span>	   
+										</div>             	
+										<%}
+									} else { %>
+										Vous n'avez aucun badge !
+									<% } %>
+		                	</div>
+		                	
 	                	</div>
 	                </div>
 	           

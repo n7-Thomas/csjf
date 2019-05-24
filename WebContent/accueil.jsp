@@ -15,7 +15,7 @@
 		<%@ include file="statusBar.jsp"%>
 	</header>
 
-	<div id="contenu" style="border: 2px solid black;">
+	<div id="contenu" style="border: 2px solid black; margin: 50px">
 		<%
 			if (isConnected) {
 		%>
@@ -29,26 +29,13 @@
 			}
 		%>
 		<h2>CSJF, qu'est ce que c'est ?</h2>
-		<p>Ceci est une page d'accueil de qualité, nous mettrons des trucs
-			cools dessus j'vous jure</p>
+		<p>CSJF est un réseau social permettant de compétiter entre potes en proposant des défis amusants et sportifs ! </p>
+		<p>Rejoins un groupe, réalise les défis, fais du sport chaque semaine et tu seras à la fois au top de la forme, et le plus chaud de tes potes</p>
+		<p>Créer un groupe, administre le, invite tes amis, crées des défis et vois les devenir plus sportifs au cours de chaque semaine</p>
+		<p>N'hésite plus, rejoins nous sur CSJF ! </p>
 
-		<h3>Lorem</h3>
-		<p>Ca faisait vide alors je mets un Lorem
-		<p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			Phasellus eleifend sed eros nec viverra. Etiam ipsum enim, pulvinar
-			ac pulvinar ac, pretium feugiat dolor. Vestibulum quis placerat
-			tellus. Morbi eget accumsan ligula. Mauris tincidunt orci felis, sed
-			dignissim eros dapibus et. Proin in tincidunt eros. Donec ac volutpat
-			orci. Aliquam sollicitudin tempor neque, a pretium metus ultrices
-			feugiat. Suspendisse potenti. Etiam ultricies lectus lobortis
-			fringilla sagittis. Quisque egestas pretium dolor, sed blandit tortor
-			accumsan non. Quisque ipsum nulla, faucibus in mollis a, pharetra
-			ultricies eros. Duis ullamcorper pretium ex sed dignissim. Donec nibh
-			ligula, tempor non feugiat et, viverra eget massa.</p>
-			
+
 		<h3>Les groupes existants:</h3>
-		
 		<div>	
 		<%
 		Collection<Groupe> Autresgroupes = (Collection<Groupe>) request.getAttribute("groupes"); 

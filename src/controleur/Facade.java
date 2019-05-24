@@ -25,7 +25,6 @@ import modele.Reaction;
 import modele.Reaction.Type;
 import modele.TypeDefi;
 import tests.Tests_Defis;
-import tests.Tests_Groupes;
 import tests.Tests_Membres;
 
 @Singleton
@@ -41,11 +40,8 @@ public class Facade {
 	 * FROM PAGE CONNEXION
 	 */
 	public boolean checkPassword(String motDePasse, Membre m) {
-		byte[] salt = m.getSalt();
 
-		String motdepasseCryp = SHACrypt.get_SHA_256_SecurePassword(motDePasse, salt);
-
-		return m.getMotdepasse().equals(motdepasseCryp);
+		return m.getMotdepasse().equals(motDePasse);
 	}
 
 	public Membre checkConnexion(String email, String motDePasse) {
@@ -63,7 +59,7 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, byte[] salt) {
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
 
 		Membre member = null;
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
@@ -77,7 +73,6 @@ public class Facade {
 			member.setMotdepasse(motdepasse);
 			member.setNom(nom);
 			member.setPrenom(prenom);
-			member.setSalt(salt);
 			em.persist(member);
 		}
 		return member;
@@ -128,21 +123,35 @@ public class Facade {
 		return date_bien;
 	}
 
+	/**
+	 * @param id_dav
+	 */
 	public void validerDefi(int id_dav) {
 		Defi_A_Valider dav = em.find(Defi_A_Valider.class, id_dav);
 		Defi_Valide dv = new Defi_Valide();
 		dv.setDefi(dav.getDefi());
 		dv.setGroupe(dav.getGroupe());
 		dv.setMembre(dav.getMembre());
+
 		dv.setDateValidation(PrivateDate.getNow().toString());
 
-		Publication p = creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi " + dav.getDefi().getDescription());
+		creerNotification(dav.getGroupe().getId(), dav.getMembre().getPrenom() + " vient de valider le défi: " + dav.getDefi().getNom());
+
+
+
+		/*Badge b1 = em.find(Badge.class, 1);
+		Membre m = dav.getMembre();
+		if(!(m.getBadges().contains(b1)) ) {
+
+			b1.addMembre(m);
+			dav.getMembre().getBadges().add(b1);
+		}*/
 
 		em.persist(dv);
 		em.remove(dav);
 
-
 	}
+
 
 	public void validerDemande(int id_dar) {
 		Demande_A_Rejoindre dar = em.find(Demande_A_Rejoindre.class, id_dar);
@@ -151,7 +160,7 @@ public class Facade {
 		mb.getGroupesAppartenus().add(gp);
 		em.remove(dar);
 
-		Publication p = creerNotification(id_dar, mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe !");
+		creerNotification(id_dar, mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
 
 	}
 
@@ -162,7 +171,7 @@ public class Facade {
 	public Groupe changerNomGroupe(Groupe gp, String nom) {
 		Groupe groupe = em.find(Groupe.class, gp.getId());
 		groupe.setNom(nom);
-		Publication p = creerNotification(gp.getId(), gp.getAdmin().getPrenom() + " à remplacé le nom du groupe par " + nom);
+		creerNotification(gp.getId(), gp.getAdmin().getPrenom() + " à remplacé le nom du groupe par " + nom);
 		return groupe;
 
 	}
@@ -196,7 +205,7 @@ public class Facade {
 			em.remove(em.find(Demande_A_Rejoindre.class, dar.getId()));
 		}
 
-		Publication p = creerNotification(grp.getId(), mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
+		creerNotification(grp.getId(), mb.getPrenom() + " " + mb.getNom() + " vient de rejoindre le groupe!");
 		return true;
 	}
 
@@ -300,7 +309,7 @@ public class Facade {
 				l.add(d);
 			}
 		}
-		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId(),
+		TypedQuery<Defi_A_Valider> req = em.createQuery("select d from Defi_A_Valider d WHERE MEMBRE_ID=" + m.getId() + "and GROUPE_ID=" + g.getId(),
 				Defi_A_Valider.class);
 		for (Defi_A_Valider d : req.getResultList()) {
 			if (defis.contains(d.getDefi())) {
@@ -342,6 +351,7 @@ public class Facade {
 		g.setNom(nom);
 		g.setAdmin(usr);
 		em.persist(g);
+		init();
 
 		return g;
 	}
@@ -417,7 +427,7 @@ public class Facade {
 	/***
 	 * Creer une nouvelle notification
 	 */
-	public Publication creerNotification(int id_groupe, String contenu){
+	public void creerNotification(int id_groupe, String contenu){
 		Publication notification = new Publication();
 		notification.setContenu(contenu);
 
@@ -425,8 +435,6 @@ public class Facade {
 		notification.setGroupe(gp);
 
 		em.persist(notification);
-
-		return notification;
 	}
 
 	/**
@@ -642,15 +650,18 @@ public class Facade {
 		}
 
 		mb.getGroupesAppartenus().remove(gp);
+
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient d'enlever " + mb.getPrenom() + " " + mb.getNom() + " du groupe!");
 	}
 
-	public void enleverDefi(int id_defi) {
+	public void enleverDefi(int id_groupe,int id_defi) {
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI
 		Defi defi = em.find(Defi.class, id_defi);
 		em.remove(defi);
 
-
+		Groupe grp = em.find(Groupe.class, id_groupe);
+		creerNotification(grp.getId(),grp.getAdmin().getPrenom() + " vient de supprimer le défi " + defi.getNom());
 
 		// SUPPRIMER LE DEFI DANS BDD DEFI_VALIDE
 		TypedQuery<Defi_Valide> req = em.createQuery(
@@ -695,7 +706,6 @@ public class Facade {
 		mb.setMotdepasse("abc");
 		mb.setNom("Darget");
 		mb.setPrenom("Thomas");
-		mb.setSalt(null);
 
 		em.persist(mb);
 		return mb;
@@ -706,33 +716,41 @@ public class Facade {
 		Membre thomas = Tests_Membres.thomas();
 		em.persist(thomas);
 
+		Membre gregoire = Tests_Membres.gregoire();
+		em.persist(gregoire);
+		
 		Membre manu = Tests_Membres.manu();
 		em.persist(manu);
 
 		Membre charlotte = Tests_Membres.cha();
 		em.persist(charlotte);
 
-		Membre gregoire = Tests_Membres.gregoire();
-		em.persist(gregoire);
-
 		Membre celia = Tests_Membres.celia();
 		em.persist(celia);
 
-		Groupe gp = Tests_Groupes.groupe1(thomas);
+		Groupe gp = creerGroupe("Objectif Summer Body", thomas);
 		em.persist(gp);
 
-		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		//this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		this.ajouterMembre("greg@wanadoo.fr", gp);
 		this.ajouterMembre("manugoncalves@gmail.com", gp);
 		this.ajouterMembre("celia@gmail.com", gp);
 		this.ajouterMembre("cha@sfr.fr", gp);
 
-		Demande_A_Rejoindre dar = new Demande_A_Rejoindre();
-		dar.setGroupe(gp);
-		dar.setMembre(gregoire);
-		em.persist(dar);
-
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
+		
+		Defi defiCardio = Tests_Defis.defiCardio(gp);
+		em.persist(defiCardio);
+		
+		Defi defiSouplesse = Tests_Defis.defiSouplesse(gp);
+		em.persist(defiSouplesse);
+		
+		Defi defiMuscu = Tests_Defis.defiMuscu(gp);
+		em.persist(defiMuscu);
+		
+		Defi defiBouffe = Tests_Defis.defiBouffe(gp);
+		em.persist(defiBouffe);
 
 
 		/*Defi_A_Valider defi_a_valider = new Defi_A_Valider();
@@ -757,59 +775,76 @@ public class Facade {
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
 		em.persist(defi_a_valider2);
+		
+		/*Defi_Valide dv = new Defi_Valide();
+		dv.setDefi(defiMuscu);
+		dv.setGroupe(gp);
+		dv.setMembre(manu);
+		em.persist(dv);*/
 
 		CSJF csjf = new CSJF();
 		csjf.setEtat(Etats.EnCoursDeValidation);
 		csjf.setGroupe(gp);
 		csjf.setMembre(celia);
-		csjf.setTexte("J'ai fait des pâtes");
+		csjf.setTexte("J'ai mangé que des légumes de saisons pendant une semaine");
 		em.persist(csjf);
 
 		CSJF csjf_deja_valide = new CSJF();
 		csjf_deja_valide.setEtat(Etats.Valide);
 		csjf_deja_valide.setGroupe(gp);
-		csjf_deja_valide.setMembre(thomas);
-		csjf_deja_valide.setTexte("Je suis né");
-		csjf_deja_valide.setDateValidation("19970723");
+		csjf_deja_valide.setMembre(manu);
+		csjf_deja_valide.setTexte("J'ai couru un sprint de 200m pour avoir mon bus");
+		csjf_deja_valide.setDateValidation("20190123");
 		csjf_deja_valide.setPoints(100);
 		em.persist(csjf_deja_valide);
 
 		CSJF csjf_deja_valide2 = new CSJF();
 		csjf_deja_valide2.setEtat(Etats.Valide);
 		csjf_deja_valide2.setGroupe(gp);
-		csjf_deja_valide2.setMembre(thomas);
-		csjf_deja_valide2.setTexte("Je suis");
+		csjf_deja_valide2.setMembre(charlotte);
+		csjf_deja_valide2.setTexte("J'ai pas mangé de viande du mois");
 		csjf_deja_valide2.setDateValidation("20190404");
-		csjf_deja_valide2.setPoints(200);
+		csjf_deja_valide2.setPoints(800);
 		em.persist(csjf_deja_valide2);
 
 
 		CSJF csjf_deja_valide3 = new CSJF();
 		csjf_deja_valide3.setEtat(Etats.Valide);
 		csjf_deja_valide3.setGroupe(gp);
-		csjf_deja_valide3.setMembre(thomas);
-		csjf_deja_valide3.setTexte("Yo");
-		csjf_deja_valide3.setDateValidation("20190508");
-		csjf_deja_valide3.setPoints(300);
+		csjf_deja_valide3.setMembre(gregoire);
+		csjf_deja_valide3.setTexte("J'ai couru un semi-marathon");
+		csjf_deja_valide3.setDateValidation("20190208");
+		csjf_deja_valide3.setPoints(1000);
 		em.persist(csjf_deja_valide3);
 		
+		CSJF csjf_deja_valide4 = new CSJF();
+		csjf_deja_valide4.setEtat(Etats.Valide);
+		csjf_deja_valide4.setGroupe(gp);
+		csjf_deja_valide4.setMembre(gregoire);
+		csjf_deja_valide4.setTexte("Je suis devenu végétarien");
+		csjf_deja_valide4.setDateValidation("20190401");
+		csjf_deja_valide4.setPoints(2000);
+		em.persist(csjf_deja_valide4);
+
+		/*
 		Badge badge = new Badge();
 		badge.setNom("Il faut un début à tout !");
 		badge.setDescription("Vous avez validé votre premier défi !");
 		badge.setNiveau(1);
 		em.persist(badge);
-		
+
 		Badge badge1 = new Badge();
 		badge.setNom("La chasse au points commence !");
 		badge.setDescription("Vous avez validé plus de 500 points !");
 		badge.setNiveau(1);
 		em.persist(badge1);
-		
+
 		Badge badge2 = new Badge();
 		badge.setNom("Beau parleur");
 		badge.setDescription("Vous avez publiez plus de 10 fois !");
 		badge.setNiveau(1);
 		em.persist(badge2);
+		*/
 
 		return thomas;
 	}
@@ -832,12 +867,14 @@ public class Facade {
 	}
 
 	public void validerCSJF(int id_csjf, int valeur) {
-		CSJF csjf = em.find(CSJF.class, id_csjf);
-		csjf.setEtat(Etats.Valide);
-		csjf.setPoints(valeur);
-		csjf.setDateValidation(PrivateDate.getNow().toString());
-
-		creerNotification(csjf.getGroupe().getId(), csjf.getMembre().getPrenom() + " vient de " + csjf.getTexte() + " pour " + valeur + " points.");
+		if(valeur > 0) {
+			CSJF csjf = em.find(CSJF.class, id_csjf);
+			csjf.setEtat(Etats.Valide);
+			csjf.setPoints(valeur);
+			csjf.setDateValidation(PrivateDate.getNow().toString());
+			
+			creerNotification(csjf.getGroupe().getId(), csjf.getMembre().getPrenom() + " vient de " + csjf.getTexte() + " pour " + valeur + " points.");
+		}
 	}
 
 	public void refuserCSJF(int id_csjf) {
@@ -924,8 +961,43 @@ public class Facade {
 		return resultat;
 	}
 
+<<<<<<< HEAD
 	public void init() {
 				
+=======
+
+	public Collection<Badge> getBadges(Membre m){
+		Membre membre = em.find(Membre.class, m.getId());
+
+		// Mise à jour du badge défi
+		int nbDefis = membre.getDefis_valides().size();
+
+		// Si le membre à effectué un défis et qu'il n'avait pas le badge avant: Obtention badge premier défi!
+		Badge b1 = em.find(Badge.class,1);
+		if(nbDefis>0 && !membre.getBadges().contains(b1)) {
+			b1.addMembre(membre);
+			membre.getBadges().add(b1);
+		}
+
+
+		return membre.getBadges();
+	}
+
+	public void init() {
+		Badge badge1 = new Badge();
+		badge1.setDescription("Vous avez validé votre premier défi!");
+		badge1.setNom("défis");
+		badge1.setNiveau(1);
+
+
+
+		Badge badge2= new Badge();
+		badge2.setDescription("Vous avez obtenu plus de 100 pts! ");
+
+		em.persist(badge1);
+		em.persist(badge2);
+
+>>>>>>> 79deda2e6c7d328714d19ea44d359289c8944919
 	}
 
 }
