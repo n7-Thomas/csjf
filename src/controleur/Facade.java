@@ -351,7 +351,7 @@ public class Facade {
 		g.setNom(nom);
 		g.setAdmin(usr);
 		em.persist(g);
-		init();
+
 
 		return g;
 	}
@@ -718,7 +718,7 @@ public class Facade {
 
 		Membre gregoire = Tests_Membres.gregoire();
 		em.persist(gregoire);
-		
+
 		Membre manu = Tests_Membres.manu();
 		em.persist(manu);
 
@@ -730,8 +730,9 @@ public class Facade {
 
 		Groupe gp = creerGroupe("Objectif Summer Body", thomas);
 		em.persist(gp);
+		init();
 
-		//this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
 		this.ajouterMembre("greg@wanadoo.fr", gp);
 		this.ajouterMembre("manugoncalves@gmail.com", gp);
 		this.ajouterMembre("celia@gmail.com", gp);
@@ -739,16 +740,31 @@ public class Facade {
 
 		Defi defi = Tests_Defis.defi1(gp);
 		em.persist(defi);
-		
+
+		Defi defi1 = Tests_Defis.defi1(gp);
+		em.persist(defi1);
+
+		Defi defi2 = Tests_Defis.defi1(gp);
+		em.persist(defi2);
+
+		Defi defi3 = Tests_Defis.defi1(gp);
+		em.persist(defi3);
+
+		Defi defi4 = Tests_Defis.defi1(gp);
+		em.persist(defi4);
+
+		Defi defi5 = Tests_Defis.defi1(gp);
+		em.persist(defi5);
+
 		Defi defiCardio = Tests_Defis.defiCardio(gp);
 		em.persist(defiCardio);
-		
+
 		Defi defiSouplesse = Tests_Defis.defiSouplesse(gp);
 		em.persist(defiSouplesse);
-		
+
 		Defi defiMuscu = Tests_Defis.defiMuscu(gp);
 		em.persist(defiMuscu);
-		
+
 		Defi defiBouffe = Tests_Defis.defiBouffe(gp);
 		em.persist(defiBouffe);
 
@@ -775,7 +791,7 @@ public class Facade {
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
 		em.persist(defi_a_valider2);
-		
+
 		/*Defi_Valide dv = new Defi_Valide();
 		dv.setDefi(defiMuscu);
 		dv.setGroupe(gp);
@@ -816,7 +832,7 @@ public class Facade {
 		csjf_deja_valide3.setDateValidation("20190208");
 		csjf_deja_valide3.setPoints(1000);
 		em.persist(csjf_deja_valide3);
-		
+
 		CSJF csjf_deja_valide4 = new CSJF();
 		csjf_deja_valide4.setEtat(Etats.Valide);
 		csjf_deja_valide4.setGroupe(gp);
@@ -872,7 +888,7 @@ public class Facade {
 			csjf.setEtat(Etats.Valide);
 			csjf.setPoints(valeur);
 			csjf.setDateValidation(PrivateDate.getNow().toString());
-			
+
 			creerNotification(csjf.getGroupe().getId(), csjf.getMembre().getPrenom() + " vient de " + csjf.getTexte() + " pour " + valeur + " points.");
 		}
 	}
@@ -963,30 +979,56 @@ public class Facade {
 
 
 	public Collection<Badge> getBadges(Membre m){
+		int i = 0;
 		Membre membre = em.find(Membre.class, m.getId());
 
 		// Mise à jour du badge défi
 		int nbDefis = membre.getDefis_valides().size();
 
+		int nbPoints = 0;
+		for (Defi_Valide d : membre.getDefis_valides()) {
+			nbPoints += d.getDefi().getPoints();
+		}
+
 		// Si le membre à effectué un défis et qu'il n'avait pas le badge avant: Obtention badge premier défi!
 		Badge b1 = em.find(Badge.class,1);
 		if(nbDefis>0 && !membre.getBadges().contains(b1)) {
+			i++;
+			System.out.println("******************" + i + "*******************");
 			b1.addMembre(membre);
 			membre.getBadges().add(b1);
 		}
 		Badge b2 = em.find(Badge.class,2);
-		if(nbDefis>30 && !membre.getBadges().contains(b2)) {
+		if(nbDefis>=10 && !membre.getBadges().contains(b2)) {
+			i++;
+			System.out.println("******************" + i + "*******************");
 			b2.addMembre(membre);
 			membre.getBadges().add(b2);
 		}
 
 		Badge b3 = em.find(Badge.class,3);
-		if(nbDefis>30 && !membre.getBadges().contains(b3)) {
+		if(nbDefis>=100 && !membre.getBadges().contains(b3)) {
+			i++;
+			System.out.println("******************" + i + "*******************");
 			b3.addMembre(membre);
 			membre.getBadges().add(b3);
 		}
 
+		Badge b4 = em.find(Badge.class,4);
+		if(nbPoints >= 100 && !membre.getBadges().contains(b4)) {
+			i++;
+			System.out.println("******************" + i + "*******************");
+			b4.addMembre(membre);
+			membre.getBadges().add(b4);
+		}
 
+		Badge b5 = em.find(Badge.class,5);
+		if(nbPoints >= 1000 && !membre.getBadges().contains(b5)) {
+			i++;
+			System.out.println("******************" + i + "*******************");
+			b5.addMembre(membre);
+			membre.getBadges().add(b5);
+		}
 
 		return membre.getBadges();
 	}
@@ -994,25 +1036,35 @@ public class Facade {
 	public void init() {
 		Badge badge1 = new Badge();
 		badge1.setDescription("Vous avez validé votre premier défi!");
-		badge1.setNom("défis");
+		badge1.setNom("Défi");
 		badge1.setNiveau(1);
 
 
 		Badge badge2 = new Badge();
 		badge2.setDescription("Vous avez validé 10 défis!");
-		badge2.setNom("défis");
+		badge2.setNom("Défi");
 		badge2.setNiveau(2);
 
 		Badge badge3 = new Badge();
 		badge3.setDescription("Vous avez validé 100 défis!");
-		badge3.setNom("défis");
+		badge3.setNom("Défi");
 		badge3.setNiveau(3);
 
+		Badge badge4 = new Badge();
+		badge4.setDescription("Vous avez obtenu 100 points!");
+		badge4.setNom("Points");
+		badge4.setNiveau(1);
+
+		Badge badge5 = new Badge();
+		badge5.setDescription("Vous avez obtenu 1000 points!");
+		badge5.setNom("Points");
+		badge5.setNiveau(2);
 
 		em.persist(badge1);
 		em.persist(badge2);
 		em.persist(badge3);
-
+		em.persist(badge4);
+		em.persist(badge5);
 	}
 
 }
