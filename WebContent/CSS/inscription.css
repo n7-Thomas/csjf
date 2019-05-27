@@ -3,7 +3,7 @@
 h2 {
 	font-family: "Nunito", sans-serif;;
 	font-size: 35px;
-	color : #729fcf;
+	color : #ecd0b8;
 	text-transform: uppercase;
 	letter-spacing: .5rem;
 }
@@ -68,7 +68,7 @@ form .text-field {                                                              
 	
 	/* On indique l'image de fond et les dimensions qu'elle occupe */
 	display: block;
-	background-image: url(arriere-plan-inscription.jpg);
+	background-image: url(arriere-plan-modif.jpg);
 	background-size : 2000px 900px;
 	width: 2000px;
 	height: 900px;
@@ -101,7 +101,7 @@ form .text-field {                                                              
 }
 
 .button {
-  background-color: #729fcf;
+  background-color: #ecd0b8;
   border: none;
   padding: 10px 80px;
   text-align: center;
