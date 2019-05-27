@@ -20,14 +20,34 @@ public class Tests_Defis {
 		return defi;
 	}
 
-	public static Defi defi1(Groupe groupe) {
-		return createDefi("Défi 1", "Ceci est un défi test", 100, PrivateDate.getNow().toString(),
+	public static Defi defiCharite(Groupe groupe) {
+		return createDefi("Défi charité", "Courir pour une noble cause", 300, PrivateDate.getNow().toString(),
 				PrivateDate.getNow().toString(), groupe);
 	}
 
-	public static Defi defi2(Groupe groupe) {
-		return createDefi("Défi 2", "Ceci est un autre défi test", 10, "",
-				"", groupe);
+	public static Defi defiInsolite(Groupe groupe) {
+		return createDefi("Défi sport insolite", "Tester pendant au moins 1h un nouveau sport", 100, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiNatation(Groupe groupe) {
+		return createDefi("Défi natation", "Nager 2km en une semaine", 200, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiTest(Groupe groupe) {
+		return createDefi("Défi test de salle", "Participer à une séance test de muscu où vous voulez", 100, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiVelo(Groupe groupe) {
+		return createDefi("Défi vélo", "Faire 3h de vélo en une semaine", 250, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
+	}
+	
+	public static Defi defiCours(Groupe groupe) {
+		return createDefi("Défi cours en cours!", "Aller en cours en courant pendant une semaine", 100, PrivateDate.getNow().toString(),
+				PrivateDate.getNow().toString(), groupe);
 	}
 	
 	public static Defi defiCardio(Groupe groupe) {

@@ -732,29 +732,29 @@ public class Facade {
 		em.persist(gp);
 		init();
 
-		this.ajouterMembre("thomasdarget@hotmail.fr", gp);
+		//this.ajouterMembre("thomasdarget@hotmail.fr", gp);
 		this.ajouterMembre("greg@wanadoo.fr", gp);
 		this.ajouterMembre("manugoncalves@gmail.com", gp);
 		this.ajouterMembre("celia@gmail.com", gp);
 		this.ajouterMembre("cha@sfr.fr", gp);
 
-		Defi defi = Tests_Defis.defi1(gp);
-		em.persist(defi);
+		Defi defiCours = Tests_Defis.defiCours(gp);
+		em.persist(defiCours);
 
-		Defi defi1 = Tests_Defis.defi1(gp);
-		em.persist(defi1);
+		Defi defiVelo = Tests_Defis.defiVelo(gp);
+		em.persist(defiVelo);
 
-		Defi defi2 = Tests_Defis.defi1(gp);
-		em.persist(defi2);
+		Defi defiNatation = Tests_Defis.defiNatation(gp);
+		em.persist(defiNatation);
 
-		Defi defi3 = Tests_Defis.defi1(gp);
-		em.persist(defi3);
+		Defi defiInsolite = Tests_Defis.defiInsolite(gp);
+		em.persist(defiInsolite);
 
-		Defi defi4 = Tests_Defis.defi1(gp);
-		em.persist(defi4);
+		Defi defiTest = Tests_Defis.defiTest(gp);
+		em.persist(defiTest);
 
-		Defi defi5 = Tests_Defis.defi1(gp);
-		em.persist(defi5);
+		Defi defiCharite = Tests_Defis.defiCharite(gp);
+		em.persist(defiCharite);
 
 		Defi defiCardio = Tests_Defis.defiCardio(gp);
 		em.persist(defiCardio);
@@ -787,7 +787,7 @@ public class Facade {
 
 
 		Defi_A_Valider defi_a_valider2 = new Defi_A_Valider();
-		defi_a_valider2.setDefi(defi);
+		defi_a_valider2.setDefi(defiInsolite);
 		defi_a_valider2.setGroupe(gp);
 		defi_a_valider2.setMembre(manu);
 		em.persist(defi_a_valider2);
@@ -811,7 +811,7 @@ public class Facade {
 		csjf_deja_valide.setMembre(manu);
 		csjf_deja_valide.setTexte("J'ai couru un sprint de 200m pour avoir mon bus");
 		csjf_deja_valide.setDateValidation("20190123");
-		csjf_deja_valide.setPoints(100);
+		csjf_deja_valide.setPoints(300);
 		em.persist(csjf_deja_valide);
 
 		CSJF csjf_deja_valide2 = new CSJF();
@@ -830,7 +830,7 @@ public class Facade {
 		csjf_deja_valide3.setMembre(gregoire);
 		csjf_deja_valide3.setTexte("J'ai couru un semi-marathon");
 		csjf_deja_valide3.setDateValidation("20190208");
-		csjf_deja_valide3.setPoints(1000);
+		csjf_deja_valide3.setPoints(500);
 		em.persist(csjf_deja_valide3);
 
 		CSJF csjf_deja_valide4 = new CSJF();
@@ -839,8 +839,38 @@ public class Facade {
 		csjf_deja_valide4.setMembre(gregoire);
 		csjf_deja_valide4.setTexte("Je suis devenu végétarien");
 		csjf_deja_valide4.setDateValidation("20190401");
-		csjf_deja_valide4.setPoints(2000);
+		csjf_deja_valide4.setPoints(800);
 		em.persist(csjf_deja_valide4);
+		
+		Publication publi = new Publication();
+		publi.setMembre(manu);
+		publi.setContenu("Et j'ai valide un defi moi!!");
+		publi.setGroupe(gp);
+		em.persist(publi);
+		
+		Publication publi1 = new Publication();
+		publi1.setMembre(gregoire);
+		publi1.setContenu("Ouais mais moi j'ai valide des CSJF et je suis premier sur le classement t'es archi nul Manu");
+		publi1.setGroupe(gp);
+		em.persist(publi1);
+		
+		Publication publi2 = new Publication();
+		publi2.setMembre(manu);
+		publi2.setContenu("Ouais j'avoue que t'es quand même tres fort t'as couru un semi-marathon... Je te respecte trop");
+		publi2.setGroupe(gp);
+		em.persist(publi2);
+		
+		Publication publi3 = new Publication();
+		publi3.setMembre(charlotte);
+		publi3.setContenu("J'avoue t'es vraiment trop fort !!!");
+		publi3.setGroupe(gp);
+		em.persist(publi3);
+		
+		Publication publi4 = new Publication();
+		publi4.setMembre(gregoire);
+		publi4.setContenu("Oh vous savez avec beaucoup d'entrainement vous y arriverai j'en suis sur!");
+		publi4.setGroupe(gp);
+		em.persist(publi4);
 
 		/*
 		Badge badge = new Badge();
