@@ -964,7 +964,8 @@ public class Facade {
 			PrivateDate[] date_mois = new PrivateDate[nb_mois];
 			for(int i=0; i < nb_mois; i++) {
 				date_mois[i] = PrivateDate.getNow();
-				date_mois[i].setMois(date_mois[i].getMois() - i);
+				date_mois[i].setMois(date_mois[i].getMois() - i + 1);
+				//date_mois[i].setMois(date_mois[i].getMois());
 			}
 
 
@@ -975,7 +976,7 @@ public class Facade {
 
 					for(int i=0; i < nb_mois - 1; i++) {
 						if(date.isBefore(date_mois[i]) && date.isAfter(date_mois[i+1]))
-							somme_csjfs_mois[i] += dv.getDefi().getPoints();
+							somme_defis_mois[i] += dv.getDefi().getPoints();
 					}
 				}
 			}
