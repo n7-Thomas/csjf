@@ -964,7 +964,7 @@ public class Facade {
 			PrivateDate[] date_mois = new PrivateDate[nb_mois];
 			for(int i=0; i < nb_mois; i++) {
 				date_mois[i] = PrivateDate.getNow();
-				date_mois[i].setMois(date_mois[i].getMois() - i + 1);
+				date_mois[i].setMois(date_mois[i].getMois() - i);
 				//date_mois[i].setMois(date_mois[i].getMois());
 			}
 
