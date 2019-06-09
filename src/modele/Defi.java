@@ -1,6 +1,7 @@
 package modele;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,15 +20,15 @@ public class Defi {
 	private int points;
 
 	private TypeDefi type;
-	
+
 	private String description;
-	
+
 	private String nom;
 
 	private String date;
-	
+
 	private String endDate;
-	
+
 	public Defi() {
 		this.setDescription("");
 		this.setNom("");
@@ -35,7 +36,7 @@ public class Defi {
 		this.setEndDate("");
 		this.setPoints(0);
 	}
-	
+
 	/**
 	 * Retourner la description du defi.
 	 * @return
@@ -43,7 +44,7 @@ public class Defi {
 	public String getDescription() {
 		return this.description;
 	}
-	
+
 	/**
 	 * Fixer la description du defi.
 	 * @return
@@ -51,7 +52,7 @@ public class Defi {
 	public void setDescription(String desc) {
 		this.description = desc;
 	}
-	
+
 	/**
 	 * Retourner le nom du defi.
 	 * @return
@@ -59,7 +60,7 @@ public class Defi {
 	public String getNom() {
 		return this.nom;
 	}
-	
+
 	/**
 	 * Fixer le nom du defi.
 	 * @return
@@ -67,7 +68,7 @@ public class Defi {
 	public void setNom(String n) {
 		this.nom = n;
 	}
-	
+
 	/**
 	 * Retourner le nombre de points.
 	 * @return
@@ -113,7 +114,7 @@ public class Defi {
 	public void setGroupe(Groupe groupe) {
 		this.groupe = groupe;
 	}
-	
+
 	/**
 	 * Retourner l'identifiant.
 	 * @return
@@ -137,6 +138,6 @@ public class Defi {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	
-	
+
+
 }

@@ -22,11 +22,11 @@ public class Defi_Valide {
 
 	@ManyToOne
 	private Groupe groupe;
-	
+
 	private String dateValidation;
-	
+
 	public Defi_Valide(){}
-	
+
 	/**
 	 * @return the defi
 	 */
@@ -54,7 +54,7 @@ public class Defi_Valide {
 	public void setMembre(Membre membre) {
 		this.membre = membre;
 	}
-	
+
 	/**
 	 * Retourner l'identifiant.
 	 * @return
@@ -62,7 +62,7 @@ public class Defi_Valide {
 	public int getId() {
 		return this.id;
 	}
-	
+
 	public Groupe getGroupe() {
 		return groupe;
 	}

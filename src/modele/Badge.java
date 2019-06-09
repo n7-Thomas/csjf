@@ -25,7 +25,7 @@ public class Badge {
 
 	private int niveau;
 	private String nom;
-	private String codepoint;
+
 
 	public Badge() {
 	}
@@ -70,7 +70,7 @@ public class Badge {
 	public void addMembre(Membre membre) {
 		membres.add(membre);
 	}
-	
+
 
 	public int getId() {
 		return this.id;
@@ -84,12 +84,5 @@ public class Badge {
 		return this.niveau;
 	}
 
-	public String getCodepoint() {
-		return codepoint;
-	}
-
-	public void setCodepoint(String codepoint) {
-		this.codepoint = codepoint;
-	}
 
 }

@@ -51,6 +51,12 @@
     			} else { %>
     			<div> <%
 					for (Membre membre : membres) { %>
+					<%Integer i = (Integer) request.getAttribute("compteur");
+					String key = (String) request.getAttribute("key" + i);
+					if (i != null && key != null) {
+					%>
+					Le compteur :<%=i %>, avec key : <%=key %>
+					<%} %>
 	    			<p><%=membre.getPrenom() %> <%=membre.getNom() %> <a href="ServeurGroupe?action=del_membre&id_grp=<%=groupe.getId() %>&id_mbr=<%=membre.getId() %>" class="delete"><img src="CSS/delete.png" height="15"></a></p>
 					<% } %>
 				</div> <%
@@ -201,7 +207,7 @@
 				</fieldset>
 		
 				<fieldset id="DefisEnCours">
-					<legend>Défis en cours</legend>
+					<legend>Défis</legend>
 						<%  
 						if(!hasDec || defis_en_cours.size() == 0){ %>	
 							<p>	Aucun défi en cours ! </p> <%

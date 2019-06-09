@@ -44,24 +44,24 @@
 		                	<div class="palmares">		                			
 									<% Collection<Badge> badges =(Collection<Badge>) request.getAttribute("liste_badges");
 									System.out.println("badges:" + badges);
-									if(badges!= null) { 
+									if(!badges.isEmpty()) { 
 										
 										for (Badge badge: badges) { %>
 										
-										<div class="badge">
+										<span class="medaille">
+												<%if(badge.getNiveau()==3){%>
+													<h3>🥇</h3>
+												<% } if (badge.getNiveau()==2) { %>
+													<h3>🥈</h3>
+												<% } else { %>
+													<h3>🥉</h3>
+												<% } %>											
+												<span class="badge_description">
+												<%= badge.getNom() + ": niveau " + badge.getNiveau() %> <br><br>
+												<%= badge.getDescription()%> 
+												</span>	   
 											
-											<%if(badge.getNiveau()==3){%>
-												🥉
-											<% } if (badge.getNiveau()==2) { %>
-												🥉
-											<% } else { %>
-												🥉
-											<% } %>
-											<span class="badge_description">
-											<%= badge.getNom() %> <br>
-											<%= badge.getDescription()%> 
-											</span>	   
-										</div>             	
+										</span>             	
 										<%}
 									} else { %>
 										Vous n'avez aucun badge !
