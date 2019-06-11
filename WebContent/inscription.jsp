@@ -45,6 +45,16 @@
 	  					<hr>
 	                </div>
 	                </div><br />
+	                
+	                <div id="field">
+	                 <label for="location"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis"></span></label>
+	                <input type="text" id="location" name="location" placeHolder="location *" value="<%= request.getAttribute("location_user") %>" size="20" maxlength="60" />
+	                <span class="erreur">${form.erreurs['location']}</span>
+	                <div style="width:80%;margin-left: auto;
+	  					margin-right: auto;">
+	                <hr>
+	                </div>
+	                </div><br />
                 
 	                <div id="field">
 	                 <label for="email"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis"></span></label>
@@ -72,6 +82,17 @@
 	  				<hr>
 	                </div>
 	                </div><br />
+	                
+	                <div id="field">
+	                <label for="location"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis"></span></label>
+	                <input type="text" id="location" name="location" placeHolder="location *" value="<%= request.getAttribute("location_user") %>" size="20" maxlength="60" />
+	                <span class="erreur">${form.erreurs['location']}</span>
+	                <div style="width:80%;margin-left: auto;
+	  					margin-right: auto;">
+	                <hr>
+	                </div>
+	                </div><br />
+	                
 	                
 	                <div id="field">
 	                 <label for="email"><i class="glyphicon glyphicon-envelope" style="font-size:25px;"></i><span class="requis"></span></label>

@@ -37,6 +37,7 @@
 				            	<p><%= mb.getPrenom() + " " + mb.getNom() %></p>
 				            </div></br>
 				            <div class="infos">
+				            <p>Location : <%= mb.getLocation() %></p>
 				            <p><i class="glyphicon glyphicon-envelope"></i> : <%= mb.getEmail() %></p>
 		                		<a href="Serveur?action=modifier_profil"> Modifier son profil.</a><br>
 		                	</div>

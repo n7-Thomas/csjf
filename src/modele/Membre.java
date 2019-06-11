@@ -37,6 +37,8 @@ public class Membre {
 
 	@ManyToMany(mappedBy="membres", fetch=FetchType.EAGER)
 	private Collection<Badge> badges;
+	
+	private String location;
 
 	//@OneToOne(mappedBy = "membre", fetch = FetchType.EAGER)
 	//private Collection<Publication> publications ;
@@ -136,5 +138,13 @@ public class Membre {
 	 */
 	public int getId() {
 		return this.id;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }

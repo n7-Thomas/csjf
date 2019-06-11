@@ -106,8 +106,9 @@ public class ServeurConnexion extends HttpServlet {
 			String prenom = request.getParameter("prenom");
 			String email = request.getParameter("email");
 			String motdepasse = request.getParameter("motdepasse");
+			String location = request.getParameter("location");
 
-			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse);
+			Membre m = facade.inscriptionNewMember(nom, prenom, email, motdepasse, location);
 			System.out.println("MEMBRE TROUVE : " + m);
 			if (m != null) {
 				session.setAttribute("user", m);
@@ -120,6 +121,7 @@ public class ServeurConnexion extends HttpServlet {
 				request.setAttribute("nom_user", nom);
 				request.setAttribute("prenom_user", prenom);
 				request.setAttribute("email_user", email);
+				request.setAttribute("location", location);
 				request.getRequestDispatcher("inscription.jsp").forward(request, response);
 			}
 

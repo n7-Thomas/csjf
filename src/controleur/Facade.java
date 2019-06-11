@@ -59,7 +59,7 @@ public class Facade {
 		return member;
 	}
 
-	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse) {
+	public Membre inscriptionNewMember(String nom, String prenom, String email, String motdepasse, String location) {
 
 		Membre member = null;
 		TypedQuery<Membre> req = em.createQuery("select m from Membre m WHERE email = '" + email + "'", Membre.class);
@@ -73,6 +73,7 @@ public class Facade {
 			member.setMotdepasse(motdepasse);
 			member.setNom(nom);
 			member.setPrenom(prenom);
+			member.setLocation(location);
 			em.persist(member);
 		}
 		return member;
@@ -507,12 +508,13 @@ public class Facade {
 	/**
 	 * FROM PROFIL
 	 */
-	public void modifierProfil(Membre mb, String nom, String prenom, String email, String motdepasse) {
+	public void modifierProfil(Membre mb, String nom, String prenom, String email, String motdepasse, String location) {
 		Membre mbr = em.find(Membre.class, mb.getId());
 		mbr.setNom(nom);
 		mbr.setPrenom(prenom);
 		mbr.setEmail(email);
 		mbr.setMotdepasse(motdepasse);
+		mbr.setLocation(location);
 	}
 
 	public Collection<Defi_A_Valider> getDefisAValider(Groupe grp) {

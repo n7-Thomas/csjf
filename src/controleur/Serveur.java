@@ -28,7 +28,7 @@ public class Serveur extends HttpServlet {
 	 */
 	public Serveur() {
 		super();
-		facade.init();
+		//facade.init();
 	}
 
 	/**
@@ -104,8 +104,9 @@ public class Serveur extends HttpServlet {
 			String prenom = request.getParameter("prenom");
 			String email = request.getParameter("email");
 			String motdepasse = request.getParameter("motdepasse");
+			String location = request.getParameter("location");
 			Membre mb = ((Membre) session.getAttribute("user"));
-			facade.modifierProfil(mb, nom, prenom, email, motdepasse);
+			facade.modifierProfil(mb, nom, prenom, email, motdepasse, location);
 			request.getRequestDispatcher("ServeurConnexion?action=afficher_profil").forward(request, response);
 		}
 
